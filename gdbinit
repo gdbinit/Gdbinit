@@ -21,28 +21,27 @@
 #                 For more information, read it here http://reverse.put.as/2008/11/28/apples-gdb-bug/
 #
 #  UPDATE: This bug can be fixed in gdb source. Refer to http://reverse.put.as/2009/08/10/fix-for-apples-gdb-bug-or-why-apple-forks-are-bad/
-#						  and http://reverse.put.as/2009/08/26/gdb-patches/ (if you want the fixed binary for i386)
+#          and http://reverse.put.as/2009/08/26/gdb-patches/ (if you want the fixed binary for i386)
 #
-#	   An updated version of the patch and binary is available at http://reverse.put.as/2011/02/21/update-to-gdb-patches-fix-a-new-bug/
+#          An updated version of the patch and binary is available at http://reverse.put.as/2011/02/21/update-to-gdb-patches-fix-a-new-bug/
 #
 # CHANGELOG: (older changes at the end of the file)
 #
 #   Version 7.4 (20/06/2011) - fG!
-#	  When registers change between instructions the colour will change to red (like it happens in OllyDBG)
-#	   This is the default behavior, if you don't like it, modify the variable SHOWREGCHANGES
-#	  Added patch sent by Philippe Langlois
-# 		Colour the first disassembly line - change the setting below on SETCOLOUR1STLINE - by default it's disabled
-#	Version 7.4.1 (21/06/2011) - fG!
-#     Added patch sent by Sofian Brabez, more than 1 year ago, which I forgot to add :-/
-#		This will allow to search for a given pattern between start and end address.
-#		On Sofian words: "It's usefull to find call, ret or everything like that." :-)
-#		New command is "search"
+#    When registers change between instructions the colour will change to red (like it happens in OllyDBG)
+#     This is the default behavior, if you don't like it, modify the variable SHOWREGCHANGES
+#    Added patch sent by Philippe Langlois
+#     Colour the first disassembly line - change the setting below on SETCOLOUR1STLINE - by default it's disabled
+#   Version 7.4.1 (21/06/2011) - fG!
+#    Added patch sent by sbz, more than 1 year ago, which I forgot to add :-/
+#     This will allow to search for a given pattern between start and end address.
+#     On sbz words: "It's usefull to find call, ret or everything like that." :-)
+#    New command is "search"
 #   Version 7.4.2 (11/08/2011)
-#	  Small fix to a weird bug happening on FreeBSD 8.2. It doesn't like a "if(" instruction, needs to be "if (". Weird!
-#       Many thanks to Evan for reporting and sending the patch :-)
-#	  Added the ptraceme/rptraceme commands to bypass PTRACE_TRACME anti-debugging technique.
-#		Grabbed this from http://falken.tuxfamily.org/?p=171
-#		
+#    Small fix to a weird bug happening on FreeBSD 8.2. It doesn't like a "if(" instruction, needs to be "if (". Weird!
+#     Many thanks to Evan for reporting and sending the patch :-)
+#    Added the ptraceme/rptraceme commands to bypass PTRACE_TRACME anti-debugging technique.
+#     Grabbed this from http://falken.tuxfamily.org/?p=171
 #
 #   TODO:
 #     Add dump, append, set write, etc commands
