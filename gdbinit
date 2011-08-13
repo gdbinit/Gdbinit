@@ -2136,26 +2136,26 @@ Create a runtime trace of target.
 Log overwrites(!) the file ~/gdb_trace_run.txt.
 end
 
-define ptraceme
-    catch syscall ptrace
-    commands
-        if ($64BITS == 0)
-            if ($ebx == 0)
-	        set $eax = 0
-                continue
-            end
-        else
-            if ($rdi == 0)
-                set $rax = 0
-                continue
-            end
-        end
-    end
-    set $ptrace_bpnum = $bpnum
-end
-document ptraceme
-Hook ptrace to bypass PTRACE_TRACEME anti debugging technique
-end
+#define ptraceme
+#    catch syscall ptrace
+#    commands
+#        if ($64BITS == 0)
+#            if ($ebx == 0)
+#	        set $eax = 0
+#                continue
+#            end
+#        else
+#            if ($rdi == 0)
+#                set $rax = 0
+#                continue
+#            end
+#        end
+#    end
+#    set $ptrace_bpnum = $bpnum
+#end
+#document ptraceme
+#Hook ptrace to bypass PTRACE_TRACEME anti debugging technique
+#end
 
 define rptraceme
     if ($ptrace_bpnum != 0)
