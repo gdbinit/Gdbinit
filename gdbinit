@@ -2,7 +2,7 @@
 #
 # DESCRIPTION: A user-friendly gdb configuration file.
 #
-# REVISION : 7.4.2 (11/08/2011)
+# REVISION : 7.4.3 (04/11/2011)
 #
 # CONTRIBUTORS: mammon_, elaine, pusillus, mong, zhang le, l0kit,
 #               truthix the cyberpunk, fG!, gln
@@ -27,57 +27,49 @@
 #
 # CHANGELOG: (older changes at the end of the file)
 #
-#   Version 7.4 (20/06/2011) - fG!
-#    When registers change between instructions the colour will change to red (like it happens in OllyDBG)
-#     This is the default behavior, if you don't like it, modify the variable SHOWREGCHANGES
-#    Added patch sent by Philippe Langlois
-#     Colour the first disassembly line - change the setting below on SETCOLOUR1STLINE - by default it's disabled
-#   Version 7.4.1 (21/06/2011) - fG!
-#    Added patch sent by sbz, more than 1 year ago, which I forgot to add :-/
-#     This will allow to search for a given pattern between start and end address.
-#     On sbz words: "It's usefull to find call, ret or everything like that." :-)
-#    New command is "search"
+#	Version 7.4.3 (04/11/2011)
+#	  - Modified "hexdump" command to support a variable number of lines (optional parameter)
+#	  - Removed restrictions on type of addresses in the "dd" command - Thanks to Plouj for the warning :-)
+#	   I don't know what was the original thinking behind those :-)
+#	  - Modified the assemble command to support 64bits - You will need to recompile nasm since the version shipped with OS X doesn't supports 64bits (www.nasm.us).
+#	   Assumes that the new binary is installed at /usr/local/bin - modify the variable at the top if you need so. 
+#	   It will assemble based on the target arch being debugged. If you want to use gdb for a quick asm just use the 32bits or 64bits commands to set your target.
+#      Thanks to snare for the warning and original patch :-)
+#	  - Added "asm" command - it's a shortcut to the "assemble" command.
+#	  - Added configuration variable for colorized prompt. Plouj reported some issues with Ubuntu's gdb 7.2 if prompt is colorized.
+#
 #   Version 7.4.2 (11/08/2011)
 #    Small fix to a weird bug happening on FreeBSD 8.2. It doesn't like a "if(" instruction, needs to be "if (". Weird!
 #     Many thanks to Evan for reporting and sending the patch :-)
 #    Added the ptraceme/rptraceme commands to bypass PTRACE_TRACME anti-debugging technique.
 #     Grabbed this from http://falken.tuxfamily.org/?p=171
+#	  It's commented out due to a gdb problem in OS X (refer to http://reverse.put.as/2011/08/20/another-patch-for-apples-gdb-the-definecommands-problem/ )
+#	  Just uncomment it if you want to use in ptrace enabled systems.
+#
+#   Version 7.4.1 (21/06/2011) - fG!
+#    Added patch sent by sbz, more than 1 year ago, which I forgot to add :-/
+#     This will allow to search for a given pattern between start and end address.
+#     On sbz words: "It's usefull to find call, ret or everything like that." :-)
+#    New command is "search"
+#
+#   Version 7.4 (20/06/2011) - fG!
+#    When registers change between instructions the colour will change to red (like it happens in OllyDBG)
+#     This is the default behavior, if you don't like it, modify the variable SHOWREGCHANGES
+#    Added patch sent by Philippe Langlois
+#     Colour the first disassembly line - change the setting below on SETCOLOUR1STLINE - by default it's disabled
 #
 #   TODO:
-#     Add dump, append, set write, etc commands
-#     Add more tips !
-
+#
 
 # __________________gdb options_________________
 
-# set to 1 to enable 64bits target by default (32bit is the default)
+# set to 1 to enable 64bits target by default (32bits is the default)
 set $64BITS = 0
-
-set confirm off
-set verbose off
-set prompt \033[31mgdb$ \033[0m
-
-set output-radix 0x10
-set input-radix 0x10
-
-# These make gdb never pause in its output
-set height 0
-set width 0
-
-# Display instructions in Intel format
-set disassembly-flavor intel
-
-set $SHOW_CONTEXT = 1
-set $SHOW_NEST_INSN = 0
-
-set $CONTEXTSIZE_STACK = 6
-set $CONTEXTSIZE_DATA  = 8
-set $CONTEXTSIZE_CODE  = 8
-
+# set to 0 if you have problems with the colorized prompt - reported by Plouj with Ubuntu gdb 7.2
+set $COLOUREDPROMPT = 1
 # Colour the first line of the disassembly - default is green, if you want to change it search for
 # SETCOLOUR1STLINE and modify it :-)
 set $SETCOLOUR1STLINE = 0
-
 # set to 0 to remove display of objectivec messages (default is 1)
 set $SHOWOBJECTIVEC = 1
 # set to 0 to remove display of cpu registers (default is 1)
@@ -86,9 +78,32 @@ set $SHOWCPUREGISTERS = 1
 set $SHOWSTACK = 0
 # set to 1 to enable display of data window (default is 0)
 set $SHOWDATAWIN = 0
-
 # set to 0 to disable coloured display of changed registers
 set $SHOWREGCHANGES = 1
+
+set confirm off
+set verbose off
+
+if $COLOUREDPROMPT == 1
+	set prompt \033[31mgdb$ \033[0m
+end
+
+set output-radix 0x10
+set input-radix 0x10
+
+# These make gdb never pause in its output
+set height 0
+set width 0
+
+# Display instructions in Intel format - change to "att" if you prefer AT&T format
+set disassembly-flavor intel
+
+set $SHOW_CONTEXT = 1
+set $SHOW_NEST_INSN = 0
+
+set $CONTEXTSIZE_STACK = 6
+set $CONTEXTSIZE_DATA  = 8
+set $CONTEXTSIZE_CODE  = 8
 
 # __________________end gdb options_________________
 
@@ -102,8 +117,8 @@ set $oldrsi = 0
 set $oldrdi = 0
 set $oldrbp = 0
 set $oldrsp = 0
-set $oldr8 = 0
-set $oldr9 = 0
+set $oldr8  = 0
+set $oldr9  = 0
 set $oldr10 = 0
 set $oldr11 = 0
 set $oldr12 = 0
@@ -410,7 +425,6 @@ end
 
 define reg
  if ($64BITS == 1)
-
 # 64bits stuff
     printf "  "
     # RAX
@@ -957,8 +971,9 @@ end
 document dis
 Disassemble a specified section of memory.
 Default is to disassemble the function surrounding the PC (program counter)
-of selected frame. With one argument, ADDR1, the function surrounding this
-address is dumped. Two arguments are taken as a range of memory to dump.
+of selected frame. 
+With one argument, ADDR1, the function surrounding this address is dumped.
+Two arguments are taken as a range of memory to dump.
 Usage: dis <ADDR1> <ADDR2>
 end
 
@@ -1003,8 +1018,30 @@ Usage: hex_quad ADDR
 end
 
 define hexdump
+    if $argc == 1
+        hexdump_aux $arg0
+	else
+		if $argc == 2
+			set $_count = 0
+			while ($_count < $arg1)
+				set $_i = ($_count * 0x10)
+				hexdump_aux $data_addr+$_i
+				set $_count++
+			end
+		else
+			help hexdump
+		end
+    end
+end
+document hexdump
+Display a 16-byte hex/ASCII dump of memory starting at address ADDR.
+Optional parameter is the number of lines to display if you want more than one. 
+Usage: hexdump ADDR [nr lines]
+end
+
+define hexdump_aux
     if $argc != 1
-        help hexdump
+        help hexdump_aux
     else
         echo \033[1m
         if ($64BITS == 1)
@@ -1040,9 +1077,9 @@ define hexdump
         printf "\n"
     end
 end
-document hexdump
+document hexdump_aux
 Display a 16-byte hex/ASCII dump of memory at address ADDR.
-Usage: hexdump ADDR
+Usage: hexdump_aux ADDR
 end
 
 
@@ -1085,12 +1122,8 @@ define dd
     if $argc != 1
         help dd
     else
-        if ((($arg0 >> 0x18) == 0x40) || (($arg0 >> 0x18) == 0x08) || (($arg0 >> 0x18) == 0xBF))
             set $data_addr = $arg0
             ddump 0x10
-        else
-            printf "Invalid address: %08X\n", $arg0
-        end
     end
 end
 document dd
@@ -1837,7 +1870,6 @@ end
 document nop
 Usage: nop ADDR1 [ADDR2]
 Patch a single byte at address ADDR1, or a series of bytes between ADDR1 and ADDR2 to a NOP (0x90) instruction.
-
 end
 
 
@@ -2209,16 +2241,34 @@ define assemble
  echo \033[0m
  printf "End with a line saying just \"end\".\n"
  if ($argc)
-  # argument specified, assemble instructions into memory at address specified.
-  shell ASMOPCODE="$(while read -ep '>' r && test "$r" != end ; do echo -E "$r"; done)" ; FILENAME=$RANDOM; \
-   echo -e "BITS 32\n$ASMOPCODE" >/tmp/$FILENAME ; /usr/bin/nasm -f bin -o /dev/stdout /tmp/$FILENAME | /usr/bin/hexdump -ve '1/1 "set *((unsigned char *) $arg0 + %#2_ax) = %#02x\n"' >/tmp/gdbassemble ; /bin/rm -f /tmp/$FILENAME
-  source /tmp/gdbassemble
-  # all done. clean the temporary file
-  shell /bin/rm -f /tmp/gdbassemble
+	if ($64BITS == 1)
+		# argument specified, assemble instructions into memory at address specified.
+		shell ASMOPCODE="$(while read -ep '>' r && test "$r" != end ; do echo -E "$r"; done)" ; GDBASMFILENAME=$RANDOM; \
+		echo -e "BITS 64\n$ASMOPCODE" >/tmp/$GDBASMFILENAME ; /usr/local/bin/nasm -f bin -o /dev/stdout /tmp/$GDBASMFILENAME | /usr/bin/hexdump -ve '1/1 "set *((unsigned char *) $arg0 + %#2_ax) = %#02x\n"' >/tmp/gdbassemble ; /bin/rm -f /tmp/$GDBASMFILENAME
+		source /tmp/gdbassemble
+		# all done. clean the temporary file
+		shell /bin/rm -f /tmp/gdbassemble
+	else
+		# argument specified, assemble instructions into memory at address specified.
+		shell ASMOPCODE="$(while read -ep '>' r && test "$r" != end ; do echo -E "$r"; done)" ; GDBASMFILENAME=$RANDOM; \
+		echo -e "BITS 32\n$ASMOPCODE" >/tmp/$GDBASMFILENAME ; /usr/bin/nasm -f bin -o /dev/stdout /tmp/$GDBASMFILENAME | /usr/bin/hexdump -ve '1/1 "set *((unsigned char *) $arg0 + %#2_ax) = %#02x\n"' >/tmp/gdbassemble ; /bin/rm -f /tmp/$GDBASMFILENAME
+		source /tmp/gdbassemble
+		# all done. clean the temporary file
+		shell /bin/rm -f /tmp/gdbassemble
+	end
  else
-  # no argument, assemble instructions to stdout
-  shell ASMOPCODE="$(while read -ep '>' r && test "$r" != end ; do echo -E "$r"; done)" ; FILENAME=$RANDOM; \
-   echo -e "BITS 32\n$ASMOPCODE" >/tmp/$FILENAME ; /usr/bin/nasm -f bin -o /dev/stdout /tmp/$FILENAME | /usr/bin/ndisasm -i -b32 /dev/stdin ; /bin/rm -f /tmp/$FILENAME
+	if ($64BITS == 1)
+		# no argument, assemble instructions to stdout
+		shell ASMOPCODE="$(while read -ep '>' r && test "$r" != end ; do echo -E "$r"; done)" ; GDBASMFILENAME=$RANDOM; \
+		echo -e "BITS 64\n$ASMOPCODE" >/tmp/$GDBASMFILENAME ; /usr/local/bin/nasm -f bin -o /dev/stdout /tmp/$GDBASMFILENAME | /usr/local/bin/ndisasm -i -b64 /dev/stdin ; \
+		/bin/rm -f /tmp/$GDBASMFILENAME
+
+	else
+		# no argument, assemble instructions to stdout
+		shell ASMOPCODE="$(while read -ep '>' r && test "$r" != end ; do echo -E "$r"; done)" ; GDBASMFILENAME=$RANDOM; \
+		echo -e "BITS 32\n$ASMOPCODE" >/tmp/$GDBASMFILENAME ; /usr/bin/nasm -f bin -o /dev/stdout /tmp/$GDBASMFILENAME | /usr/bin/ndisasm -i -b32 /dev/stdin ; \
+		/bin/rm -f /tmp/$GDBASMFILENAME
+	end
  end
 end
 document assemble
@@ -2227,6 +2277,17 @@ Type a line containing "end" to indicate the end.
 If an address is specified, insert/modify instructions at that address.
 If no address is specified, assembled instructions are printed to stdout.
 Use the pseudo instruction "org ADDR" to set the base address.
+end
+
+define asm
+	if $argc == 1
+		assemble $arg0
+	else
+		assemble
+	end
+end
+document asm
+Shortcut to the asssemble command
 end
 
 define assemble_gas
