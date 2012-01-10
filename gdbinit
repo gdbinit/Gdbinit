@@ -2,7 +2,7 @@
 #
 # DESCRIPTION: A user-friendly gdb configuration file.
 #
-# REVISION : 7.4.3 (04/11/2011)
+# REVISION : 7.4.4 (02/01/2012)
 #
 # CONTRIBUTORS: mammon_, elaine, pusillus, mong, zhang le, l0kit,
 #               truthix the cyberpunk, fG!, gln
@@ -27,6 +27,10 @@
 #
 # CHANGELOG: (older changes at the end of the file)
 #
+#   Version 7.4.4 (02/01/2012)
+#     - Added the "skip" command. This will jump to the next instruction after EIP/RIP without executing the current one.
+#       Thanks to @bSr43 for the tip to retrieve the current instruction size.
+#
 #	Version 7.4.3 (04/11/2011)
 #	  - Modified "hexdump" command to support a variable number of lines (optional parameter)
 #	  - Removed restrictions on type of addresses in the "dd" command - Thanks to Plouj for the warning :-)
@@ -37,26 +41,6 @@
 #      Thanks to snare for the warning and original patch :-)
 #	  - Added "asm" command - it's a shortcut to the "assemble" command.
 #	  - Added configuration variable for colorized prompt. Plouj reported some issues with Ubuntu's gdb 7.2 if prompt is colorized.
-#
-#   Version 7.4.2 (11/08/2011)
-#    Small fix to a weird bug happening on FreeBSD 8.2. It doesn't like a "if(" instruction, needs to be "if (". Weird!
-#     Many thanks to Evan for reporting and sending the patch :-)
-#    Added the ptraceme/rptraceme commands to bypass PTRACE_TRACME anti-debugging technique.
-#     Grabbed this from http://falken.tuxfamily.org/?p=171
-#	  It's commented out due to a gdb problem in OS X (refer to http://reverse.put.as/2011/08/20/another-patch-for-apples-gdb-the-definecommands-problem/ )
-#	  Just uncomment it if you want to use in ptrace enabled systems.
-#
-#   Version 7.4.1 (21/06/2011) - fG!
-#    Added patch sent by sbz, more than 1 year ago, which I forgot to add :-/
-#     This will allow to search for a given pattern between start and end address.
-#     On sbz words: "It's usefull to find call, ret or everything like that." :-)
-#    New command is "search"
-#
-#   Version 7.4 (20/06/2011) - fG!
-#    When registers change between instructions the colour will change to red (like it happens in OllyDBG)
-#     This is the default behavior, if you don't like it, modify the variable SHOWREGCHANGES
-#    Added patch sent by Philippe Langlois
-#     Colour the first disassembly line - change the setting below on SETCOLOUR1STLINE - by default it's disabled
 #
 #   TODO:
 #
@@ -80,6 +64,12 @@ set $SHOWSTACK = 0
 set $SHOWDATAWIN = 0
 # set to 0 to disable coloured display of changed registers
 set $SHOWREGCHANGES = 1
+# set to 1 so skip command to execute the instruction at the new location
+# by default it EIP/RIP will be modified and update the new context but not execute the instruction
+set $SKIPEXECUTE = 0
+# if $SKIPEXECUTE is 1 configure the type of execution
+# 1 = use stepo (do not get into calls), 0 = use stepi (step into calls)
+set $SKIPSTEP = 1
 
 set confirm off
 set verbose off
@@ -1739,6 +1729,25 @@ document stepoh
 Same as stepo command but uses temporary hardware breakpoints
 end
 
+define skip
+	x/2i $pc
+	set $instruction_size = (int)($_ - $pc)
+	set $pc = $pc + $instruction_size
+	if ($SKIPEXECUTE == 1)
+		if ($SKIPSTEP == 1)
+			stepo
+		else
+			stepi
+		end
+	else
+		context
+	end
+end
+document skip
+Skip over the instruction located at EIP/RIP. By default, the instruction will not be executed!
+Some configurable options are available on top of gdbinit to override this.
+end
+
 # _______________eflags commands______________
 define cfc
     if ($eflags & 1)
@@ -2563,6 +2572,26 @@ end
 #EOF
 
 # Older change logs:
+#
+#   Version 7.4.2 (11/08/2011)
+#    Small fix to a weird bug happening on FreeBSD 8.2. It doesn't like a "if(" instruction, needs to be "if (". Weird!
+#     Many thanks to Evan for reporting and sending the patch :-)
+#    Added the ptraceme/rptraceme commands to bypass PTRACE_TRACME anti-debugging technique.
+#     Grabbed this from http://falken.tuxfamily.org/?p=171
+#	  It's commented out due to a gdb problem in OS X (refer to http://reverse.put.as/2011/08/20/another-patch-for-apples-gdb-the-definecommands-problem/ )
+#	  Just uncomment it if you want to use in ptrace enabled systems.
+#
+#   Version 7.4.1 (21/06/2011) - fG!
+#    Added patch sent by sbz, more than 1 year ago, which I forgot to add :-/
+#     This will allow to search for a given pattern between start and end address.
+#     On sbz words: "It's usefull to find call, ret or everything like that." :-)
+#    New command is "search"
+#
+#   Version 7.4 (20/06/2011) - fG!
+#    When registers change between instructions the colour will change to red (like it happens in OllyDBG)
+#     This is the default behavior, if you don't like it, modify the variable SHOWREGCHANGES
+#    Added patch sent by Philippe Langlois
+#     Colour the first disassembly line - change the setting below on SETCOLOUR1STLINE - by default it's disabled
 #
 #	Version 7.3.2 (21/02/2011) - fG!
 #	  Added the command rint3 and modified the int3 command. The new command will restore the byte in previous int3 patch.
