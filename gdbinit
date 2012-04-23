@@ -2,7 +2,7 @@
 #
 # DESCRIPTION: A user-friendly gdb configuration file, for x86/x86_64 and ARM platforms.
 #
-# REVISION : 8.0 (13/04/2012)
+# REVISION : 8.0.1 (23/04/2012)
 #
 # CONTRIBUTORS: mammon_, elaine, pusillus, mong, zhang le, l0kit,
 #               truthix the cyberpunk, fG!, gln
@@ -29,6 +29,9 @@
 #            For more information, read it here http://reverse.put.as/2008/11/28/apples-gdb-bug/
 #
 # CHANGELOG: (older changes at the end of the file)
+#
+#   Version 8.0.1 (23/04/2012)
+#     - Small bug fix to the attsyntax and intelsyntax commands (changing X86 flavor variable was missing)
 #
 #   Version 8.0 (13/04/2012)
 #     - Merged x86/x64 and ARM versions
@@ -3303,6 +3306,7 @@ end
 define intelsyntax
     if $ARM == 0
         set disassembly-flavor intel
+        set $X86FLAVOR = 0
     end
 end
 document intelsyntax
@@ -3313,6 +3317,7 @@ end
 define attsyntax
     if $ARM == 0
         set disassembly-flavor att
+        set $X86FLAVOR = 1
     end
 end
 document attsyntax
