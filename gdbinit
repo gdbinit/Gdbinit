@@ -79,9 +79,7 @@ set $X86FLAVOR = 0
 set confirm off
 set verbose off
 
-if $COLOUREDPROMPT == 1
-	set prompt \033[31mgdb$ \033[0m
-end
+
 
 set output-radix 0x10
 set input-radix 0x10
@@ -97,7 +95,13 @@ set $CONTEXTSIZE_STACK = 6
 set $CONTEXTSIZE_DATA  = 8
 set $CONTEXTSIZE_CODE  = 8
 
+source ~/.gdbinit.local
+
 # __________________end gdb options_________________
+#
+if $COLOUREDPROMPT == 1
+	set prompt \033[31mgdb$ \033[0m
+end
 
 # Initialize these variables else comparisons will fail for colouring
 # we must initialize all of them at once, 32 and 64 bits, and ARM.
