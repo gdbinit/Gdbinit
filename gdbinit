@@ -2,7 +2,7 @@
 #
 # DESCRIPTION: A user-friendly gdb configuration file, for x86/x86_64 and ARM platforms.
 #
-# REVISION : 8.0.1 (23/04/2012)
+# REVISION : 8.0.2 (31/07/2012)
 #
 # CONTRIBUTORS: mammon_, elaine, pusillus, mong, zhang le, l0kit,
 #               truthix the cyberpunk, fG!, gln
@@ -29,6 +29,10 @@
 #            For more information, read it here http://reverse.put.as/2008/11/28/apples-gdb-bug/
 #
 # CHANGELOG: (older changes at the end of the file)
+#
+#   Version 8.0.2 (31/07/2012)
+#     - Merge pull request from mheistermann to support local modifications in a .gdbinit.local file
+#     - Add a missing opcode to the stepo command
 #
 #   Version 8.0.1 (23/04/2012)
 #     - Small bug fix to the attsyntax and intelsyntax commands (changing X86 flavor variable was missing)
@@ -2232,7 +2236,7 @@ define stepoframework
                     set $_nextaddress = $pc + 0x3
                 end
                 # call *0x????????(%ebx) (0xFF93????????) || 
-                if ($_byte2 == 0x93 || $_byte2 == 0x94 || $_byte2 == 0x90 || $_byte2 == 0x92)
+                if ($_byte2 == 0x93 || $_byte2 == 0x94 || $_byte2 == 0x90 || $_byte2 == 0x92 || $_byte2 == 0x95)
                     set $_nextaddress = $pc + 6
                 end
                 # call *0x????????(%ebx,%eax,4) (0xFF94??????????)
