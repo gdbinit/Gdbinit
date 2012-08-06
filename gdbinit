@@ -54,6 +54,14 @@
 set $ARM = 0
 # set to 1 to enable 64bits target by default (32bits is the default)
 set $64BITS = 0
+
+if $64BITS == 1
+   printf "64-bit mode assumbed by the extended macros.\n"
+   printf "Edit the $64BITS variable in your .gdbinit file to switch to 32-bit mode.\n"
+else
+   printf "32-bit mode assumbed by the extended macros.\n"
+   printf "Edit the $64BITS variable in your .gdbinit file to switch to 64-bit mode.\n"
+end
 # set to 0 if you have problems with the colorized prompt - reported by Plouj with Ubuntu gdb 7.2
 set $COLOUREDPROMPT = 1
 # Colour the first line of the disassembly - default is green, if you want to change it search for
