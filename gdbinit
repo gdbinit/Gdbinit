@@ -56,11 +56,11 @@ set $ARM = 0
 set $64BITS = 0
 
 if $64BITS == 1
-   printf "64-bit mode assumbed by the extended macros.\n"
-   printf "Edit the $64BITS variable in your .gdbinit file to switch to 32-bit mode.\n"
+   printf "64-bit mode is default. Use the 32bits command if your target is 32 bits.\n"
+   printf "Edit the $64BITS variable in your .gdbinit file to switch to default 32-bit mode.\n"
 else
-   printf "32-bit mode assumbed by the extended macros.\n"
-   printf "Edit the $64BITS variable in your .gdbinit file to switch to 64-bit mode.\n"
+   printf "32-bit mode is default. Use the 64bits command if your target is 64 bits.\n"
+   printf "Edit the $64BITS variable in your .gdbinit file to switch to default 64-bit mode.\n"
 end
 # set to 0 if you have problems with the colorized prompt - reported by Plouj with Ubuntu gdb 7.2
 set $COLOUREDPROMPT = 1
