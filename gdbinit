@@ -107,13 +107,15 @@ set $CONTEXTSIZE_STACK = 6
 set $CONTEXTSIZE_DATA  = 8
 set $CONTEXTSIZE_CODE  = 8
 
-source ~/.gdbinit.local
-
 # __________________end gdb options_________________
 #
+
 if $COLOUREDPROMPT == 1
 	set prompt \033[31mgdb$ \033[0m
 end
+
+# this way anyone can have their custom prompt - argp's idea :-)
+source ~/.gdbinit.local
 
 # Initialize these variables else comparisons will fail for colouring
 # we must initialize all of them at once, 32 and 64 bits, and ARM.
