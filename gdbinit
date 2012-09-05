@@ -1948,7 +1948,7 @@ define context
     	    end
 
         	if ($__byte == 0x4244c89)
-         		set $objectivec = $edx
+         		set $objectivec = $ecx
      	    	set $displayobjectivec = 1
         	end
         else
