@@ -50,18 +50,6 @@
 
 # __________________gdb options_________________
 
-# set to 1 to have ARM target debugging as default, use the "arm" command to switch inside gdb
-set $ARM = 0
-# set to 1 to enable 64bits target by default (32bits is the default)
-set $64BITS = 1
-
-if $64BITS == 1
-   printf "64-bit mode is default. Use the 32bits command if your target is 32 bits.\n"
-   printf "Edit the $64BITS variable in your .gdbinit file to switch to default 32-bit mode.\n"
-else
-   printf "32-bit mode is default. Use the 64bits command if your target is 64 bits.\n"
-   printf "Edit the $64BITS variable in your .gdbinit file to switch to default 64-bit mode.\n"
-end
 # set to 0 if you have problems with the colorized prompt - reported by Plouj with Ubuntu gdb 7.2
 set $COLOUREDPROMPT = 1
 # Colour the first line of the disassembly - default is green, if you want to change it search for
@@ -114,6 +102,7 @@ if $COLOUREDPROMPT == 1
    	set prompt \033[31mgdb$ \033[0m
 end
 
+source ~/.gdb/setup
 source ~/.gdb/window
 source ~/.gdb/cpu
 source ~/.gdb/data

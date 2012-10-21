@@ -1,0 +1,50 @@
+define setup-detect-target
+  set $ARM = 0
+  set $X86 = 0
+  set $MIPS = 0
+  set $64BITS = 0
+
+  set logging file /tmp/gdb_info_target
+  set logging overwrite on
+  set logging redirect on
+  set logging on
+  set pagination off
+  info target
+  set pagination on
+  set logging off
+  set logging redirect off
+  set logging overwrite off
+
+  shell TARGET_DOUBLET="`grep 'file type' /tmp/gdb_info_target | \
+                         sed \"s/\.$//g\" | \
+			 cut -d ' ' -f 4 | \
+			 tr -d '\n'`"; \
+	GDB_FILE="/tmp/gdb_target_arch.gdb"; \
+	rm -f "$GDB_FILE"; \
+        case "$TARGET_DOUBLET" in \
+	    *-x86-64) \
+	        echo "set \$64BITS = 1" >> $GDB_FILE; \
+	        echo "set \$X86 = 1" >> $GDB_FILE; \
+		;; \
+	    *-arm*) \
+	        echo "set \$ARM = 1" >> $GDB_FILE; \
+		;; \
+	    *-mips*) \
+	        echo "set \$MIPS = 1" >> $GDB_FILE; \
+		;; \
+	esac
+  source /tmp/gdb_target_arch.gdb
+  #shell rm -f /tmp/gdb_info_target /tmp/gdb_target_arch.gdb
+end
+document setup-detect-target
+Sets up various globals used throughout the GDB macros to provide
+architecture-specific support.
+end
+
+
+define hook-run
+  setup-detect-target
+end
+document hook-run
+!!! FOR INTERNAL USE ONLY - DO NOT CALL !!!
+end
