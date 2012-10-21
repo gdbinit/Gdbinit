@@ -1,5 +1,5 @@
 define bpl
-    info breakpoints
+  info breakpoints
 end
 document bpl
 List all breakpoints.
@@ -7,11 +7,11 @@ end
 
 
 define bp
-    if $argc != 1
-        help bp
-    else
-        break $arg0
-    end
+  if $argc != 1
+    help bp
+  else
+    break $arg0
+  end
 end
 document bp
 Set breakpoint.
@@ -24,12 +24,12 @@ Or else you can use directly the break command (break [NSControl stringValue])
 end
 
 
-define bpc 
-    if $argc != 1
-        help bpc
-    else
-        clear $arg0
-    end
+define bpc
+  if $argc != 1
+    help bpc
+  else
+    clear $arg0
+  end
 end
 document bpc
 Clear breakpoint.
@@ -39,11 +39,11 @@ end
 
 
 define bpe
-    if $argc != 1
-        help bpe
-    else
-        enable $arg0
-    end
+  if $argc != 1
+    help bpe
+  else
+    enable $arg0
+  end
 end
 document bpe
 Enable breakpoint with number NUM.
@@ -52,11 +52,11 @@ end
 
 
 define bpd
-    if $argc != 1
-        help bpd
-    else
-        disable $arg0
-    end
+  if $argc != 1
+    help bpd
+  else
+    disable $arg0
+  end
 end
 document bpd
 Disable breakpoint with number NUM.
@@ -65,11 +65,11 @@ end
 
 
 define bpt
-    if $argc != 1
-        help bpt
-    else
-        tbreak $arg0
-    end
+  if $argc != 1
+    help bpt
+  else
+    tbreak $arg0
+  end
 end
 document bpt
 Set a temporary breakpoint.
@@ -80,11 +80,11 @@ end
 
 
 define bpm
-    if $argc != 1
-        help bpm
-    else
-        awatch $arg0
-    end
+  if $argc != 1
+    help bpm
+  else
+    awatch $arg0
+  end
 end
 document bpm
 Set a read/write breakpoint on EXPRESSION, e.g. *address.
@@ -93,11 +93,11 @@ end
 
 
 define bhb
-    if $argc != 1
-        help bhb
-    else
-        hb $arg0
-    end
+  if $argc != 1
+    help bhb
+  else
+    hb $arg0
+  end
 end
 document bhb
 Set hardware assisted breakpoint.
@@ -107,11 +107,11 @@ end
 
 
 define bht
-    if $argc != 1
-        help bht
-    else
-        thbreak $arg0
-    end
+  if $argc != 1
+    help bht
+  else
+    thbreak $arg0
+  end
 end
 document bht
 Set a temporary hardware breakpoint.

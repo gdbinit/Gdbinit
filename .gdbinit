@@ -143,7 +143,7 @@ source ~/.gdbinit.local
 #	  - Removed restrictions on type of addresses in the "dd" command - Thanks to Plouj for the warning :-)
 #	   I don't know what was the original thinking behind those :-)
 #	  - Modified the assemble command to support 64bits - You will need to recompile nasm since the version shipped with OS X doesn't supports 64bits (www.nasm.us).
-#	   Assumes that the new binary is installed at /usr/local/bin - modify the variable at the top if you need so. 
+#	   Assumes that the new binary is installed at /usr/local/bin - modify the variable at the top if you need so.
 #	   It will assemble based on the target arch being debugged. If you want to use gdb for a quick asm just use the 32bits or 64bits commands to set your target.
 #      Thanks to snare for the warning and original patch :-)
 #	  - Added "asm" command - it's a shortcut to the "assemble" command.
@@ -174,7 +174,7 @@ source ~/.gdbinit.local
 #
 # 	Version 7.3.1 (29/06/2010) - fG!
 #	  Added enablelib/disablelib command to quickly set the stop-on-solib-events trick
-#	  Implemented the stepoh command equivalent to the stepo but using hardware breakpoints 
+#	  Implemented the stepoh command equivalent to the stepo but using hardware breakpoints
 #	  More fixes to stepo
 #
 #	Version 7.3 (16/04/2010) - fG!
@@ -267,7 +267,7 @@ source ~/.gdbinit.local
 #     Add global variables to allow user to control stack, data and code window sizes
 #     Increase readability for registers
 #     Some corrections (hexdump, ddump, context, cfp, assemble, gas_asm, tips, prompt)
-#   
+#
 #   Version 6.1-color-user
 #     Took the Gentoo route and ran sed s/user/user/g
 #
