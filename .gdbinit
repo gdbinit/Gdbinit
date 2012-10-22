@@ -96,6 +96,12 @@ define hook-file
 end
 
 
+define hook-core-file
+  # Attempt to detect the target again since a new core has been loaded.
+  setup-detect-target
+end
+
+
 define hook-stop
   # Display instructions formats
   hookstopcpu
