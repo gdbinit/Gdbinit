@@ -303,8 +303,7 @@ Usage: get_insn_type ADDR
 end
 
 
-define hook-stop
-  # Display instructions formats
+define hookstopcpu
   if $ARM == 1
     hookstoparm
   end
@@ -312,20 +311,8 @@ define hook-stop
   if (($X86 == 1) || ($X86_64 == 1))
     hookstopx86
   end
-
-  # this makes 'context' be called at every BP/step
-  if ($SHOW_CONTEXT > 0)
-    context
-  end
-  if ($SHOW_NEST_INSN > 0)
-    set $x = $_nest
-    while ($x > 0)
-      printf "\t"
-      set $x = $x - 1
-    end
-  end
 end
-document hook-stop
+document hookstopcpu
 !!! FOR INTERNAL USE ONLY - DO NOT CALL !!!
 end
 

@@ -25,11 +25,3 @@ document setup-detect-target
 Sets up various globals used throughout the GDB macros to provide
 architecture-specific support.
 end
-
-
-define hook-run
-  setup-detect-target
-end
-document hook-run
-!!! FOR INTERNAL USE ONLY - DO NOT CALL !!!
-end

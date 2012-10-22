@@ -1,13 +1,13 @@
-
-# __________________gdb options_________________
+###
+# Options
 
 # set to 0 if you have problems with the colorized prompt - reported by Plouj with Ubuntu gdb 7.2
-set $COLOUREDPROMPT = 1
+set $COLOUREDPROMPT = 0
 # Colour the first line of the disassembly - default is green, if you want to change it search for
 # SETCOLOUR1STLINE and modify it :-)
 set $SETCOLOUR1STLINE = 0
 # set to 0 to remove display of objectivec messages (default is 1)
-set $SHOWOBJECTIVEC = 1
+set $SHOWOBJECTIVEC = 0
 # set to 0 to remove display of cpu registers (default is 1)
 set $SHOWCPUREGISTERS = 1
 # set to 1 to enable display of stack (default is 0)
@@ -46,17 +46,23 @@ set $CONTEXTSIZE_STACK = 6
 set $CONTEXTSIZE_DATA  = 8
 set $CONTEXTSIZE_CODE  = 8
 
-# __________________end gdb options_________________
-#
+# Options
+###
+
 
 if $COLOUREDPROMPT == 1
    	set prompt \033[31mgdb$ \033[0m
 end
 
+
+###
+# Command files
+
 source ~/.gdb/setup
-source ~/.gdb/window
 source ~/.gdb/cpu
 source ~/.gdb/data
+
+source ~/.gdb/window
 source ~/.gdb/process
 source ~/.gdb/datawin
 source ~/.gdb/dumpjump
@@ -66,9 +72,46 @@ source ~/.gdb/misc
 source ~/.gdb/info
 source ~/.gdb/tips
 
-# Configuration options specific to local machine. This file is not in the
-# repository.
+# Configuration options specific to local machine. This file should never go
+# into version control.
 source ~/.gdbinit.local
 
-#EOF
+# Command files
+###
 
+
+###
+# Hooks
+
+define hook-run
+  # Attempt to detect the target in case gdb was started with the executable
+  # as an argument.
+  setup-detect-target
+end
+
+
+define hook-file
+  # Attempt to detect the target again since a new binary has been loaded.
+  setup-detect-target
+end
+
+
+define hook-stop
+  # Display instructions formats
+  hookstopcpu
+
+  # this makes 'context' be called at every BP/step
+  if ($SHOW_CONTEXT > 0)
+    context
+  end
+  if ($SHOW_NEST_INSN > 0)
+    set $x = $_nest
+    while ($x > 0)
+      printf "\t"
+      set $x = $x - 1
+    end
+  end
+end
+
+# Hooks
+###
