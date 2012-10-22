@@ -44,7 +44,8 @@ define hexdump
       set $_count = 0
       while ($_count < $arg1)
 	set $_i = ($_count * 0x10)
-	hexdump_aux $data_addr + $_i
+	set $_addr = $data_addr + $_i
+	hexdump_aux $_addr
 	set $_count++
       end
     else
@@ -74,25 +75,16 @@ define hexdump_aux
     echo \033[1m
     printf " - "
     echo \033[0m
-    hex_quad $arg0 + 8
+    set $_addr = $arg0 + 8
+    hex_quad $_addr
     printf " "
     echo \033[1m
-    ascii_char $arg0 + 0x0
-    ascii_char $arg0 + 0x1
-    ascii_char $arg0 + 0x2
-    ascii_char $arg0 + 0x3
-    ascii_char $arg0 + 0x4
-    ascii_char $arg0 + 0x5
-    ascii_char $arg0 + 0x6
-    ascii_char $arg0 + 0x7
-    ascii_char $arg0 + 0x8
-    ascii_char $arg0 + 0x9
-    ascii_char $arg0 + 0xA
-    ascii_char $arg0 + 0xB
-    ascii_char $arg0 + 0xC
-    ascii_char $arg0 + 0xD
-    ascii_char $arg0 + 0xE
-    ascii_char $arg0 + 0xF
+    set $_count = 0
+    while ($_count < 0xf)
+      set $_addr = $arg0 + $_count
+      ascii_char $_addr
+      set $_count++
+    end
     echo \033[0m
     printf "\n"
   end
