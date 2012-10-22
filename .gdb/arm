@@ -155,167 +155,240 @@ define regarm
   printf "  "
   echo \033[32m
   printf "R0:"
-  if ($r0 != $oldr0 && $SHOWREGCHANGES == 1)
-    echo \033[31m
+  if $r0
+    if ($r0 != $oldr0 && $SHOWREGCHANGES == 1)
+      echo \033[31m
+    end
+    printf " 0x%08X  ", $r0
   else
-    echo \033[0m
+    printf " 0x%08X  ", 0
   end
-  printf "  0x%08X  ", $r0
 
   echo \033[32m
   printf "R1:"
-  if ($r1 != $oldr1 && $SHOWREGCHANGES == 1)
-    echo \033[31m
+  if $r1
+    if ($r1 != $oldr1 && $SHOWREGCHANGES == 1)
+      echo \033[31m
+    end
+    printf " 0x%08X  ", $r1
   else
-    echo \033[0m
+    printf " 0x%08X  ", 0
   end
-  printf " 0x%08X  ", $r1
 
   echo \033[32m
   printf "R2:"
-  if ($r2 != $oldr2 && $SHOWREGCHANGES == 1)
-    echo \033[31m
+  if $r2
+    if ($r2 != $oldr2 && $SHOWREGCHANGES == 1)
+      echo \033[31m
+    end
+    printf " 0x%08X  ", $r2
   else
-    echo \033[0m
+    printf " 0x%08X  ", 0
   end
-  printf "  0x%08X  ", $r2
 
   echo \033[32m
   printf "R3:"
-  if ($r3 != $oldr3 && $SHOWREGCHANGES == 1)
-    echo \033[31m
+  if $r3
+    if ($r3 != $oldr3 && $SHOWREGCHANGES == 1)
+      echo \033[31m
+    end
+    printf " 0x%08X", $r3
   else
-    echo \033[0m
+    printf " 0x%08X", 0
   end
-  printf "  0x%08X\n", $r3
-  printf "  "
+
+
+  # Newline
+  printf "\n  "
 
   echo \033[32m
   printf "R4:"
-  if ($r4 != $oldr4 && $SHOWREGCHANGES == 1)
-    echo \033[31m
+  if $r4
+    if ($r4 != $oldr4 && $SHOWREGCHANGES == 1)
+      echo \033[31m
+    end
+    printf " 0x%08X  ", $r4
   else
-    echo \033[0m
+    printf " 0x%08X  ", 0
   end
-  printf "  0x%08X  ", $r4
 
   echo \033[32m
   printf "R5:"
-  if ($r5 != $oldr5 && $SHOWREGCHANGES == 1)
-    echo \033[31m
+  if $r5
+    if ($r5 != $oldr5 && $SHOWREGCHANGES == 1)
+      echo \033[31m
+    end
+    printf " 0x%08X  ", $r5
   else
-    echo \033[0m
+    printf " 0x%08X  ", 0
   end
-  printf " 0x%08X  ", $r5
 
   echo \033[32m
   printf "R6:"
-  if ($r6 != $oldr6 && $SHOWREGCHANGES == 1)
-    echo \033[31m
+  if $r6
+    if ($r6 != $oldr6 && $SHOWREGCHANGES == 1)
+      echo \033[31m
+    end
+    printf " 0x%08X  ", $r6
   else
-    echo \033[0m
+    printf " 0x%08X  ", 0
   end
-  printf "  0x%08X  ", $r6
 
   echo \033[32m
   printf "R7:"
-  if ($r7 != $oldr7 && $SHOWREGCHANGES == 1)
-    echo \033[31m
+  if $r7
+    if ($r7 != $oldr7 && $SHOWREGCHANGES == 1)
+      echo \033[31m
+    end
+    printf " 0x%08X  ", $r7
   else
-    echo \033[0m
+    printf " 0x%08X  ", 0
   end
-  printf "  0x%08X\n", $r7
-  printf "  "
+
+
+  # Newline
+  printf "\n  "
 
   echo \033[32m
   printf "R8:"
-  if ($r8 != $oldr8 && $SHOWREGCHANGES == 1)
-    echo \033[31m
+  if $r8
+    if ($r8 != $oldr8 && $SHOWREGCHANGES == 1)
+      echo \033[31m
+    end
+    printf " 0x%08X  ", $r8
   else
-    echo \033[0m
+    printf " 0x%08X  ", 0
   end
-  printf "  0x%08X  ", $r8
 
   echo \033[32m
   printf "R9:"
-  if ($r9 != $oldr9 && $SHOWREGCHANGES == 1)
-    echo \033[31m
+  if $r9
+    if ($r9 != $oldr9 && $SHOWREGCHANGES == 1)
+      echo \033[31m
+    end
+    printf " 0x%08X  ", $r9
   else
-    echo \033[0m
+    printf " 0x%08X  ", 0
   end
-  printf " 0x%08X  ", $r9
 
   echo \033[32m
   printf "R10:"
-  if ($r10 != $oldr10 && $SHOWREGCHANGES == 1)
-    echo \033[31m
+  if $r10
+    if ($r10 != $oldr10 && $SHOWREGCHANGES == 1)
+      echo \033[31m
+    end
+    printf " 0x%08X  ", $r10
   else
-    echo \033[0m
+    printf " 0x%08X  ", 0
   end
-  printf " 0x%08X  ", $r10
 
   echo \033[32m
   printf "R11:"
-  if ($r11 != $oldr11 && $SHOWREGCHANGES == 1)
-    echo \033[31m
+  if $r11
+    if ($r11 != $oldr11 && $SHOWREGCHANGES == 1)
+      echo \033[31m
+    end
+    printf " 0x%08X ", $r11
   else
-    echo \033[0m
+    printf " 0x%08X ", 0
   end
-  printf " 0x%08X ", $r11
+
   dumpjump
-  printf "\n"
+  printf "\n  "
+
   echo \033[32m
-  printf "  R12:"
-  if ($r12 != $oldr12 && $SHOWREGCHANGES == 1)
-    echo \033[31m
+  printf "R12:"
+  if $r12
+    if ($r12 != $oldr12 && $SHOWREGCHANGES == 1)
+      echo \033[31m
+    end
+    printf " 0x%08X  ", $r12
   else
-    echo \033[0m
+    printf " 0x%08X  ", 0
   end
-  printf " 0x%08X", $r12
-  printf "  "
+
   echo \033[32m
   printf "SP:"
-  if ($sp != $oldsp && $SHOWREGCHANGES == 1)
-    echo \033[31m
+  if $sp
+    if ($sp != $oldsp && $SHOWREGCHANGES == 1)
+      echo \033[31m
+    end
+    printf " 0x%08X  ", $sp
   else
-    echo \033[0m
+    printf " 0x%08X  ", 0
   end
-  printf " 0x%08X  ", $sp
 
   echo \033[32m
   printf "LR:"
-  if ($lr != $oldlr && $SHOWREGCHANGES == 1)
-    echo \033[31m
+  if $lr
+    if ($lr != $oldlr && $SHOWREGCHANGES == 1)
+      echo \033[31m
+    end
+    printf " 0x%08X  ", $lr
   else
-    echo \033[0m
+    printf " 0x%08X  ", 0
   end
-  printf "  0x%08X  ", $lr
 
   echo \033[32m
   printf "PC:"
   echo \033[0m
-  printf "  0x%08X  ", $pc
+  if $pc
+    printf "  0x%08X  ", $pc
+  else
+    printf "  0x%08X  ", 0
+  end
+
   echo \033[1m\033[4m\033[31m
   flags
   echo \033[0m
   printf "\n"
 
   if ($SHOWREGCHANGES == 1)
-    set $oldr0  = $r0
-    set $oldr1  = $r1
-    set $oldr2  = $r2
-    set $oldr3  = $r3
-    set $oldr4  = $r4
-    set $oldr5  = $r5
-    set $oldr6  = $r6
-    set $oldr7  = $r7
-    set $oldr8  = $r8
-    set $oldr9  = $r9
-    set $oldr10 = $r10
-    set $oldr11 = $r11
-    set $oldr12 = $r12
-    set $oldsp  = $sp
-    set $oldlr  = $lr
+    if $r0
+      set $oldr0  = $r0
+    end
+    if $r1
+      set $oldr1  = $r1
+    end
+    if $r2
+      set $oldr2  = $r2
+    end
+    if $r3
+      set $oldr3  = $r3
+    end
+    if $r4
+      set $oldr4  = $r4
+    end
+    if $r5
+      set $oldr5  = $r5
+    end
+    if $r6
+      set $oldr6  = $r6
+    end
+    if $r7
+      set $oldr7  = $r7
+    end
+    if $r8
+      set $oldr8  = $r8
+    end
+    if $r9
+      set $oldr9  = $r9
+    end
+    if $r10
+      set $oldr10 = $r10
+    end
+    if $r11
+      set $oldr11 = $r11
+    end
+    if $r12
+      set $oldr12 = $r12
+    end
+    if $sp
+      set $oldsp  = $sp
+    end
+    if $lr
+      set $oldlr  = $lr
+    end
   end
 end
 document regarm

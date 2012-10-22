@@ -7,6 +7,15 @@ set $oldrsi = 0
 set $oldrdi = 0
 set $oldrbp = 0
 set $oldrsp = 0
+set $oldr8  = 0
+set $oldr9  = 0
+set $oldr10 = 0
+set $oldr11 = 0
+set $oldr12 = 0
+set $oldr13 = 0
+set $oldr14 = 0
+set $oldr15 = 0
+
 set $oldeax = 0
 set $oldebx = 0
 set $oldecx = 0
@@ -111,201 +120,340 @@ end
 define regx86_64
   # 64bits stuff
   printf "  "
+
   # RAX
   echo \033[32m
   printf "RAX:"
-  if ($rax != $oldrax && $SHOWREGCHANGES == 1)
-    echo \033[31m
+  echo \033[0m
+  if $rax
+    if ($rax != $oldrax && $SHOWREGCHANGES == 1)
+      echo \033[31m
+    end
+    printf " 0x%016lX  ", $rax
   else
-    echo \033[0m
+    printf " 0x%016lX  ", 0
   end
-  printf " 0x%016lX  ", $rax
+
   # RBX
   echo \033[32m
   printf "RBX:"
-  if ($rbx != $oldrbx && $SHOWREGCHANGES == 1)
-    echo \033[31m
+  echo \033[0m
+  if $rbx
+    if ($rbx != $oldrbx && $SHOWREGCHANGES == 1)
+      echo \033[31m
+    end
+    printf " 0x%016lX  ", $rbx
   else
-    echo \033[0m
+    printf " 0x%016lX  ", 0
   end
-  printf " 0x%016lX  ", $rbx
+
   # RCX
   echo \033[32m
   printf "RCX:"
-  if ($rcx != $oldrcx && $SHOWREGCHANGES == 1)
-    echo \033[31m
+  echo \033[0m
+  if $rcx
+    if ($rcx != $oldrcx && $SHOWREGCHANGES == 1)
+      echo \033[31m
+    end
+    printf " 0x%016lX  ", $rcx
   else
-    echo \033[0m
+    printf " 0x%016lX  ", 0
   end
-  printf " 0x%016lX  ", $rcx
+
   # RDX
   echo \033[32m
   printf "RDX:"
-  if ($rdx != $oldrdx && $SHOWREGCHANGES == 1)
-    echo \033[31m
+  echo \033[0m
+  if $rdx
+    if ($rdx != $oldrdx && $SHOWREGCHANGES == 1)
+      echo \033[31m
+    end
+    printf " 0x%016lX  ", $rdx
   else
-    echo \033[0m
+    printf " 0x%016lX  ", 0
   end
-  printf " 0x%016lX  ", $rdx
+
   echo \033[1m\033[4m\033[31m
   flags
   echo \033[0m
   printf "  "
+
   # RSI
   echo \033[32m
   printf "RSI:"
-  if ($rsi != $oldrsi && $SHOWREGCHANGES == 1)
-    echo \033[31m
+  echo \033[0m
+  if $rsi
+    if ($rsi != $oldrsi && $SHOWREGCHANGES == 1)
+      echo \033[31m
+    end
+    printf " 0x%016lX  ", $rsi
   else
-    echo \033[0m
+    printf " 0x%016lX  ", 0
   end
-  printf " 0x%016lX  ", $rsi
+
   # RDI
   echo \033[32m
   printf "RDI:"
-  if ($rdi != $oldrdi && $SHOWREGCHANGES == 1)
-    echo \033[31m
+  echo \033[0m
+  if $rdi
+    if ($rdi != $oldrdi && $SHOWREGCHANGES == 1)
+      echo \033[31m
+    end
+    printf " 0x%016lX  ", $rdi
   else
-    echo \033[0m
+    printf " 0x%016lX  ", 0
   end
-  printf " 0x%016lX  ", $rdi
+
   # RBP
   echo \033[32m
   printf "RBP:"
-  if ($rbp != $oldrbp && $SHOWREGCHANGES == 1)
-    echo \033[31m
+  echo \033[0m
+  if $rbp
+    if ($rbp != $oldrbp && $SHOWREGCHANGES == 1)
+      echo \033[31m
+    end
+    printf " 0x%016lX  ", $rbp
   else
-    echo \033[0m
+    printf " 0x%016lX  ", 0
   end
-  printf " 0x%016lX  ", $rbp
+
   # RSP
   echo \033[32m
   printf "RSP:"
-  if ($rsp != $oldrsp && $SHOWREGCHANGES == 1)
-    echo \033[31m
+  echo \033[0m
+  if $rsp
+    if ($rsp != $oldrsp && $SHOWREGCHANGES == 1)
+      echo \033[31m
+    end
+    printf " 0x%016lX  ", $rsp
   else
-    echo \033[0m
+    printf " 0x%016lX  ", 0
   end
-  printf " 0x%016lX  ", $rsp
+
   echo \033[32m
   printf "RIP:"
   echo \033[0m
-  printf " 0x%016lX\n  ", $rip
+  if $rip
+    printf " 0x%016lX", $rip
+  else
+    printf " 0x%016lX", 0
+  end
+
+
+  # Newline
+  printf "\n  "
+
   # R8
   echo \033[32m
   printf "R8 :"
-  if ($r8 != $oldr8 && $SHOWREGCHANGES == 1)
-    echo \033[31m
+  echo \033[0m
+  if $r8
+    if ($r8 != $oldr8 && $SHOWREGCHANGES == 1)
+      echo \033[31m
+    end
+    printf " 0x%016lX  ", $r8
   else
-    echo \033[0m
+    printf " 0x%016lX  ", 0
   end
-  printf " 0x%016lX  ", $r8
+
   # R9
   echo \033[32m
   printf "R9 :"
-  if ($r9 != $oldr9 && $SHOWREGCHANGES == 1)
-    echo \033[31m
+  echo \033[0m
+  if $r9
+    if ($r9 != $oldr9 && $SHOWREGCHANGES == 1)
+      echo \033[31m
+    end
+    printf " 0x%016lX  ", $r9
   else
-    echo \033[0m
+    printf " 0x%016lX  ", 0
   end
-  printf " 0x%016lX  ", $r9
+
   # R10
   echo \033[32m
   printf "R10:"
-  if ($r10 != $oldr10 && $SHOWREGCHANGES == 1)
-    echo \033[31m
+  echo \033[0m
+  if $r10
+    if ($r10 != $oldr10 && $SHOWREGCHANGES == 1)
+      echo \033[31m
+    end
+    printf " 0x%016lX  ", $r10
   else
-    echo \033[0m
+    printf " 0x%016lX  ", 0
   end
-  printf " 0x%016lX  ", $r10
+
   # R11
   echo \033[32m
   printf "R11:"
-  if ($r11 != $oldr11 && $SHOWREGCHANGES == 1)
-    echo \033[31m
+  echo \033[0m
+  if $r11
+    if ($r11 != $oldr11 && $SHOWREGCHANGES == 1)
+      echo \033[31m
+    end
+    printf " 0x%016lX  ", $r11
   else
-    echo \033[0m
+    printf " 0x%016lX  ", 0
   end
-  printf " 0x%016lX  ", $r11
+
   # R12
   echo \033[32m
   printf "R12:"
-  if ($r12 != $oldr12 && $SHOWREGCHANGES == 1)
-    echo \033[31m
+  echo \033[0m
+  if $r12
+    if ($r12 != $oldr12 && $SHOWREGCHANGES == 1)
+      echo \033[31m
+    end
+    printf " 0x%016lX", $r12
   else
-    echo \033[0m
+    printf " 0x%016lX", 0
   end
-  printf " 0x%016lX\n  ", $r12
+
+
+  # Newline
+  printf "\n  "
+
   # R13
   echo \033[32m
   printf "R13:"
-  if ($r13 != $oldr13 && $SHOWREGCHANGES == 1)
-    echo \033[31m
+  echo \033[0m
+  if $r13
+    if ($r13 != $oldr13 && $SHOWREGCHANGES == 1)
+      echo \033[31m
+    end
+    printf " 0x%016lX  ", $r13
   else
-    echo \033[0m
+    printf " 0x%016lX  ", 0
   end
-  printf " 0x%016lX  ", $r13
+
   # R14
   echo \033[32m
   printf "R14:"
-  if ($r14 != $oldr14 && $SHOWREGCHANGES == 1)
-    echo \033[31m
+  echo \033[0m
+  if $r14
+    if ($r14 != $oldr14 && $SHOWREGCHANGES == 1)
+      echo \033[31m
+    end
+    printf " 0x%016lX  ", $r14
   else
-    echo \033[0m
+    printf " 0x%016lX  ", 0
   end
-  printf " 0x%016lX  ", $r14
+
   # R15
   echo \033[32m
   printf "R15:"
-  if ($r15 != $oldr15 && $SHOWREGCHANGES == 1)
-    echo \033[31m
+  echo \033[0m
+  if $r15
+    if ($r15 != $oldr15 && $SHOWREGCHANGES == 1)
+      echo \033[31m
+    end
+    printf " 0x%016lX  ", $r15
   else
-    echo \033[0m
+    printf " 0x%016lX  ", 0
   end
-  printf " 0x%016lX\n  ", $r15
+
+
+  # Newline
+  printf "\n  "
+
   echo \033[32m
   printf "CS:"
   echo \033[0m
-  printf " %04X  ", $cs
+  if $cs
+    printf " %04X  ", $cs
+  else
+    printf " %04X  ", 0
+  end
   echo \033[32m
   printf "DS:"
   echo \033[0m
-  printf " %04X  ", $ds
+  if $ds
+    printf " %04X  ", $ds
+  else
+    printf " %04X  ", 0
+  end
   echo \033[32m
   printf "ES:"
   echo \033[0m
-  printf " %04X  ", $es
+  if $es
+    printf " %04X  ", $es
+  else
+    printf " %04X  ", 0
+  end
   echo \033[32m
   printf "FS:"
   echo \033[0m
-  printf " %04X  ", $fs
+  if $fs
+    printf " %04X  ", $fs
+  else
+    printf " %04X  ", 0
+  end
   echo \033[32m
   printf "GS:"
   echo \033[0m
-  printf " %04X  ", $gs
+  if $gs
+    printf " %04X  ", $gs
+  else
+    printf " %04X  ", 0
+  end
   echo \033[32m
   printf "SS:"
   echo \033[0m
-  printf " %04X", $ss
+  if $ss
+    printf " %04X", $ss
+  else
+    printf " %04X  ", 0
+  end
   echo \033[0m
 
   if ($SHOWREGCHANGES == 1)
-    set $oldrax = $rax
-    set $oldrbx = $rbx
-    set $oldrcx = $rcx
-    set $oldrdx = $rdx
-    set $oldrsi = $rsi
-    set $oldrdi = $rdi
-    set $oldrbp = $rbp
-    set $oldrsp = $rsp
-    set $oldr8  = $r8
-    set $oldr9  = $r9
-    set $oldr10 = $r10
-    set $oldr11 = $r11
-    set $oldr12 = $r12
-    set $oldr13 = $r13
-    set $oldr14 = $r14
-    set $oldr15 = $r15
+    if $rax
+      set $oldrax = $rax
+    end
+    if $rbx
+      set $oldrbx = $rbx
+    end
+    if $rcx
+      set $oldrcx = $rcx
+    end
+    if $rdx
+      set $oldrdx = $rdx
+    end
+    if $rsi
+      set $oldrsi = $rsi
+    end
+    if $rdi
+      set $oldrdi = $rdi
+    end
+    if $rbp
+      set $oldrbp = $rbp
+    end
+    if $rsp
+      set $oldrsp = $rsp
+    end
+    if $r8
+      set $oldr8  = $r8
+    end
+    if $r9
+      set $oldr9  = $r9
+    end
+    if $r10
+      set $oldr10 = $r10
+    end
+    if $r11
+      set $oldr11 = $r11
+    end
+    if $r12
+      set $oldr12 = $r12
+    end
+    if $r13
+      set $oldr13 = $r13
+    end
+    if $r14
+      set $oldr14 = $r14
+    end
+    if $r15
+      set $oldr15 = $r15
+    end
   end
 end
 document regx86_64
@@ -318,122 +466,210 @@ define regx86
   # EAX
   echo \033[32m
   printf "EAX:"
-  if ($eax != $oldeax && $SHOWREGCHANGES == 1)
-    echo \033[31m   	 	
+  echo \033[0m
+  if $eax
+    if ($eax != $oldeax && $SHOWREGCHANGES == 1)
+      echo \033[31m
+    end
+    printf " 0x%08X  ", $eax
   else
-    echo \033[0m
+    printf " 0x%08X  ", 0
   end
-  printf " 0x%08X  ", $eax
+
   # EBX
   echo \033[32m
   printf "EBX:"
-  if ($ebx != $oldebx && $SHOWREGCHANGES == 1)
-    echo \033[31m   		
+  echo \033[0m
+  if $ebx
+    if ($ebx != $oldebx && $SHOWREGCHANGES == 1)
+      echo \033[31m
+    end
+    printf " 0x%08X  ", $ebx
   else
-    echo \033[0m
+    printf " 0x%08X  ", 0
   end
-  printf " 0x%08X  ", $ebx
+
   # ECX
   echo \033[32m
   printf "ECX:"
-  if ($ecx != $oldecx && $SHOWREGCHANGES == 1)
-    echo \033[31m	
+  echo \033[0m
+  if $ecx
+    if ($ecx != $oldecx && $SHOWREGCHANGES == 1)
+      echo \033[31m
+    end
+    printf " 0x%08X  ", $ecx
   else
-    echo \033[0m
+    printf " 0x%08X  ", 0
   end
-  printf " 0x%08X  ", $ecx
+
   # EDX
-  if ($edx != $oldedx && $SHOWREGCHANGES == 1)
-    echo \033[32m
-    printf "EDX:"
-    echo \033[31m
-    printf " 0x%08X  ", $edx
+  if $edx
+    if ($edx != $oldedx && $SHOWREGCHANGES == 1)
+      echo \033[32m
+      printf "EDX:"
+      echo \033[31m
+      printf " 0x%08X  ", $edx
+    else
+      echo \033[32m
+      printf "EDX:"
+      echo \033[0m
+      printf " 0x%08X  ", $edx
+    end
   else
-    echo \033[32m
-    printf "EDX:"
+      printf "EDX:"
     echo \033[0m
-    printf " 0x%08X  ", $edx
+    printf " 0x%08X  ", 0
   end
+
   echo \033[1m\033[4m\033[31m
   flags
   echo \033[0m
-  printf "  "
+
+
+  # Newline
+  printf "\n  "
+
   # ESI
   echo \033[32m
   printf "ESI:"
-  if ($esi != $oldesi && $SHOWREGCHANGES == 1)
-    echo \033[31m	
+  echo \033[0m
+  if $esi
+    if ($esi != $oldesi && $SHOWREGCHANGES == 1)
+      echo \033[31m
+    end
+    printf " 0x%08X  ", $esi
   else
-    echo \033[0m
+    printf " 0x%08X  ", 0
   end
-  printf " 0x%08X  ", $esi
+
   # EDI
   echo \033[32m
   printf "EDI:"
-  if ($edi != $oldedi && $SHOWREGCHANGES == 1)
-    echo \033[31m	
+  echo \033[0m
+  if $edi
+    if ($edi != $oldedi && $SHOWREGCHANGES == 1)
+      echo \033[31m
+    end
+    printf " 0x%08X  ", $edi
   else
-    echo \033[0m
+    printf " 0x%08X  ", 0
   end
-  printf " 0x%08X  ", $edi
+
   # EBP
   echo \033[32m
   printf "EBP:"
-  if ($ebp != $oldebp && $SHOWREGCHANGES == 1)
-    echo \033[31m
+  echo \033[0m
+  if $ebp
+    if ($ebp != $oldebp && $SHOWREGCHANGES == 1)
+      echo \033[31m
+    end
+    printf " 0x%08X  ", $ebp
   else
-    echo \033[0m
+    printf " 0x%08X  ", 0
   end
-  printf " 0x%08X  ", $ebp
+
   # ESP
   echo \033[32m
   printf "ESP:"
-  if ($esp != $oldesp && $SHOWREGCHANGES == 1)
-    echo \033[31m	
+  echo \033[0m
+  if $esp
+    if ($esp != $oldesp && $SHOWREGCHANGES == 1)
+      echo \033[31m
+    end
+    printf " 0x%08X  ", $esp
   else
-    echo \033[0m
+    printf " 0x%08X  ", 0
   end
-  printf " 0x%08X  ", $esp
+
   # EIP
   echo \033[32m
   printf "EIP:"
   echo \033[0m
-  printf " 0x%08X\n  ", $eip
+  if $eip
+    printf " 0x%08X", $eip
+  else
+    printf " 0x%08X", 0
+  end
+
+
+  # Newline
+  printf "\n  "
+
   echo \033[32m
   printf "CS:"
   echo \033[0m
-  printf " %04X  ", $cs
+  if $cs
+    printf " %04X  ", $cs
+  else
+    printf " %04X  ", 0
+  end
   echo \033[32m
   printf "DS:"
   echo \033[0m
-  printf " %04X  ", $ds
+  if $ds
+    printf " %04X  ", $ds
+  else
+    printf " %04X  ", 0
+  end
   echo \033[32m
   printf "ES:"
   echo \033[0m
-  printf " %04X  ", $es
+  if $es
+    printf " %04X  ", $es
+  else
+    printf " %04X  ", 0
+  end
   echo \033[32m
   printf "FS:"
   echo \033[0m
-  printf " %04X  ", $fs
+  if $fs
+    printf " %04X  ", $fs
+  else
+    printf " %04X  ", 0
+  end
   echo \033[32m
   printf "GS:"
   echo \033[0m
-  printf " %04X  ", $gs
+  if $gs
+    printf " %04X  ", $gs
+  else
+    printf " %04X  ", 0
+  end
   echo \033[32m
   printf "SS:"
   echo \033[0m
-  printf " %04X  ", $ss
+  if $ss
+    printf " %04X  ", $ss
+  else
+    printf " %04X  ", 0
+  end
   echo \033[0m
 
   if ($SHOWREGCHANGES == 1)
-    set $oldeax = $eax
-    set $oldebx = $ebx
-    set $oldecx = $ecx
-    set $oldedx = $edx
-    set $oldesi = $esi
-    set $oldedi = $edi
-    set $oldebp = $ebp
-    set $oldesp = $esp
+    if $eax
+      set $oldeax = $eax
+    end
+    if $ebx
+      set $oldebx = $ebx
+    end
+    if $ecx
+      set $oldecx = $ecx
+    end
+    if $edx
+      set $oldedx = $edx
+    end
+    if $esi
+      set $oldesi = $esi
+    end
+    if $edi
+      set $oldedi = $edi
+    end
+    if $ebp
+      set $oldebp = $ebp
+    end
+    if $esp
+      set $oldesp = $esp
+    end
   end
 end
 document regx86

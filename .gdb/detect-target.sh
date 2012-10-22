@@ -1,4 +1,4 @@
-#!/bin/env bash
+#!/usr/bin/env bash
 
 TARGET_DOUBLET=$(grep 'file type' /tmp/gdb_info_target |
                  sed 's/\.$//g' |

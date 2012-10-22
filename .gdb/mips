@@ -49,7 +49,7 @@ define regmips
     end
     printf " 0x%016lX  ", $v0
   else
-    printf " void                "
+    printf " 0x%016lX  ", 0
   end
 
   echo \033[32m
@@ -61,7 +61,7 @@ define regmips
     end
     printf " 0x%016lX  ", $v1
   else
-    printf " void                "
+    printf " 0x%016lX  ", 0
   end
 
   echo \033[32m
@@ -73,7 +73,7 @@ define regmips
     end
     printf " 0x%016lX  ", $a0
   else
-    printf " void                "
+    printf " 0x%016lX  ", 0
   end
 
   echo \033[32m
@@ -85,7 +85,7 @@ define regmips
     end
     printf " 0x%016lX  ", $a1
   else
-    printf " void                "
+    printf " 0x%016lX  ", 0
   end
 
   echo \033[32m
@@ -95,9 +95,9 @@ define regmips
     if ($a2 != $oldt5 && $SHOWREGCHANGES == 1)
       echo \033[31m
     end
-    printf " 0x%016lX  ", $a2
+    printf " 0x%016lX", $a2
   else
-    printf " void                "
+    printf " 0x%016lX", 0
   end
 
 
@@ -113,7 +113,7 @@ define regmips
     end
     printf " 0x%016lX  ", $a3
   else
-    printf " void                "
+    printf " 0x%016lX  ", 0
   end
 
   echo \033[32m
@@ -125,7 +125,7 @@ define regmips
     end
     printf " 0x%016lX  ", $t0
   else
-    printf " void                "
+    printf " 0x%016lX  ", 0
   end
 
   echo \033[32m
@@ -137,7 +137,7 @@ define regmips
     end
     printf " 0x%016lX  ", $t1
   else
-    printf " void                "
+    printf " 0x%016lX  ", 0
   end
 
   echo \033[32m
@@ -149,7 +149,7 @@ define regmips
     end
     printf " 0x%016lX  ", $t2
   else
-    printf " void                "
+    printf " 0x%016lX  ", 0
   end
 
   echo \033[32m
@@ -159,9 +159,9 @@ define regmips
     if ($t3 != $oldt3 && $SHOWREGCHANGES == 1)
       echo \033[31m
     end
-    printf " 0x%016lX  ", $t3
+    printf " 0x%016lX", $t3
   else
-    printf " void                "
+    printf " 0x%016lX", 0
   end
 
 
@@ -177,7 +177,7 @@ define regmips
     end
     printf " 0x%016lX  ", $t4
   else
-    printf " void                "
+    printf " 0x%016lX  ", 0
   end
 
   echo \033[32m
@@ -189,7 +189,7 @@ define regmips
     end
     printf " 0x%016lX  ", $t5
   else
-    printf " void                "
+    printf " 0x%016lX  ", 0
   end
 
   echo \033[32m
@@ -201,7 +201,7 @@ define regmips
     end
     printf " 0x%016lX  ", $t6
   else
-    printf " void                "
+    printf " 0x%016lX  ", 0
   end
 
   echo \033[32m
@@ -213,7 +213,7 @@ define regmips
     end
     printf " 0x%016lX  ", $t7
   else
-    printf " void                "
+    printf " 0x%016lX  ", 0
   end
 
   echo \033[32m
@@ -223,9 +223,9 @@ define regmips
     if ($t8 != $oldt8 && $SHOWREGCHANGES == 1)
       echo \033[31m
     end
-    printf " 0x%016lX  ", $t8
+    printf " 0x%016lX", $t8
   else
-    printf " void                "
+    printf " 0x%016lX", 0
   end
 
 
@@ -241,7 +241,7 @@ define regmips
     end
     printf " 0x%016lX  ", $t9
   else
-    printf " void                "
+    printf " 0x%016lX  ", 0
   end
 
   echo \033[32m
@@ -253,7 +253,7 @@ define regmips
     end
     printf " 0x%016lX  ", $s0
   else
-    printf " void                "
+    printf " 0x%016lX  ", 0
   end
 
   echo \033[32m
@@ -265,7 +265,7 @@ define regmips
     end
     printf " 0x%016lX  ", $s1
   else
-    printf " void                "
+    printf " 0x%016lX  ", 0
   end
 
   echo \033[32m
@@ -277,7 +277,7 @@ define regmips
     end
     printf " 0x%016lX  ", $s2
   else
-    printf " void                "
+    printf " 0x%016lX  ", 0
   end
 
   echo \033[32m
@@ -287,9 +287,9 @@ define regmips
     if ($s3 != $olds3 && $SHOWREGCHANGES == 1)
       echo \033[31m
     end
-    printf " 0x%016lX  ", $s3
+    printf " 0x%016lX", $s3
   else
-    printf " void                "
+    printf " 0x%016lX", 0
   end
 
 
@@ -305,7 +305,7 @@ define regmips
     end
     printf " 0x%016lX  ", $s4
   else
-    printf " void                "
+    printf " 0x%016lX  ", 0
   end
 
   echo \033[32m
@@ -317,7 +317,7 @@ define regmips
     end
     printf " 0x%016lX  ", $s5
   else
-    printf " void                "
+    printf " 0x%016lX  ", 0
   end
 
   echo \033[32m
@@ -329,7 +329,7 @@ define regmips
     end
     printf " 0x%016lX  ", $s6
   else
-    printf " void                "
+    printf " 0x%016lX  ", 0
   end
 
   echo \033[32m
@@ -341,7 +341,7 @@ define regmips
     end
     printf " 0x%016lX  ", $s7
   else
-    printf " void                "
+    printf " 0x%016lX  ", 0
   end
 
   echo \033[32m
@@ -351,9 +351,9 @@ define regmips
     if ($s8 != $olds8 && $SHOWREGCHANGES == 1)
       echo \033[31m
     end
-    printf " 0x%016lX  ", $s8
+    printf " 0x%016lX", $s8
   else
-    printf " void                "
+    printf " 0x%016lX", 0
   end
 
 
@@ -375,7 +375,7 @@ define regmips
   echo \033[32m
   printf "SP: "
   echo \033[0m
-  printf " 0x%016lX  ", $sp
+  printf " 0x%016lX", $sp
 
 
   # Newline
