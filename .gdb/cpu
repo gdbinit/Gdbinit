@@ -1,11 +1,14 @@
 source ~/.gdb/arm
 source ~/.gdb/x86
+source ~/.gdb/mips
 
 define flags
   # call the auxiliary functions based on target cpu
-  if $ARM == 1
+  if ($ARM == 1)
     flagsarm
-  else
+  end
+
+  if (($X86 == 1) || ($X86_64 == 1))
     flagsx86
   end
 end
@@ -17,7 +20,9 @@ define eflags
   # call the auxiliary functions based on target cpu
   if $ARM == 1
     eflagsarm
-  else
+  end
+
+  if (($X86 == 1) || ($X86_64 == 1))
     eflagsx86
   end
 end
@@ -29,20 +34,26 @@ end
 define reg
   if $ARM == 1
     regarm
-  else
-    if ($64BITS == 1)
-      regx64
+  end
+
+  if (($X86 == 1) || ($X86_64 == 1))
+    if ($X86_64 == 1)
+      regx86_64
     else
       regx86
     end
     # call smallregisters
     smallregisters
     # display conditional jump routine
-    if ($64BITS == 1)
+    if ($X86_64 == 1)
       printf "\t\t\t\t"
     end
     dumpjump
     printf "\n"
+  end
+
+  if ($MIPS == 1)
+    regmips
   end
 end
 document reg
@@ -72,7 +83,9 @@ define cfc
   # Carry/Borrow/Extend (C), bit 29
   if $ARM == 1
     cfcarm
-  else
+  end
+
+  if (($X86 == 1) || ($X86_64 == 1))
     cfcx86
   end
 end
@@ -109,7 +122,9 @@ define cfz
   # zero (Z), bit 30
   if $ARM == 1
     cfzarm
-  else
+  end
+
+  if (($X86 == 1) || ($X86_64 == 1))
     cfzx86
   end
 end
@@ -292,7 +307,9 @@ define hook-stop
   # Display instructions formats
   if $ARM == 1
     hookstoparm
-  else
+  end
+
+  if (($X86 == 1) || ($X86_64 == 1))
     hookstopx86
   end
 
@@ -327,12 +344,20 @@ define context
     reg
     echo \033[36m
   end
+
   if $SHOWSTACK == 1
     echo \033[34m
-    if ($64BITS == 1)
+    if ($ARM == 1)
+      printf "[0x%08X]---------", $sp
+    end
+    if ($MIPS == 1)
+      printf "[0x%016lX]-------", $sp
+    end
+    if ($X86_64 == 1)
       printf "[0x%04X:0x%016lX]", $ss, $rsp
-    else
-      printf "[0x%04X:0x%08X]", $ss, $esp
+    end
+    if ($X86 == 1)
+      printf "[0x%04X:0x%08X]--", $ss, $esp
     end
     echo \033[34m
     printf "-------------------------"
@@ -350,12 +375,13 @@ define context
       set $context_i--
     end
   end
+
   # show the objective C message being passed to msgSend
   if $SHOWOBJECTIVEC == 1
     #FIXME: X64 and ARM
     # What a piece of crap that's going on here :)
     # detect if it's the correct opcode we are searching for
-    if $ARM == 0
+    if (($X86 == 1) || ($X86_64 == 1))
       set $__byte1 = *(unsigned char *) $pc
       set $__byte = *(int *) $pc
       if ($__byte == 0x4244489)
@@ -372,7 +398,9 @@ define context
         set $objectivec = $ecx
      	set $displayobjectivec = 1
       end
-    else
+    end
+
+    if ($ARM == 1)
       set $__byte1 = 0
     end
     # and now display it or not (we have no interest in having the info displayed after the call)

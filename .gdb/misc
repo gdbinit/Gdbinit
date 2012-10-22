@@ -143,7 +143,7 @@ end
 
 
 define intelsyntax
-  if $ARM == 0
+  if (($X86 == 1) || ($X86_64 == 1))
     set disassembly-flavor intel
     set $X86FLAVOR = 0
   end
@@ -154,7 +154,7 @@ end
 
 
 define attsyntax
-  if $ARM == 0
+  if (($X86 == 1) || ($X86_64 == 1))
     set disassembly-flavor att
     set $X86FLAVOR = 1
   end

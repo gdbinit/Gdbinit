@@ -36,8 +36,9 @@ define dumpjump
         dumpjumphelper
       end
     end
-    ##################### X86
-  else
+  end
+
+  if (($X86 == 1) || ($X86_64 == 1))
     ## grab the first two bytes from the instruction so we can determine the jump instruction
     set $_byte1 = *(unsigned char *) $pc
     set $_byte2 = *(unsigned char *) ($pc+1)

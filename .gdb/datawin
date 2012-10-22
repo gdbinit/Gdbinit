@@ -4,10 +4,17 @@ define ddump
     help ddump
   else
     echo \033[34m
-    if ($64BITS == 1)
+    if ($ARM == 1)
+      printf "[0x%08X]---------", $data_addr
+    end
+    if ($MIPS == 1)
+      printf "[0x%016lX]-------", $data_addr
+    end
+    if ($X86 == 1)
+      printf "[0x%04X:0x%08X]--", $ds, $data_addr
+    end
+    if ($X86_64 == 1)
       printf "[0x%04X:0x%016lX]", $ds, $data_addr
-    else
-      printf "[0x%04X:0x%08X]", $ds, $data_addr
     end
     echo \033[34m
     printf "------------------------"
@@ -21,7 +28,8 @@ define ddump
     set $_count = 0
     while ($_count < $arg0)
       set $_i = ($_count * 0x10)
-      hexdump $data_addr + $_i
+      set $_addr = $data_addr + $_i
+      hexdump $_addr
       set $_count++
     end
   end
@@ -57,38 +65,63 @@ define datawin
         if ((($r2 >> 0x18) == 0x40) || (($r2 >> 0x18) == 0x08) || (($r2 >> 0x18) == 0xBF))
           set $data_addr = $r2
         else
-          set $data_addr = $sp
+          if ((($r3 >> 0x18) == 0x40) || (($r3 >> 0x18) == 0x08) || (($r3 >> 0x18) == 0xBF))
+            set $data_addr = $r3
+	  else
+            set $data_addr = $sp
+	  end
         end
       end
     end
-################################# X86
-  else
-    if ($64BITS == 1)
-      if ((($rsi >> 0x18) == 0x40) || (($rsi >> 0x18) == 0x08) || (($rsi >> 0x18) == 0xBF))
-        set $data_addr = $rsi
+  end
+
+  if $MIPS == 1
+    if ((($a0 >> 0x18) == 0x40) || (($a0 >> 0x18) == 0x08) || (($a0 >> 0x18) == 0xBF))
+      set $data_addr = $a0
+    else
+      if ((($a1 >> 0x18) == 0x40) || (($a1 >> 0x18) == 0x08) || (($a1 >> 0x18) == 0xBF))
+        set $data_addr = $a1
       else
-        if ((($rdi >> 0x18) == 0x40) || (($rdi >> 0x18) == 0x08) || (($rdi >> 0x18) == 0xBF))
-          set $data_addr = $rdi
-        else
-          if ((($rax >> 0x18) == 0x40) || (($rax >> 0x18) == 0x08) || (($rax >> 0x18) == 0xBF))
-            set $data_addr = $rax
+        if ((($a2 >> 0x18) == 0x40) || (($a2 >> 0x18) == 0x08) || (($a2 >> 0x18) == 0xBF))
+          set $data_addr = $a2
+	else
+          if ((($a3 >> 0x18) == 0x40) || (($a3 >> 0x18) == 0x08) || (($a3 >> 0x18) == 0xBF))
+            set $data_addr = $a3
           else
-            set $data_addr = $rsp
-          end
+            set $data_addr = $sp
+	  end
         end
       end
+    end
+  end
+
+  if ($X86_64 == 1)
+    if ((($rsi >> 0x18) == 0x40) || (($rsi >> 0x18) == 0x08) || (($rsi >> 0x18) == 0xBF))
+      set $data_addr = $rsi
     else
-      if ((($esi >> 0x18) == 0x40) || (($esi >> 0x18) == 0x08) || (($esi >> 0x18) == 0xBF))
-        set $data_addr = $esi
+      if ((($rdi >> 0x18) == 0x40) || (($rdi >> 0x18) == 0x08) || (($rdi >> 0x18) == 0xBF))
+        set $data_addr = $rdi
       else
-        if ((($edi >> 0x18) == 0x40) || (($edi >> 0x18) == 0x08) || (($edi >> 0x18) == 0xBF))
-          set $data_addr = $edi
+        if ((($rax >> 0x18) == 0x40) || (($rax >> 0x18) == 0x08) || (($rax >> 0x18) == 0xBF))
+          set $data_addr = $rax
         else
-          if ((($eax >> 0x18) == 0x40) || (($eax >> 0x18) == 0x08) || (($eax >> 0x18) == 0xBF))
-            set $data_addr = $eax
-          else
-            set $data_addr = $esp
-          end
+          set $data_addr = $rsp
+        end
+      end
+    end
+  end
+
+  if ($X86 == 1)
+    if ((($esi >> 0x18) == 0x40) || (($esi >> 0x18) == 0x08) || (($esi >> 0x18) == 0xBF))
+      set $data_addr = $esi
+    else
+      if ((($edi >> 0x18) == 0x40) || (($edi >> 0x18) == 0x08) || (($edi >> 0x18) == 0xBF))
+        set $data_addr = $edi
+      else
+        if ((($eax >> 0x18) == 0x40) || (($eax >> 0x18) == 0x08) || (($eax >> 0x18) == 0xBF))
+          set $data_addr = $eax
+        else
+          set $data_addr = $esp
         end
       end
     end

@@ -34,7 +34,9 @@ define nop
 	end
       end			
     end
-  else
+  end
+
+  if (($X86 == 1) || ($X86_64 == 1))
     if ($argc == 1)
       set *(unsigned char *) $arg0 = 0x90
     else
@@ -82,7 +84,9 @@ define int3
       set $ORIGINAL_INT3 = *(unsigned int *) $arg0
       set $ORIGINAL_INT3ADDRESS = $arg0
       set *(unsigned int*) $arg0 = 0xe7ffdefe
-    else
+    end
+
+    if (($X86 == 1) || ($X86_64 == 1))
       # save original bytes and address
       set $ORIGINAL_INT3 = *(unsigned char *) $arg0
       set $ORIGINAL_INT3ADDRESS = $arg0
@@ -101,7 +105,9 @@ define rint3
   if $ARM == 1
     set *(unsigned int *) $ORIGINAL_INT3ADDRESS = $ORIGINAL_INT3
     set $pc = $ORIGINAL_INT3ADDRESS
-  else
+  end
+
+  if (($X86 == 1) || ($X86_64 == 1))
     set *(unsigned char *) $ORIGINAL_INT3ADDRESS = $ORIGINAL_INT3
     if $64BITS == 1
       set $rip = $ORIGINAL_INT3ADDRESS
@@ -138,7 +144,7 @@ define assemble
   printf "End with a line saying just \"end\".\n"
 
   if ($argc)
-    if ($64BITS == 1)
+    if ($X86_64 == 1)
       # argument specified, assemble instructions into memory at address specified.
       shell ASMOPCODE="$(while read -ep '>' r && test "$r" != end ; do echo -E "$r"; done)"; \
             GDBASMFILENAME=$RANDOM; \
@@ -149,7 +155,9 @@ define assemble
       source /tmp/gdbassemble
       # all done. clean the temporary file
       shell /bin/rm -f /tmp/gdbassemble
-    else
+    end
+
+    if ($X86 == 1)
       # argument specified, assemble instructions into memory at address specified.
       shell ASMOPCODE="$(while read -ep '>' r && test "$r" != end ; do echo -E "$r"; done)"; \
             GDBASMFILENAME=$RANDOM; \
@@ -162,7 +170,7 @@ define assemble
       shell /bin/rm -f /tmp/gdbassemble
     end
   else
-    if ($64BITS == 1)
+    if ($X86_64 == 1)
       # no argument, assemble instructions to stdout
       shell ASMOPCODE="$(while read -ep '>' r && test "$r" != end ; do echo -E "$r"; done)";
             GDBASMFILENAME=$RANDOM; \
@@ -170,7 +178,9 @@ define assemble
 	    /usr/local/bin/nasm -f bin -o /dev/stdout /tmp/$GDBASMFILENAME | \
 	    /usr/local/bin/ndisasm -i -b64 /dev/stdin; \
 	    /bin/rm -f /tmp/$GDBASMFILENAME
-    else
+    end
+
+    if ($X86 == 1)
       # no argument, assemble instructions to stdout
       shell ASMOPCODE="$(while read -ep '>' r && test "$r" != end ; do echo -E "$r"; done)"; \
             GDBASMFILENAME=$RANDOM; \

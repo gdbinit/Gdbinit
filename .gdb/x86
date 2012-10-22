@@ -108,7 +108,7 @@ Auxillary function to print X86/X64 eflags register.
 end
 
 
-define regx64
+define regx86_64
   # 64bits stuff
   printf "  "
   # RAX
@@ -308,7 +308,7 @@ define regx64
     set $oldr15 = $r15
   end
 end
-document regx64
+document regx86_64
 Auxiliary function to display X86_64 registers.
 end
 
@@ -442,7 +442,7 @@ end
 
 
 define smallregisters
-  if ($64BITS == 1)
+  if ($X86_64 == 1)
     #64bits stuff
     # from rax
     set $eax = $rax & 0xffffffff
@@ -471,7 +471,9 @@ define smallregisters
     set $edi = $rdi & 0xffffffff
     set $di  = $rdi & 0xffff		
     #32 bits stuff
-  else
+  end
+
+  if ($X86 == 1)
     # from eax
     set $ax = $eax & 0xffff
     set $al = $ax & 0xff
