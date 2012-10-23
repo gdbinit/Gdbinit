@@ -1,6 +1,6 @@
-source ~/.gdb/arm
-source ~/.gdb/x86
-source ~/.gdb/mips
+source ~/.gdb/cpu-arm.gdb
+source ~/.gdb/cpu-x86.gdb
+source ~/.gdb/cpu-mips.gdb
 
 define flags
   # call the auxiliary functions based on target cpu

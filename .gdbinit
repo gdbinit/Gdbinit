@@ -58,19 +58,19 @@ end
 ###
 # Command files
 
-source ~/.gdb/setup
-source ~/.gdb/cpu
-source ~/.gdb/data
+source ~/.gdb/setup.gdb
+source ~/.gdb/cpu.gdb
+source ~/.gdb/data.gdb
 
-source ~/.gdb/window
-source ~/.gdb/process
-source ~/.gdb/datawin
-source ~/.gdb/dumpjump
-source ~/.gdb/patch
-source ~/.gdb/tracing
-source ~/.gdb/misc
-source ~/.gdb/info
-source ~/.gdb/tips
+source ~/.gdb/window.gdb
+source ~/.gdb/process.gdb
+source ~/.gdb/datawin.gdb
+source ~/.gdb/dumpjump.gdb
+source ~/.gdb/patch.gdb
+source ~/.gdb/tracing.gdb
+source ~/.gdb/misc.gdb
+source ~/.gdb/info.gdb
+source ~/.gdb/tips.gdb
 
 # Configuration options specific to local machine. This file should never go
 # into version control.
