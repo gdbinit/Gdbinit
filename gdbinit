@@ -764,64 +764,65 @@ define regx64
         echo \033[0m
     end
     printf " 0x%016lX  ", $rbx
-    # RCX
+    # RBP
     echo \033[32m
-    printf "RCX:"
-    if ($rcx != $oldrcx && $SHOWREGCHANGES == 1)
+    printf "RBP:"
+    if ($rbp != $oldrbp && $SHOWREGCHANGES == 1)
         echo \033[31m
     else
         echo \033[0m
     end
-    printf " 0x%016lX  ", $rcx
-    # RDX
+    printf " 0x%016lX  ", $rbp
+    # RSP
     echo \033[32m
-    printf "RDX:"
-    if ($rdx != $oldrdx && $SHOWREGCHANGES == 1)
+    printf "RSP:"
+    if ($rsp != $oldrsp && $SHOWREGCHANGES == 1)
         echo \033[31m        
     else
         echo \033[0m
     end
-    printf " 0x%016lX  ", $rdx
+    printf " 0x%016lX  ", $rsp
 	echo \033[1m\033[4m\033[31m
     flags
     echo \033[0m
     printf "  "
-    # RSI
+    # RDI
     echo \033[32m
-    printf "RSI:"
-    if ($rsi != $oldrsi && $SHOWREGCHANGES == 1)
-	    echo \033[31m
-	else
-	    echo \033[0m
-	end
-	printf " 0x%016lX  ", $rsi
-	# RDI
-    echo \033[32m
-   	printf "RDI:"
-	if ($rdi != $oldrdi && $SHOWREGCHANGES == 1)
+    printf "RDI:"
+    if ($rdi != $oldrdi && $SHOWREGCHANGES == 1)
 	    echo \033[31m
 	else
 	    echo \033[0m
 	end
 	printf " 0x%016lX  ", $rdi
-	# RBP
+	# RSI
     echo \033[32m
-   	printf "RBP:"
-	if ($rbp != $oldrbp && $SHOWREGCHANGES == 1)
+   	printf "RSI:"
+	if ($rsi != $oldrsi && $SHOWREGCHANGES == 1)
 	    echo \033[31m
 	else
 	    echo \033[0m
 	end
-	printf " 0x%016lX  ", $rbp
-	# RSP
+	printf " 0x%016lX  ", $rsi
+	# RDX
     echo \033[32m
-   	printf "RSP:"
-	if ($rsp != $oldrsp && $SHOWREGCHANGES == 1)
+   	printf "RDX:"
+	if ($rdx != $oldrdx && $SHOWREGCHANGES == 1)
+	    echo \033[31m
+	else
+	    echo \033[0m
+	end
+	printf " 0x%016lX  ", $rdx
+	# RCX
+    echo \033[32m
+   	printf "RCX:"
+	if ($rcx != $oldrcx && $SHOWREGCHANGES == 1)
 	    echo \033[31m
 	else
 	    echo \033[0m
     end
-    printf " 0x%016lX  ", $rsp
+    printf " 0x%016lX  ", $rcx
+    # RIP
     echo \033[32m
     printf "RIP:"
     echo \033[0m
@@ -2253,6 +2254,14 @@ define stepoframework
                 if ($_byte2 == 0x94)
                     set $_nextaddress = $pc + 7
                 end
+            end
+            # FIXME: still missing a few?
+            if ($_byte1 == 0x41 || $_byte1 == 0x40)
+               if ($_byte2 == 0xFF)
+                    if ($_byte3 == 0xD0 || $_byte3 == 0xD1 || $_byte3 == 0xD2 || $_byte3 == 0xD3 || $_byte3 == 0xD4 || $_byte3 == 0xD5 ||  $_byte3 == 0xD6 || $_byte3 == 0xD7)
+                        set $_nextaddress = $pc + 0x3
+                    end
+               end
             end
         end
         # if we have found a call to bypass we set a temporary breakpoint on next instruction and continue 
