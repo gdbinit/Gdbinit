@@ -132,7 +132,7 @@ set $WHITE = 7
 # CHANGME: If you want to modify the "theme" change the colors here
 #          or just create a ~/.gdbinit.local and set these variables there
 set $COLOR_REGNAME = $GREEN
-set $COLOR_REGVAL = $WHITE
+set $COLOR_REGVAL = $BLACK
 set $COLOR_REGVAL_MODIFIED  = $RED
 set $COLOR_SEPARATOR = $BLUE
 set $COLOR_CPUFLAGS = $RED
