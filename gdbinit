@@ -1060,11 +1060,10 @@ define regx86
 	printf "EDX:"
 	if ($edx != $oldedx && $SHOWREGCHANGES == 1)
 	    color $COLOR_REGVAL_MODIFIED
-	    printf " 0x%08X  ", $edx
 	else
-		color $COLOR_REGVAL
+	    color $COLOR_REGVAL
 	end
-    printf " 0x%08X  ", $edx
+        printf " 0x%08X  ", $edx
 	color_bold
 	color_underline
 	color $COLOR_CPUFLAGS
