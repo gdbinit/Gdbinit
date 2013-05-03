@@ -2,7 +2,15 @@
 #
 # DESCRIPTION: A user-friendly gdb configuration file, for x86/x86_64 and ARM platforms.
 #
-# REVISION : 8.0.3 (21/03/2013)
+# REVISION : 8.0.4 (04/05/2013)
+# modified by Trong Q. Vu
+# ~ fix hexdump bug with 2 args
+# + change color of default registers to CYAN to be suit for both BLACK and WHITE backgroung
+# + change color of CHANGED_REGS to BRIGHT RED
+# + be prefer AT&T style code than Intel
+# + always show current instruction in GREEN
+# + some small changes
+#
 #
 # CONTRIBUTORS: mammon_, elaine, pusillus, mong, zhang le, l0kit,
 #               truthix the cyberpunk, fG!, gln
@@ -60,20 +68,20 @@
 # set to 1 to have ARM target debugging as default, use the "arm" command to switch inside gdb
 set $ARM = 0
 # set to 1 to enable 64bits target by default (32bits is the default)
-set $64BITS = 1
+#set $64BITS = 1
 
-if $64BITS == 1
-   printf "64-bit mode is default. Use the 32bits command if your target is 32 bits.\n"
-   printf "Edit the $64BITS variable in your .gdbinit file to switch to default 32-bit mode.\n"
-else
-   printf "32-bit mode is default. Use the 64bits command if your target is 64 bits.\n"
-   printf "Edit the $64BITS variable in your .gdbinit file to switch to default 64-bit mode.\n"
-end
+#if $64BITS == 1
+#   printf "64-bit mode is default. Use the 32bits command if your target is 32 bits.\n"
+#   printf "Edit the $64BITS variable in your .gdbinit file to switch to default 32-bit mode.\n"
+#else
+#   printf "32-bit mode is default. Use the 64bits command if your target is 64 bits.\n"
+#   printf "Edit the $64BITS variable in your .gdbinit file to switch to default 64-bit mode.\n"
+#end
 # set to 0 if you have problems with the colorized prompt - reported by Plouj with Ubuntu gdb 7.2
 set $COLOUREDPROMPT = 1
 # Colour the first line of the disassembly - default is green, if you want to change it search for
 # SETCOLOUR1STLINE and modify it :-)
-set $SETCOLOUR1STLINE = 0
+set $SETCOLOUR1STLINE = 1
 # set to 0 to remove display of objectivec messages (default is 1)
 set $SHOWOBJECTIVEC = 1
 # set to 0 to remove display of cpu registers (default is 1)
@@ -93,7 +101,7 @@ set $SKIPSTEP = 1
 # show the ARM opcodes - change to 0 if you don't want such thing (in x/i command)
 set $ARMOPCODES = 1
 # x86 disassembly flavor: 0 for Intel, 1 for AT&T
-set $X86FLAVOR = 0
+set $X86FLAVOR = 1
 # use colorized output or not
 set $USECOLOR = 1
 
@@ -110,9 +118,9 @@ set width 0
 set $SHOW_CONTEXT = 1
 set $SHOW_NEST_INSN = 0
 
-set $CONTEXTSIZE_STACK = 6
+set $CONTEXTSIZE_STACK = 8
 set $CONTEXTSIZE_DATA  = 8
-set $CONTEXTSIZE_CODE  = 8
+set $CONTEXTSIZE_CODE  = 4
 
 # __________________end gdb options_________________
 #
@@ -132,7 +140,7 @@ set $WHITE = 7
 # CHANGME: If you want to modify the "theme" change the colors here
 #          or just create a ~/.gdbinit.local and set these variables there
 set $COLOR_REGNAME = $GREEN
-set $COLOR_REGVAL = $BLACK
+set $COLOR_REGVAL = $CYAN
 set $COLOR_REGVAL_MODIFIED  = $RED
 set $COLOR_SEPARATOR = $BLUE
 set $COLOR_CPUFLAGS = $RED
@@ -140,39 +148,39 @@ set $COLOR_CPUFLAGS = $RED
 # this is ugly but there's no else if available :-(
 define color
  if $USECOLOR == 0
-	echo \033[0m
+	echo \033[0;0m
  else
  	# BLACK
  	if $arg0 == 0
- 		echo \033[30m
+ 		echo \033[0;30m
  	else
  		# RED
 	 	if $arg0 == 1
-	 		echo \033[31m
+	 		echo \033[1;31m
 	 	else
 	 		# GREEN
 	 		if $arg0 == 2
-	 			echo \033[32m
+	 			echo \033[0;32m
 	 		else
 	 			# YELLOW
 	 			if $arg0 == 3
-	 				echo \033[33m
+	 				echo \033[0;33m
 	 			else
 	 				# BLUE
 	 				if $arg0 == 4
-	 					echo \033[34m
+	 					echo \033[0;34m
 	 				else
 	 					# MAGENTA
 	 					if $arg0 == 5
-	 						echo \033[35m
+	 						echo \033[0;35m
 	 					else
 	 						# CYAN
 	 						if $arg0 == 6
-	 							echo \033[36m
+	 							echo \033[0;36m
 	 						else
 	 							# WHITE
 	 							if $arg0 == 7
-	 								echo \033[37m
+	 								echo \033[0;37m
 	 							end
 	 						end
 	 					end
@@ -198,7 +206,7 @@ end
 
 # can't use the color functions because we are using the set command
 if $COLOUREDPROMPT == 1
-	set prompt \033[31mgdb$ \033[0m
+	set prompt \033[1;31mgdb$ \033[0;0m
 end
 
 # this way anyone can have their custom prompt - argp's idea :-)
@@ -1163,7 +1171,7 @@ define reg
 			set $oldlr  = $lr
 	    end
     else
-        if ($64BITS == 1)
+        if (sizeof(void *)==8)
             regx64 
         else
             regx86
@@ -1171,13 +1179,13 @@ define reg
         # call smallregisters
 	    smallregisters
         # display conditional jump routine
-	    if ($64BITS == 1)
+	    if (sizeof(void *)==8)
     	    printf "\t\t\t\t"
     	end
         dumpjump
         printf "\n"
         if ($SHOWREGCHANGES == 1)
-    	    if ($64BITS == 1)
+    	    if (sizeof(void *)==8)
 	        	set $oldrax = $rax
 			    set $oldrbx = $rbx
     			set $oldrcx = $rcx
@@ -1213,7 +1221,7 @@ end
 
 
 define smallregisters
-    if ($64BITS == 1)
+    if (sizeof(void *)==8)
     #64bits stuff
 	    # from rax
     	set $eax = $rax & 0xffffffff
@@ -1429,8 +1437,8 @@ define hexdump_aux
     if $argc != 1
         help hexdump_aux
     else
-    	color_bold
-        if ($64BITS == 1)
+    	color_reset
+        if (sizeof(void *)==8)
             printf "0x%016lX : ", $arg0
         else
             printf "0x%08X : ", $arg0
@@ -1475,7 +1483,7 @@ define ddump
         help ddump
     else
         color $COLOR_SEPARATOR
-        if ($64BITS == 1)
+        if (sizeof(void *)==8)
             printf "[0x%04X:0x%016lX]", $ds, $data_addr
         else
             printf "[0x%04X:0x%08X]", $ds, $data_addr
@@ -1483,7 +1491,7 @@ define ddump
     	color $COLOR_SEPARATOR
     	printf "------------------------"
         printf "-------------------------------"
-        if ($64BITS == 1)
+        if (sizeof(void *)==8)
             printf "-------------------------------------"
 	    end
 	    color_bold
@@ -1535,7 +1543,7 @@ define datawin
         end
 ################################# X86
     else
-        if ($64BITS == 1)
+        if (sizeof(void *)==8)
             if ((($rsi >> 0x18) == 0x40) || (($rsi >> 0x18) == 0x08) || (($rsi >> 0x18) == 0xBF))
                 set $data_addr = $rsi
             else
@@ -1996,7 +2004,7 @@ define context
     if $SHOWCPUREGISTERS == 1
 	    printf "----------------------------------------"
 	    printf "----------------------------------"
-	    if ($64BITS == 1)
+	    if (sizeof(void *)==8)
 	        printf "---------------------------------------------"
 	    end
 	    color $COLOR_SEPARATOR
@@ -2008,7 +2016,7 @@ define context
     end
     if $SHOWSTACK == 1
     	color $COLOR_SEPARATOR
-		if ($64BITS == 1)
+		if (sizeof(void *)==8)
 		    printf "[0x%04X:0x%016lX]", $ss, $rsp
 		else
     	    printf "[0x%04X:0x%08X]", $ss, $esp
@@ -2016,7 +2024,7 @@ define context
         color $COLOR_SEPARATOR
 		printf "-------------------------"
     	printf "-----------------------------"
-	    if ($64BITS == 1)
+	    if (sizeof(void *)==8)
 	        printf "-------------------------------------"
 	    end
 	    color $COLOR_SEPARATOR
@@ -2060,7 +2068,7 @@ define context
             if $displayobjectivec == 1
                 color $COLOR_SEPARATOR
                 printf "--------------------------------------------------------------------"
-                if ($64BITS == 1)
+                if (sizeof(void *)==8)
                     printf "---------------------------------------------"
                 end
                 color $COLOR_SEPARATOR
@@ -2075,7 +2083,7 @@ define context
         if $displayobjectivec == 1
             color $COLOR_SEPARATOR
           	printf "--------------------------------------------------------------------"
-          	if ($64BITS == 1)
+          	if (sizeof(void *)==8)
 	            printf "---------------------------------------------"
     	    end
     	    color $COLOR_SEPARATOR
@@ -2095,7 +2103,7 @@ define context
 
     color $COLOR_SEPARATOR
     printf "--------------------------------------------------------------------------"
-    if ($64BITS == 1)
+    if (sizeof(void *)==8)
 	    printf "---------------------------------------------"
 	end
 	color $COLOR_SEPARATOR
@@ -2120,7 +2128,7 @@ define context
     color $COLOR_SEPARATOR
     printf "----------------------------------------"
     printf "----------------------------------------"
-    if ($64BITS == 1)
+    if (sizeof(void *)==8)
         printf "---------------------------------------------\n"
 	else
 	    printf "\n"
@@ -2700,7 +2708,7 @@ define rint3
 	    set $pc = $ORIGINAL_INT3ADDRESS
     else
     	set *(unsigned char *)$ORIGINAL_INT3ADDRESS = $ORIGINAL_INT3
-    	if $64BITS == 1
+    	if (sizeof(void *)==8)
         	set $rip = $ORIGINAL_INT3ADDRESS
     	else
     	    set $eip = $ORIGINAL_INT3ADDRESS
@@ -3048,7 +3056,7 @@ define assemble
     printf "End with a line saying just \"end\".\n"
     
     if ($argc)
-	    if ($64BITS == 1)
+	    if (sizeof(void *)==8)
 		    # argument specified, assemble instructions into memory at address specified.
     		shell ASMOPCODE="$(while read -ep '>' r && test "$r" != end ; do echo -E "$r"; done)" ; GDBASMFILENAME=$RANDOM; \
     		echo -e "BITS 64\n$ASMOPCODE" >/tmp/$GDBASMFILENAME ; /usr/local/bin/nasm -f bin -o /dev/stdout /tmp/$GDBASMFILENAME | /usr/bin/hexdump -ve '1/1 "set *((unsigned char *) $arg0 + %#2_ax) = %#02x\n"' >/tmp/gdbassemble ; /bin/rm -f /tmp/$GDBASMFILENAME
@@ -3064,7 +3072,7 @@ define assemble
 		    shell /bin/rm -f /tmp/gdbassemble
     	end
     else
-	    if ($64BITS == 1)
+	    if (sizeof(void *)==8)
 		    # no argument, assemble instructions to stdout
     		shell ASMOPCODE="$(while read -ep '>' r && test "$r" != end ; do echo -E "$r"; done)" ; GDBASMFILENAME=$RANDOM; \
 	    	echo -e "BITS 64\n$ASMOPCODE" >/tmp/$GDBASMFILENAME ; /usr/local/bin/nasm -f bin -o /dev/stdout /tmp/$GDBASMFILENAME | /usr/local/bin/ndisasm -i -b64 /dev/stdin ; \
