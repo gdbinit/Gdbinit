@@ -2,15 +2,7 @@
 #
 # DESCRIPTION: A user-friendly gdb configuration file, for x86/x86_64 and ARM platforms.
 #
-# REVISION : 8.0.4 (04/05/2013)
-# modified by Trong Q. Vu
-# ~ fix hexdump bug with 2 args
-# + change color of default registers to CYAN to be suit for both BLACK and WHITE backgroung
-# + change color of CHANGED_REGS to BRIGHT RED
-# + be prefer AT&T style code than Intel
-# + always show current instruction in GREEN
-# + some small changes
-#
+# REVISION : 8.0.3 (21/03/2013)
 #
 # CONTRIBUTORS: mammon_, elaine, pusillus, mong, zhang le, l0kit,
 #               truthix the cyberpunk, fG!, gln
@@ -81,7 +73,7 @@ set $ARM = 0
 set $COLOUREDPROMPT = 1
 # Colour the first line of the disassembly - default is green, if you want to change it search for
 # SETCOLOUR1STLINE and modify it :-)
-set $SETCOLOUR1STLINE = 1
+set $SETCOLOUR1STLINE = 0
 # set to 0 to remove display of objectivec messages (default is 1)
 set $SHOWOBJECTIVEC = 1
 # set to 0 to remove display of cpu registers (default is 1)
@@ -101,7 +93,7 @@ set $SKIPSTEP = 1
 # show the ARM opcodes - change to 0 if you don't want such thing (in x/i command)
 set $ARMOPCODES = 1
 # x86 disassembly flavor: 0 for Intel, 1 for AT&T
-set $X86FLAVOR = 1
+set $X86FLAVOR = 0
 # use colorized output or not
 set $USECOLOR = 1
 
@@ -118,9 +110,9 @@ set width 0
 set $SHOW_CONTEXT = 1
 set $SHOW_NEST_INSN = 0
 
-set $CONTEXTSIZE_STACK = 8
+set $CONTEXTSIZE_STACK = 6
 set $CONTEXTSIZE_DATA  = 8
-set $CONTEXTSIZE_CODE  = 4
+set $CONTEXTSIZE_CODE  = 8
 
 # __________________end gdb options_________________
 #
@@ -140,7 +132,7 @@ set $WHITE = 7
 # CHANGME: If you want to modify the "theme" change the colors here
 #          or just create a ~/.gdbinit.local and set these variables there
 set $COLOR_REGNAME = $GREEN
-set $COLOR_REGVAL = $CYAN
+set $COLOR_REGVAL = $BLACK
 set $COLOR_REGVAL_MODIFIED  = $RED
 set $COLOR_SEPARATOR = $BLUE
 set $COLOR_CPUFLAGS = $RED
@@ -148,39 +140,39 @@ set $COLOR_CPUFLAGS = $RED
 # this is ugly but there's no else if available :-(
 define color
  if $USECOLOR == 0
-	echo \033[0;0m
+	echo \033[0m
  else
  	# BLACK
  	if $arg0 == 0
- 		echo \033[0;30m
+ 		echo \033[30m
  	else
  		# RED
 	 	if $arg0 == 1
-	 		echo \033[1;31m
+	 		echo \033[31m
 	 	else
 	 		# GREEN
 	 		if $arg0 == 2
-	 			echo \033[0;32m
+	 			echo \033[32m
 	 		else
 	 			# YELLOW
 	 			if $arg0 == 3
-	 				echo \033[0;33m
+	 				echo \033[33m
 	 			else
 	 				# BLUE
 	 				if $arg0 == 4
-	 					echo \033[0;34m
+	 					echo \033[34m
 	 				else
 	 					# MAGENTA
 	 					if $arg0 == 5
-	 						echo \033[0;35m
+	 						echo \033[35m
 	 					else
 	 						# CYAN
 	 						if $arg0 == 6
-	 							echo \033[0;36m
+	 							echo \033[36m
 	 						else
 	 							# WHITE
 	 							if $arg0 == 7
-	 								echo \033[0;37m
+	 								echo \033[37m
 	 							end
 	 						end
 	 					end
@@ -206,7 +198,7 @@ end
 
 # can't use the color functions because we are using the set command
 if $COLOUREDPROMPT == 1
-	set prompt \033[1;31mgdb$ \033[0;0m
+	set prompt \033[31mgdb$ \033[0m
 end
 
 # this way anyone can have their custom prompt - argp's idea :-)
@@ -1437,7 +1429,7 @@ define hexdump_aux
     if $argc != 1
         help hexdump_aux
     else
-    	color_reset
+    	color_bold
         if (sizeof(void *)==8)
             printf "0x%016lX : ", $arg0
         else
