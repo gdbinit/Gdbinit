@@ -1408,7 +1408,7 @@ define hexdump
 			set $_count = 0
 			while ($_count < $arg1)
 				set $_i = ($_count * 0x10)
-				hexdump_aux $data_addr+$_i
+				hexdump_aux $arg0+$_i
 				set $_count++
 			end
 		else
