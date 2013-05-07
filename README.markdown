@@ -518,3 +518,7 @@ This section is incomplete.
 
    Tips on automatically displaying values when a program stops.
 ```
+
+### MacsBug
+Type `MACSBUG_HELP` to summarize the MacsBug commands
+
