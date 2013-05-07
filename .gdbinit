@@ -71,6 +71,10 @@ source ~/.gdb/tracing.gdb
 source ~/.gdb/misc.gdb
 source ~/.gdb/info.gdb
 source ~/.gdb/tips.gdb
+source ~/.gdb/macsbug.gdb
+
+# The following is commented out because it caused errors last time for me (egall)
+#source ~/.gdb/kgmacros.gdb
 
 # Configuration options specific to local machine. This file should never go
 # into version control.
