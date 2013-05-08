@@ -2,7 +2,7 @@
 #
 # DESCRIPTION: A user-friendly gdb configuration file, for x86/x86_64 and ARM platforms.
 #
-# REVISION : 8.0.3 (21/03/2013)
+# REVISION : 8.0.4 (08/05/2013)
 #
 # CONTRIBUTORS: mammon_, elaine, pusillus, mong, zhang le, l0kit,
 #               truthix the cyberpunk, fG!, gln
@@ -30,6 +30,11 @@
 #
 # CHANGELOG: (older changes at the end of the file)
 #
+#   Version 8.0.4 (08/05/2013)
+#     - Detect automatically 32 or 64 bits archs using sizeof(void*). 
+#       Thanks to vuquangtrong for the simple but very effective idea!
+#     - Typo in hexdump command also fixed by vuquangtrong.
+#     - Add shortcuts to attach to VMware kernel debugging gdb stub (kernel32 and kernel64)
 #
 #   Version 8.0.3 (21/03/2013)
 #	  - Add option to colorize or not output (thanks to argp and skier for the request and ideas!)
@@ -3415,6 +3420,28 @@ define attsyntax
 end
 document attsyntax
 Change disassembly syntax to at&t flavor.
+end
+
+define kernel32
+    # try to load kgmacros files
+    # failure is silent...
+    source /Volumes/KernelDebugKit/kgmacros
+    set architecture i386
+    target remote localhost:8832
+end
+document kernel32
+Attach to VMware gdb stub for 32 bits kernel.
+end
+
+define kernel64
+    # try to load kgmacros files
+    # failure is silent...
+    source /Volumes/KernelDebugKit/kgmacros
+    set architecture i386:x86-64
+    target remote localhost:8864
+end
+document kernel64
+Attach to VMware gdb stub for 64 bits kernel.
 end
 
 #EOF
