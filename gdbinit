@@ -32,7 +32,7 @@
 #
 #   Version 8.0.4 (08/05/2013)
 #     - Detect automatically 32 or 64 bits archs using sizeof(void*). 
-#       Thanks to vuquangtrong for the simple but very effective idea!
+#       Thanks to Tyilo for the simple but very effective idea!
 #     - Typo in hexdump command also fixed by vuquangtrong.
 #     - Add shortcuts to attach to VMware kernel debugging gdb stub (kernel32 and kernel64)
 #
