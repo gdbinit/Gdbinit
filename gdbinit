@@ -3427,10 +3427,17 @@ define kernel32
     # failure is silent...
     source /Volumes/KernelDebugKit/kgmacros
     set architecture i386
-    target remote localhost:8832
+    if $argc == 1
+        target remote localhost:$arg0
+    else
+        target remote localhost:8832
+    end
 end
 document kernel32
 Attach to VMware gdb stub for 32 bits kernel.
+Add a parameter if you wish to debug another kernel port.
+VMware increments the port for each running VM with gdb stub.
+Default without parameters is port 8832.
 end
 
 define kernel64
@@ -3438,10 +3445,17 @@ define kernel64
     # failure is silent...
     source /Volumes/KernelDebugKit/kgmacros
     set architecture i386:x86-64
-    target remote localhost:8864
+    if $argc == 1
+        target remote localhost:$arg0
+    else
+        target remote localhost:8864
+    end
 end
 document kernel64
 Attach to VMware gdb stub for 64 bits kernel.
+Add a parameter if you wish to debug another kernel port.
+VMware increments the port for each running VM with gdb stub.
+Default without parameters is port 8864.
 end
 
 #EOF
