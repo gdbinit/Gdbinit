@@ -3078,6 +3078,85 @@ If no address is specified, assembled instructions are printed to stdout.
 Use the pseudo instruction "org ADDR" to set the base address.
 end
 
+define assemble32
+    # dont enter routine again if user hits enter
+    dont-repeat
+    if ($argc)
+        if (*$arg0 = *$arg0)
+        # check if we have a valid address by dereferencing it,
+        # if we havnt, this will cause the routine to exit.
+        end
+        printf "Instructions will be written to %#x.\n", $arg0
+    else
+        printf "Instructions will be written to stdout.\n"
+    end
+    printf "Type instructions, one per line."
+    color_bold
+    printf " Do not forget to use NASM assembler syntax!\n"
+    color_reset
+    printf "End with a line saying just \"end\".\n"
+    
+    if ($argc)
+        # argument specified, assemble instructions into memory at address specified.
+        shell ASMOPCODE="$(while read -ep '>' r && test "$r" != end ; do echo -E "$r"; done)" ; GDBASMFILENAME=$RANDOM; \
+        echo -e "BITS 32\n$ASMOPCODE" >/tmp/$GDBASMFILENAME ; /usr/bin/nasm -f bin -o /dev/stdout /tmp/$GDBASMFILENAME | /usr/bin/hexdump -ve '1/1 "set *((unsigned char *) $arg0 + %#2_ax) = %#02x\n"' >/tmp/gdbassemble ; /bin/rm -f /tmp/$GDBASMFILENAME
+        source /tmp/gdbassemble
+        # all done. clean the temporary file
+        shell /bin/rm -f /tmp/gdbassemble
+    else
+        # no argument, assemble instructions to stdout
+        shell ASMOPCODE="$(while read -ep '>' r && test "$r" != end ; do echo -E "$r"; done)" ; GDBASMFILENAME=$RANDOM; \
+        echo -e "BITS 32\n$ASMOPCODE" >/tmp/$GDBASMFILENAME ; /usr/bin/nasm -f bin -o /dev/stdout /tmp/$GDBASMFILENAME | /usr/bin/ndisasm -i -b32 /dev/stdin ; \
+        /bin/rm -f /tmp/$GDBASMFILENAME
+    end
+end
+document assemble32
+Assemble 32 bits instructions using nasm.
+Type a line containing "end" to indicate the end.
+If an address is specified, insert/modify instructions at that address.
+If no address is specified, assembled instructions are printed to stdout.
+Use the pseudo instruction "org ADDR" to set the base address.
+end
+
+define assemble64
+    # dont enter routine again if user hits enter
+    dont-repeat
+    if ($argc)
+        if (*$arg0 = *$arg0)
+        # check if we have a valid address by dereferencing it,
+        # if we havnt, this will cause the routine to exit.
+        end
+        printf "Instructions will be written to %#x.\n", $arg0
+    else
+        printf "Instructions will be written to stdout.\n"
+    end
+    printf "Type instructions, one per line."
+    color_bold
+    printf " Do not forget to use NASM assembler syntax!\n"
+    color_reset
+    printf "End with a line saying just \"end\".\n"
+    
+    if ($argc)
+        # argument specified, assemble instructions into memory at address specified.
+        shell ASMOPCODE="$(while read -ep '>' r && test "$r" != end ; do echo -E "$r"; done)" ; GDBASMFILENAME=$RANDOM; \
+        echo -e "BITS 64\n$ASMOPCODE" >/tmp/$GDBASMFILENAME ; /usr/local/bin/nasm -f bin -o /dev/stdout /tmp/$GDBASMFILENAME | /usr/bin/hexdump -ve '1/1 "set *((unsigned char *) $arg0 + %#2_ax) = %#02x\n"' >/tmp/gdbassemble ; /bin/rm -f /tmp/$GDBASMFILENAME
+        source /tmp/gdbassemble
+        # all done. clean the temporary file
+        shell /bin/rm -f /tmp/gdbassemble
+    else
+        # no argument, assemble instructions to stdout
+        shell ASMOPCODE="$(while read -ep '>' r && test "$r" != end ; do echo -E "$r"; done)" ; GDBASMFILENAME=$RANDOM; \
+        echo -e "BITS 64\n$ASMOPCODE" >/tmp/$GDBASMFILENAME ; /usr/local/bin/nasm -f bin -o /dev/stdout /tmp/$GDBASMFILENAME | /usr/local/bin/ndisasm -i -b64 /dev/stdin ; \
+        /bin/rm -f /tmp/$GDBASMFILENAME
+    end
+end
+document assemble64
+Assemble 64 bits instructions using nasm.
+Type a line containing "end" to indicate the end.
+If an address is specified, insert/modify instructions at that address.
+If no address is specified, assembled instructions are printed to stdout.
+Use the pseudo instruction "org ADDR" to set the base address.
+end
 
 define asm
 	if $argc == 1
@@ -3090,6 +3169,27 @@ document asm
 Shortcut to the asssemble command.
 end
 
+define asm32
+    if $argc == 1
+        assemble32 $arg0
+    else
+        assemble32
+    end
+end
+document asm32
+Shortcut to the assemble32 command.
+end
+
+define asm64
+    if $argc == 1
+        assemble64 $arg0
+    else
+        assemble64
+    end
+end
+document asm64
+Shortcut to the assemble64 command.
+end
 
 define assemble_gas
     printf "\nType code to assemble and hit Ctrl-D when finished.\n"
