@@ -250,8 +250,8 @@ define contextsize-stack
     end
 end
 document contextsize-stack
-Set stack dump window size to NUM lines.
-Usage: contextsize-stack NUM
+Syntax: contextsize-stack NUM
+| Set stack dump window size to NUM lines.
 end
 
 
@@ -263,8 +263,8 @@ define contextsize-data
     end
 end
 document contextsize-data
-Set data dump window size to NUM lines.
-Usage: contextsize-data NUM
+Syntax: contextsize-data NUM
+| Set data dump window size to NUM lines.
 end
 
 
@@ -276,8 +276,8 @@ define contextsize-code
     end
 end
 document contextsize-code
-Set code window size to NUM lines.
-Usage: contextsize-code NUM
+Syntax: contextsize-code NUM
+| Set code window size to NUM lines.
 end
 
 
@@ -286,7 +286,8 @@ define bpl
     info breakpoints
 end
 document bpl
-List all breakpoints.
+Syntax: bpl
+| List all breakpoints.
 end
 
 
@@ -298,13 +299,13 @@ define bp
     end
 end
 document bp
-Set breakpoint.
-Usage: bp LOCATION
-LOCATION may be a line number, function name, or "*" and an address.
-To break on a symbol you must enclose symbol name inside "".
-Example:
-bp "[NSControl stringValue]"
-Or else you can use directly the break command (break [NSControl stringValue])
+Syntax: bp LOCATION
+| Set breakpoint.
+| LOCATION may be a line number, function name, or "*" and an address.
+| To break on a symbol you must enclose symbol name inside "".
+| Example:
+| bp "[NSControl stringValue]"
+| Or else you can use directly the break command (break [NSControl stringValue])
 end
 
 
@@ -316,9 +317,9 @@ define bpc
     end
 end
 document bpc
-Clear breakpoint.
-Usage: bpc LOCATION
-LOCATION may be a line number, function name, or "*" and an address.
+Syntax: bpc LOCATION
+| Clear breakpoint.
+| LOCATION may be a line number, function name, or "*" and an address.
 end
 
 
@@ -330,8 +331,8 @@ define bpe
     end
 end
 document bpe
-Enable breakpoint with number NUM.
-Usage: bpe NUM
+Syntax: bpe NUM
+| Enable breakpoint with number NUM.
 end
 
 
@@ -343,8 +344,8 @@ define bpd
     end
 end
 document bpd
-Disable breakpoint with number NUM.
-Usage: bpd NUM
+Syntax: bpd NUM
+| Disable breakpoint with number NUM.
 end
 
 
@@ -356,10 +357,10 @@ define bpt
     end
 end
 document bpt
-Set a temporary breakpoint.
-This breakpoint will be automatically deleted when hit!.
-Usage: bpt LOCATION
-LOCATION may be a line number, function name, or "*" and an address.
+Syntax: bpt LOCATION
+| Set a temporary breakpoint.
+| This breakpoint will be automatically deleted when hit!.
+| LOCATION may be a line number, function name, or "*" and an address.
 end
 
 
@@ -371,8 +372,8 @@ define bpm
     end
 end
 document bpm
-Set a read/write breakpoint on EXPRESSION, e.g. *address.
-Usage: bpm EXPRESSION
+Syntax: bpm EXPRESSION
+| Set a read/write breakpoint on EXPRESSION, e.g. *address.
 end
 
 
@@ -384,9 +385,9 @@ define bhb
     end
 end
 document bhb
-Set hardware assisted breakpoint.
-Usage: bhb LOCATION
-LOCATION may be a line number, function name, or "*" and an address.
+Syntax: bhb LOCATION
+| Set hardware assisted breakpoint.
+| LOCATION may be a line number, function name, or "*" and an address.
 end
 
 
@@ -398,10 +399,10 @@ define bht
     end
 end
 document bht
-Set a temporary hardware breakpoint.
-This breakpoint will be automatically deleted when hit!
 Usage: bht LOCATION
-LOCATION may be a line number, function name, or "*" and an address.
+| Set a temporary hardware breakpoint.
+| This breakpoint will be automatically deleted when hit!
+| LOCATION may be a line number, function name, or "*" and an address.
 end
 
 
@@ -410,7 +411,8 @@ define argv
     show args
 end
 document argv
-Print program arguments.
+Syntax: argv
+| Print program arguments.
 end
 
 
@@ -426,8 +428,8 @@ define stack
     end
 end
 document stack
-Print backtrace of the call stack, or innermost COUNT frames.
-Usage: stack <COUNT>
+Syntax: stack <COUNT>
+| Print backtrace of the call stack, or innermost COUNT frames.
 end
 
 
@@ -437,7 +439,8 @@ define frame
     info locals
 end
 document frame
-Print stack frame.
+Syntax: frame
+| Print stack frame.
 end
 
 
@@ -547,7 +550,8 @@ define flagsarm
     # TODO: GE bit ?
 end
 document flagsarm
-Auxiliary function to set ARM cpu flags.
+Syntax: flagsarm
+| Auxiliary function to set ARM cpu flags.
 end
 
 
@@ -619,7 +623,8 @@ define flagsx86
     printf "\n"
 end
 document flagsx86
-Auxiliary function to set X86/X64 cpu flags.
+Syntax: flagsx86
+| Auxiliary function to set X86/X64 cpu flags.
 end
 
 
@@ -632,7 +637,8 @@ define flags
     end
 end
 document flags
-Print flags register.
+Syntax: flags
+| Print flags register.
 end
 
 
@@ -663,7 +669,8 @@ define eflags
      end
 end
 document eflags
-Print eflags register.
+Syntax: eflags
+| Print eflags register.
 end
 
 
@@ -671,7 +678,8 @@ define cpsr
 	eflags
 end
 document cpsr
-Print cpsr register.
+Syntax: cpsr
+| Print cpsr register.
 end
 
 define regarm
@@ -829,7 +837,8 @@ define regarm
     printf "\n"
 end
 document regarm
-Auxiliary function to display ARM registers.
+Syntax: regarm
+| Auxiliary function to display ARM registers.
 end
 
 define regx64
@@ -1017,7 +1026,8 @@ define regx64
     color_reset
 end
 document regx64
-Auxiliary function to display X86_64 registers.
+Syntax: regx64
+| Auxiliary function to display X86_64 registers.
 end
 
 
@@ -1133,7 +1143,8 @@ define regx86
     color_reset
 end
 document regx86
-Auxiliary function to display X86 registers.
+Syntax: regx86
+| Auxiliary function to display X86 registers.
 end
 
 
@@ -1203,7 +1214,8 @@ define reg
     end
 end
 document reg
-Print CPU registers.
+Syntax: reg
+| Print CPU registers.
 end
 
 
@@ -1261,8 +1273,9 @@ define smallregisters
      end
 end
 document smallregisters
-Create the 16 and 8 bit cpu registers (gdb doesn't have them by default).
-And 32bits if we are dealing with 64bits binaries.
+Syntax: smallregisters
+| Create the 16 and 8 bit cpu registers (gdb doesn't have them by default).
+| And 32bits if we are dealing with 64bits binaries.
 end
 
 
@@ -1278,8 +1291,8 @@ define func
     end
 end
 document func
-Print all function names in target, or those matching REGEXP.
-Usage: func <REGEXP>
+Syntax: func <REGEXP>
+| Print all function names in target, or those matching REGEXP.
 end
 
 
@@ -1295,8 +1308,8 @@ define var
     end
 end
 document var
-Print all global and static variable names (symbols), or those matching REGEXP.
-Usage: var <REGEXP>
+Syntax: var <REGEXP>
+| Print all global and static variable names (symbols), or those matching REGEXP.
 end
 
 
@@ -1304,7 +1317,8 @@ define lib
     info sharedlibrary
 end
 document lib
-Print shared libraries linked to target.
+Syntax: lib
+| Print shared libraries linked to target.
 end
 
 
@@ -1320,9 +1334,9 @@ define sig
     end
 end
 document sig
-Print what debugger does when program gets various signals.
-Specify a SIGNAL as argument to print info on that signal only.
-Usage: sig <SIGNAL>
+Syntax: sig <SIGNAL>
+| Print what debugger does when program gets various signals.
+| Specify a SIGNAL as argument to print info on that signal only.
 end
 
 
@@ -1330,7 +1344,8 @@ define threads
     info threads
 end
 document threads
-Print threads in target.
+Syntax: threads
+| Print threads in target.
 end
 
 
@@ -1349,11 +1364,11 @@ define dis
     end
 end
 document dis
-Disassemble a specified section of memory.
-Default is to disassemble the function surrounding the PC (program counter) of selected frame. 
-With one argument, ADDR1, the function surrounding this address is dumped.
-Two arguments are taken as a range of memory to dump.
-Usage: dis <ADDR1> <ADDR2>
+Syntax: dis <ADDR1> <ADDR2>
+| Disassemble a specified section of memory.
+| Default is to disassemble the function surrounding the PC (program counter) of selected frame. 
+| With one argument, ADDR1, the function surrounding this address is dumped.
+| Two arguments are taken as a range of memory to dump.
 end
 
 
@@ -1372,9 +1387,9 @@ define ascii_char
     end
 end
 document ascii_char
-Print ASCII value of byte at address ADDR.
-Print "." if the value is unprintable.
-Usage: ascii_char ADDR
+Syntax: ascii_char ADDR
+| Print ASCII value of byte at address ADDR.
+| Print "." if the value is unprintable.
 end
 
 
@@ -1390,8 +1405,8 @@ define hex_quad
     end
 end
 document hex_quad
-Print eight hexadecimal bytes starting at address ADDR.
-Usage: hex_quad ADDR
+Syntax: hex_quad ADDR
+| Print eight hexadecimal bytes starting at address ADDR.
 end
 
 
@@ -1412,9 +1427,9 @@ define hexdump
     end
 end
 document hexdump
-Display a 16-byte hex/ASCII dump of memory starting at address ADDR.
-Optional parameter is the number of lines to display if you want more than one. 
-Usage: hexdump ADDR [nr lines]
+Syntax: hexdump ADDR [nr lines]
+| Display a 16-byte hex/ASCII dump of memory starting at address ADDR.
+| Optional parameter is the number of lines to display if you want more than one. 
 end
 
 
@@ -1457,8 +1472,8 @@ define hexdump_aux
     end
 end
 document hexdump_aux
-Display a 16-byte hex/ASCII dump of memory at address ADDR.
-Usage: hexdump_aux ADDR
+Syntax: hexdump_aux ADDR
+| Display a 16-byte hex/ASCII dump of memory at address ADDR.
 end
 
 
@@ -1492,8 +1507,8 @@ define ddump
     end
 end
 document ddump
-Display NUM lines of hexdump for address in $data_addr global variable.
-Usage: ddump NUM
+Syntax: ddump NUM
+| Display NUM lines of hexdump for address in $data_addr global variable.
 end
 
 
@@ -1506,8 +1521,8 @@ define dd
     end
 end
 document dd
-Display 16 lines of a hex dump of address starting at ADDR.
-Usage: dd ADDR
+Syntax: dd ADDR
+| Display 16 lines of a hex dump of address starting at ADDR.
 end
 
 
@@ -1561,8 +1576,9 @@ define datawin
     ddump $CONTEXTSIZE_DATA
 end
 document datawin
-Display valid address from one register in data window.
-Registers to choose are: esi, edi, eax, or esp.
+Syntax: datawin
+| Display valid address from one register in data window.
+| Registers to choose are: esi, edi, eax, or esp.
 end
 
 
@@ -1830,7 +1846,8 @@ define dumpjump
     end
 end
 document dumpjump
-Display if conditional jump will be taken or not.
+Syntax: dumpjump
+| Display if conditional jump will be taken or not.
 end
 
 define dumpjumphelper
@@ -1976,7 +1993,8 @@ define dumpjumphelper
     end
 end
 document dumpjumphelper
-Helper function to decide if conditional jump will be taken or not, for ARM and Thumb.
+Syntax: dumpjumphelper
+| Helper function to decide if conditional jump will be taken or not, for ARM and Thumb.
 end
 
 
@@ -2121,7 +2139,8 @@ define context
     color_reset
 end
 document context
-Print context window, i.e. regs, stack, ds:esi and disassemble cs:eip.
+Syntax: context
+| Print context window, i.e. regs, stack, ds:esi and disassemble cs:eip.
 end
 
 
@@ -2130,7 +2149,8 @@ define context-on
     printf "Displaying of context is now ON\n"
 end
 document context-on
-Enable display of context on every program break.
+Syntax: context-on
+| Enable display of context on every program break.
 end
 
 
@@ -2139,7 +2159,8 @@ define context-off
     printf "Displaying of context is now OFF\n"
 end
 document context-off
-Disable display of context on every program break.
+Syntax: context-off
+| Disable display of context on every program break.
 end
 
 
@@ -2156,10 +2177,10 @@ define n
     end
 end
 document n
-Step one instruction, but proceed through subroutine calls.
-If NUM is given, then repeat it NUM times or till program stops.
-This is alias for nexti.
-Usage: n <NUM>
+Syntax: n <NUM>
+| Step one instruction, but proceed through subroutine calls.
+| If NUM is given, then repeat it NUM times or till program stops.
+| This is alias for nexti.
 end
 
 
@@ -2175,10 +2196,10 @@ define go
     end
 end
 document go
-Step one instruction exactly.
-If NUM is given, then repeat it NUM times or till program stops.
-This is alias for stepi.
-Usage: go <NUM>
+Syntax: go <NUM>
+| Step one instruction exactly.
+| If NUM is given, then repeat it NUM times or till program stops.
+| This is alias for stepi.
 end
 
 
@@ -2186,8 +2207,9 @@ define pret
     finish
 end
 document pret
-Execute until selected stack frame returns (step out of current call).
-Upon return, the value returned is printed and put in the value history.
+Syntax: pret
+| Execute until selected stack frame returns (step out of current call).
+| Upon return, the value returned is printed and put in the value history.
 end
 
 
@@ -2197,7 +2219,8 @@ define init
     r
 end
 document init
-Run program and break on _init().
+Syntax: init
+| Run program and break on _init().
 end
 
 
@@ -2207,7 +2230,8 @@ define start
     r
 end
 document start
-Run program and break on _start().
+Syntax: start
+| Run program and break on _start().
 end
 
 
@@ -2217,8 +2241,9 @@ define sstart
     r
 end
 document sstart
-Run program and break on __libc_start_main().
-Useful for stripped executables.
+Syntax: sstart
+| Run program and break on __libc_start_main().
+| Useful for stripped executables.
 end
 
 
@@ -2228,7 +2253,8 @@ define main
     r
 end
 document main
-Run program and break on main().
+Syntax: main
+| Run program and break on main().
 end
 
 
@@ -2377,16 +2403,18 @@ define stepoframework
     end
 end
 document stepoframework
-Auxiliary function to stepo command.
+Syntax: stepoframework
+| Auxiliary function to stepo command.
 end
 
 define stepo
     stepoframework 0
 end
 document stepo
-Step over calls (interesting to bypass the ones to msgSend).
-This function will set a temporary breakpoint on next instruction after the call so the call will be bypassed.
-You can safely use it instead nexti or n since it will single step code if it's not a call instruction (unless you want to go into the call function).
+Syntax: stepo
+| Step over calls (interesting to bypass the ones to msgSend).
+| This function will set a temporary breakpoint on next instruction after the call so the call will be bypassed.
+| You can safely use it instead nexti or n since it will single step code if it's not a call instruction (unless you want to go into the call function).
 end
 
 
@@ -2394,7 +2422,8 @@ define stepoh
     stepoframework 1
 end
 document stepoh
-Same as stepo command but uses temporary hardware breakpoints.
+Syntax: stepoh
+| Same as stepo command but uses temporary hardware breakpoints.
 end
 
 
@@ -2414,8 +2443,9 @@ define skip
 	end
 end
 document skip
-Skip over the instruction located at EIP/RIP. By default, the instruction will not be executed!
-Some configurable options are available on top of gdbinit to override this.
+Syntax: skip
+| Skip over the instruction located at EIP/RIP. By default, the instruction will not be executed!
+| Some configurable options are available on top of gdbinit to override this.
 end
 
 
@@ -2438,7 +2468,8 @@ define cfn
     end
 end
 document cfn
-Change Negative/Less Than Flag.
+Syntax: cfn
+| Change Negative/Less Than Flag.
 end
 
 
@@ -2460,7 +2491,8 @@ define cfc
      end
 end
 document cfc
-Change Carry Flag.
+Syntax: cfc
+| Change Carry Flag.
 end
 
 
@@ -2472,7 +2504,8 @@ define cfp
     end
 end
 document cfp
-Change Parity Flag.
+Syntax: cfp
+| Change Parity Flag.
 end
 
 
@@ -2484,7 +2517,8 @@ define cfa
     end
 end
 document cfa
-Change Auxiliary Carry Flag.
+Syntax: cfa
+| Change Auxiliary Carry Flag.
 end
 
 
@@ -2506,7 +2540,8 @@ define cfz
      end
 end
 document cfz
-Change Zero Flag.
+Syntax: cfz
+| Change Zero Flag.
 end
 
 
@@ -2518,7 +2553,8 @@ define cfs
     end
 end
 document cfs
-Change Sign Flag.
+Syntax: cfs
+| Change Sign Flag.
 end
 
 
@@ -2530,7 +2566,8 @@ define cft
     end
 end
 document cft
-Change Trap Flag.
+Syntax: cft
+| Change Trap Flag.
 end
 
 
@@ -2542,9 +2579,10 @@ define cfi
     end
 end
 document cfi
-Change Interrupt Flag.
-Only privileged applications (usually the OS kernel) may modify IF.
-This only applies to protected mode (real mode code may always modify IF).
+Syntax: cfi
+| Change Interrupt Flag.
+| Only privileged applications (usually the OS kernel) may modify IF.
+| This only applies to protected mode (real mode code may always modify IF).
 end
 
 
@@ -2556,7 +2594,8 @@ define cfd
     end
 end
 document cfd
-Change Direction Flag.
+Syntax: cfd
+| Change Direction Flag.
 end
 
 
@@ -2568,7 +2607,8 @@ define cfo
     end
 end
 document cfo
-Change Overflow Flag.
+Syntax: cfo
+| Change Overflow Flag.
 end
 
 
@@ -2584,7 +2624,8 @@ define cfv
     end
 end
 document cfv
-Change Overflow Flag.
+Syntax: cfv
+| Change Overflow Flag.
 end
 
 
@@ -2637,9 +2678,9 @@ define nop
     end
 end
 document nop
-Usage: nop ADDR1 [ADDR2]
-Patch a single byte at address ADDR1, or a series of bytes between ADDR1 and ADDR2 to a NOP (0x90) instruction.
-ARM or Thumb code will be patched accordingly.
+Syntax: nop ADDR1 [ADDR2]
+| Patch a single byte at address ADDR1, or a series of bytes between ADDR1 and ADDR2 to a NOP (0x90) instruction.
+| ARM or Thumb code will be patched accordingly.
 end
 
 
@@ -2659,8 +2700,8 @@ define null
     end
 end
 document null
-Usage: null ADDR1 [ADDR2]
-Patch a single byte at address ADDR1 to NULL (0x00), or a series of bytes between ADDR1 and ADDR2.
+Syntax: null ADDR1 [ADDR2]
+| Patch a single byte at address ADDR1 to NULL (0x00), or a series of bytes between ADDR1 and ADDR2.
 end
 
 # FIXME: thumb breakpoint ?
@@ -2682,8 +2723,8 @@ define int3
     end
 end
 document int3
-Patch byte at address ADDR to an INT3 (0xCC) instruction or the equivalent software breakpoint for ARM.
-Usage: int3 ADDR
+Syntax int3 ADDR
+| Patch byte at address ADDR to an INT3 (0xCC) instruction or the equivalent software breakpoint for ARM.
 end
 
 
@@ -2701,7 +2742,8 @@ define rint3
 	end
 end
 document rint3
-Restore the original byte previous to int3 patch issued with "int3" command.
+Syntax: rint3
+| Restore the original byte previous to int3 patch issued with "int3" command.
 end
 
 
@@ -2734,8 +2776,8 @@ define print_insn_type
     end
 end
 document print_insn_type
-Print human-readable mnemonic for the instruction type (usually $INSN_TYPE).
-Usage: print_insn_type INSN_TYPE_NUMBER
+Syntax: print_insn_type INSN_TYPE_NUMBER
+| Print human-readable mnemonic for the instruction type (usually $INSN_TYPE).
 end
 
 
@@ -2794,11 +2836,11 @@ define get_insn_type
     end
 end
 document get_insn_type
-Recognize instruction type at address ADDR.
-Take address ADDR and set the global $INSN_TYPE variable to
-0, 1, 2, 3, 4, 5 if the instruction at that address is
-unknown, a jump, a conditional jump, a call, a return, or an interrupt.
-Usage: get_insn_type ADDR
+Syntax: get_insn_type ADDR
+| Recognize instruction type at address ADDR.
+| Take address ADDR and set the global $INSN_TYPE variable to
+| 0, 1, 2, 3, 4, 5 if the instruction at that address is
+| unknown, a jump, a conditional jump, a call, a return, or an interrupt.
 end
 
 
@@ -2840,9 +2882,10 @@ define step_to_call
 
 end
 document step_to_call
-Single step until a call instruction is found.
-Stop before the call is taken.
-Log is written into the file ~/gdb.txt.
+Syntax: step_to_call
+| Single step until a call instruction is found.
+| Stop before the call is taken.
+| Log is written into the file ~/gdb.txt.
 end
 
 
@@ -2901,8 +2944,9 @@ define trace_calls
     printf "Done, check ~/gdb_trace_calls.txt\n"
 end
 document trace_calls
-Create a runtime trace of the calls made by target.
-Log overwrites(!) the file ~/gdb_trace_calls.txt.
+Syntax: trace_calls
+| Create a runtime trace of the calls made by target.
+| Log overwrites(!) the file ~/gdb_trace_calls.txt.
 end
 
 
@@ -2948,8 +2992,9 @@ define trace_run
     printf "Done, check ~/gdb_trace_run.txt\n"
 end
 document trace_run
-Create a runtime trace of target.
-Log overwrites(!) the file ~/gdb_trace_run.txt.
+Syntax: trace_run
+| Create a runtime trace of target.
+| Log overwrites(!) the file ~/gdb_trace_run.txt.
 end
 
 #define ptraceme
@@ -2970,7 +3015,8 @@ end
 #    set $ptrace_bpnum = $bpnum
 #end
 #document ptraceme
-#Hook ptrace to bypass PTRACE_TRACEME anti debugging technique
+#Syntax: ptraceme
+#| Hook ptrace to bypass PTRACE_TRACEME anti debugging technique
 #end
 
 define rptraceme
@@ -2980,7 +3026,8 @@ define rptraceme
     end
 end
 document rptraceme
-Remove ptrace hook.
+Syntax: rptraceme
+| Remove ptrace hook.
 end
 
 
@@ -3014,7 +3061,8 @@ define hook-stop
     end
 end
 document hook-stop
-!!! FOR INTERNAL USE ONLY - DO NOT CALL !!!
+Syntax: hook-stop
+| !!! FOR INTERNAL USE ONLY - DO NOT CALL !!!
 end
 
 
@@ -3071,11 +3119,12 @@ define assemble
     end
 end
 document assemble
-Assemble instructions using nasm.
-Type a line containing "end" to indicate the end.
-If an address is specified, insert/modify instructions at that address.
-If no address is specified, assembled instructions are printed to stdout.
-Use the pseudo instruction "org ADDR" to set the base address.
+Syntax: assemble <ADDR>
+| Assemble instructions using nasm.
+| Type a line containing "end" to indicate the end.
+| If an address is specified, insert/modify instructions at that address.
+| If no address is specified, assembled instructions are printed to stdout.
+| Use the pseudo instruction "org ADDR" to set the base address.
 end
 
 define assemble32
@@ -3111,11 +3160,12 @@ define assemble32
     end
 end
 document assemble32
-Assemble 32 bits instructions using nasm.
-Type a line containing "end" to indicate the end.
-If an address is specified, insert/modify instructions at that address.
-If no address is specified, assembled instructions are printed to stdout.
-Use the pseudo instruction "org ADDR" to set the base address.
+Syntax: assemble32 <ADDR>
+| Assemble 32 bits instructions using nasm.
+| Type a line containing "end" to indicate the end.
+| If an address is specified, insert/modify instructions at that address.
+| If no address is specified, assembled instructions are printed to stdout.
+| Use the pseudo instruction "org ADDR" to set the base address.
 end
 
 define assemble64
@@ -3151,11 +3201,12 @@ define assemble64
     end
 end
 document assemble64
-Assemble 64 bits instructions using nasm.
-Type a line containing "end" to indicate the end.
-If an address is specified, insert/modify instructions at that address.
-If no address is specified, assembled instructions are printed to stdout.
-Use the pseudo instruction "org ADDR" to set the base address.
+Syntax: assemble64 <ADDR>
+| Assemble 64 bits instructions using nasm.
+| Type a line containing "end" to indicate the end.
+| If an address is specified, insert/modify instructions at that address.
+| If no address is specified, assembled instructions are printed to stdout.
+| Use the pseudo instruction "org ADDR" to set the base address.
 end
 
 define asm
@@ -3166,7 +3217,8 @@ define asm
 	end
 end
 document asm
-Shortcut to the asssemble command.
+Syntax: asm <ADDR>
+| Shortcut to the asssemble command.
 end
 
 define asm32
@@ -3177,7 +3229,8 @@ define asm32
     end
 end
 document asm32
-Shortcut to the assemble32 command.
+Syntax: asm32 <ADDR>
+| Shortcut to the assemble32 command.
 end
 
 define asm64
@@ -3188,7 +3241,8 @@ define asm64
     end
 end
 document asm64
-Shortcut to the assemble64 command.
+Syntax: asm64 <ADDR>
+| Shortcut to the assemble64 command.
 end
 
 define assemble_gas
@@ -3206,8 +3260,8 @@ define assemble_gas
           echo -e "temporaly files deleted.\n"
 end
 document assemble_gas
-Assemble instructions to binary opcodes. Uses GNU as and objdump.
-Usage: assemble_gas
+Syntax: assemble_gas
+| Assemble instructions to binary opcodes. Uses GNU as and objdump.
 end
 
 
@@ -3215,9 +3269,9 @@ define dump_hexfile
     dump ihex memory $arg0 $arg1 $arg2
 end
 document dump_hexfile
-Write a range of memory to a file in Intel ihex (hexdump) format.
-The range is specified by ADDR1 and ADDR2 addresses.
-Usage: dump_hexfile FILENAME ADDR1 ADDR2
+Syntax: dump_hexfile FILENAME ADDR1 ADDR2
+| Write a range of memory to a file in Intel ihex (hexdump) format.
+| The range is specified by ADDR1 and ADDR2 addresses.
 end
 
 
@@ -3225,9 +3279,9 @@ define dump_binfile
     dump memory $arg0 $arg1 $arg2
 end
 document dump_binfile
-Write a range of memory to a binary file.
-The range is specified by ADDR1 and ADDR2 addresses.
-Usage: dump_binfile FILENAME ADDR1 ADDR2
+Syntax: dump_binfile FILENAME ADDR1 ADDR2
+| Write a range of memory to a binary file.
+| The range is specified by ADDR1 and ADDR2 addresses.
 end
 
 
@@ -3252,9 +3306,9 @@ define dumpmacho
     end
 end
 document dumpmacho
-Dump the Mach-O header to a file.
-You need to input the start address (use info shared command to find it).
-Usage: dumpmacho STARTADDRESS FILENAME
+Syntax: dumpmacho STARTADDRESS FILENAME
+| Dump the Mach-O header to a file.
+| You need to input the start address (use info shared command to find it).
 end
 
 
@@ -3262,7 +3316,8 @@ define cls
     shell clear
 end
 document cls
-Clear screen.
+Syntax: cls
+| Clear screen.
 end
 
 
@@ -3279,8 +3334,8 @@ define search
     end
 end
 document search
-Search for the given pattern beetween $start and $end address.
-Usage: search <start> <end> <pattern>
+Syntax: search <start> <end> <pattern>
+| Search for the given pattern beetween $start and $end address.
 end
 
 
@@ -3294,7 +3349,8 @@ define tips
     printf "\ttip_syntax  : AT&T vs Intel syntax\n"
 end
 document tips
-Provide a list of tips from users on various topics.
+Syntax: tips
+| Provide a list of tips from users on various topics.
 end
 
 
@@ -3315,7 +3371,8 @@ define tip_patch
     printf "\n"
 end
 document tip_patch
-Tips on patching memory and binary files.
+Syntax: tip_patch
+| Tips on patching memory and binary files.
 end
 
 
@@ -3338,7 +3395,8 @@ define tip_strip
     printf "\n"
 end
 document tip_strip
-Tips on dealing with stripped binaries.
+Syntax: tip_strip
+| Tips on dealing with stripped binaries.
 end
 
 
@@ -3363,7 +3421,8 @@ define tip_syntax
     printf "\n"
 end
 document tip_syntax
-Summary of Intel and AT&T syntax differences.
+Syntax: tip_syntax
+| Summary of Intel and AT&T syntax differences.
 end
 
 
@@ -3382,7 +3441,8 @@ define tip_display
     printf "\n"
 end
 document tip_display
-Tips on automatically displaying values when a program stops.
+Syntax: tip_display
+| Tips on automatically displaying values when a program stops.
 end
 
 # bunch of semi-useless commands
@@ -3393,7 +3453,8 @@ define enablesolib
 	printf "Stop-on-solib-events is enabled!\n"
 end
 document enablesolib
-Shortcut to enable stop-on-solib-events trick.
+Syntax: enablesolib
+| Shortcut to enable stop-on-solib-events trick.
 end
 
 
@@ -3402,7 +3463,8 @@ define disablesolib
 	printf "Stop-on-solib-events is disabled!\n"
 end
 document disablesolib
-Shortcut to disable stop-on-solib-events trick.
+Syntax: disablesolib
+| Shortcut to disable stop-on-solib-events trick.
 end
 
 
@@ -3411,7 +3473,8 @@ define enableobjectivec
 	set $SHOWOBJECTIVEC = 1
 end
 document enableobjectivec
-Enable display of objective-c information in the context window.
+Syntax: enableobjectivec
+| Enable display of objective-c information in the context window.
 end
 
 
@@ -3419,7 +3482,8 @@ define enablecpuregisters
 	set $SHOWCPUREGISTERS = 1
 end
 document enablecpuregisters
-Enable display of cpu registers in the context window.
+Syntax: enablecpuregisters
+| Enable display of cpu registers in the context window.
 end
 
 
@@ -3427,7 +3491,8 @@ define enablestack
 	set $SHOWSTACK = 1
 end
 document enablestack
-Enable display of stack in the context window.
+Syntax: enablestack
+| Enable display of stack in the context window.
 end
 
 
@@ -3435,7 +3500,8 @@ define enabledatawin
 	set $SHOWDATAWIN = 1
 end
 document enabledatawin
-Enable display of data window in the context window.
+Syntax: enabledatawin
+| Enable display of data window in the context window.
 end
 
 
@@ -3444,7 +3510,8 @@ define disableobjectivec
 	set $SHOWOBJECTIVEC = 0
 end
 document disableobjectivec
-Disable display of objective-c information in the context window.
+Syntax: disableobjectivec
+| Disable display of objective-c information in the context window.
 end
 
 
@@ -3452,7 +3519,8 @@ define disablecpuregisters
 	set $SHOWCPUREGISTERS = 0
 end
 document disablecpuregisters
-Disable display of cpu registers in the context window.
+Syntax: disablecpuregisters
+| Disable display of cpu registers in the context window.
 end
 
 
@@ -3460,7 +3528,8 @@ define disablestack
 	set $SHOWSTACK = 0
 end
 document disablestack
-Disable display of stack information in the context window.
+Syntax: disablestack
+| Disable display of stack information in the context window.
 end
 
 
@@ -3468,7 +3537,8 @@ define disabledatawin
 	set $SHOWDATAWIN = 0
 end
 document disabledatawin
-Disable display of data window in the context window.
+Syntax: disabledatawin
+| Disable display of data window in the context window.
 end
 
 
@@ -3481,23 +3551,8 @@ define arm
     set $ARM = 1
 end
 document arm
-Set gdb to work with ARM binaries.
-end
-
-
-define enablelib
-	set stop-on-solib-events 1
-end
-document enablelib
-Activate stop-on-solib-events.
-end
-
-
-define disablelib
-	set stop-on-solib-events 0
-end
-document disablelib
-Deactivate stop-on-solib-events.
+Syntax: arm
+| Set gdb to work with ARM binaries.
 end
 
 
@@ -3508,7 +3563,8 @@ define intelsyntax
     end
 end
 document intelsyntax
-Change disassembly syntax to intel flavor.
+Syntax: intelsyntax
+| Change disassembly syntax to intel flavor.
 end
 
 
@@ -3519,7 +3575,8 @@ define attsyntax
     end
 end
 document attsyntax
-Change disassembly syntax to at&t flavor.
+Syntax: attsyntax
+| Change disassembly syntax to at&t flavor.
 end
 
 define kernel32
