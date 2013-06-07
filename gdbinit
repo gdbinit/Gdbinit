@@ -3523,39 +3523,53 @@ Change disassembly syntax to at&t flavor.
 end
 
 define kernel32
-    # try to load kgmacros files
-    # failure is silent...
-    source /Volumes/KernelDebugKit/kgmacros
-    set architecture i386
-    if $argc == 1
-        target remote localhost:$arg0
+    if $argc != 0
+        # try to load kgmacros files
+        # failure is silent if non-existent...
+        source $arg0
+        set architecture i386
+        if $argc == 2
+            target remote localhost:$arg1
+        else
+            target remote localhost:8832
+        end
     else
-        target remote localhost:8832
+        help kernel32
     end
 end
 document kernel32
-Attach to VMware gdb stub for 32 bits kernel.
-Add a parameter if you wish to debug another kernel port.
-VMware increments the port for each running VM with gdb stub.
-Default without parameters is port 8832.
+Syntax: kernel32 path_to_kgmacros [port]
+| Attach to VMware gdb stub for 32 bits kernel.
+| The path to kgmacros must be supplied as first parameter.
+| If you don't want to load kgmacros just put something as the first parameter.
+| Optional parameter is the port to connect to, in case you are not using the default 8832
+| or want to kernel debug more than one active virtual machine.
+| By supplying a bogus kgmacros this command should be compatible with any OS.
 end
 
 define kernel64
-    # try to load kgmacros files
-    # failure is silent...
-    source /Volumes/KernelDebugKit/kgmacros
-    set architecture i386:x86-64
-    if $argc == 1
-        target remote localhost:$arg0
+    if $argc != 0
+        # try to load kgmacros files
+        # failure is silent if non-existent...
+        source $arg0
+        set architecture i386:x86-64
+        if $argc == 2
+            target remote localhost:$arg1
+        else
+            target remote localhost:8864
+        end
     else
-        target remote localhost:8864
+        help kernel64
     end
 end
 document kernel64
-Attach to VMware gdb stub for 64 bits kernel.
-Add a parameter if you wish to debug another kernel port.
-VMware increments the port for each running VM with gdb stub.
-Default without parameters is port 8864.
+Syntax: kernel64 path_to_kgmacros [port]
+| Attach to VMware gdb stub for 64 bits kernel.
+| The path to kgmacros must be supplied as first parameter.
+| If you don't want to load kgmacros just put something as the first parameter.
+| Optional parameter is the port to connect to, in case you are not using the default 8864
+| or want to kernel debug more than one active virtual machine.
+| By supplying a bogus kgmacros this command should be compatible with any OS.
 end
 
 #EOF
