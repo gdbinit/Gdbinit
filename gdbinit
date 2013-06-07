@@ -2484,9 +2484,9 @@ define cfc
         end
      else
         if ((unsigned int)$eflags & 1)
-            set (unsigned int)$eflags = (unsigned int)$eflags&~0x1
+            set $eflags = (unsigned int)$eflags&~0x1
         else
-            set (unsigned int)$eflags = (unsigned int)$eflags|0x1
+            set $eflags = (unsigned int)$eflags|0x1
         end
      end
 end
@@ -2498,9 +2498,9 @@ end
 
 define cfp
     if (((unsigned int)$eflags >> 2) & 1)
-        set (unsigned int)$eflags = (unsigned int)$eflags&~0x4
+        set $eflags = (unsigned int)$eflags&~0x4
     else
-        set (unsigned int)$eflags = (unsigned int)$eflags|0x4
+        set $eflags = (unsigned int)$eflags|0x4
     end
 end
 document cfp
@@ -2511,9 +2511,9 @@ end
 
 define cfa
     if (((unsigned int)$eflags >> 4) & 1)
-        set (unsigned int)$eflags = (unsigned int)$eflags&~0x10
+        set $eflags = (unsigned int)$eflags&~0x10
     else
-        set (unsigned int)$eflags = (unsigned int)$eflags|0x10
+        set $eflags = (unsigned int)$eflags|0x10
     end
 end
 document cfa
@@ -2533,9 +2533,9 @@ define cfz
         end
      else
         if (((unsigned int)$eflags >> 6) & 1)
-            set (unsigned int)$eflags = (unsigned int)$eflags&~0x40
+            set $eflags = (unsigned int)$eflags&~0x40
         else
-            set (unsigned int)$eflags = (unsigned int)$eflags|0x40
+            set $eflags = (unsigned int)$eflags|0x40
         end
      end
 end
@@ -2547,9 +2547,9 @@ end
 
 define cfs
     if (((unsigned int)$eflags >> 7) & 1)
-        set (unsigned int)$eflags = (unsigned int)$eflags&~0x80
+        set $eflags = (unsigned int)$eflags&~0x80
     else
-        set (unsigned int)$eflags = (unsigned int)$eflags|0x80
+        set $eflags = (unsigned int)$eflags|0x80
     end
 end
 document cfs
@@ -2560,9 +2560,9 @@ end
 
 define cft
     if (((unsigned int)$eflags >>8) & 1)
-        set (unsigned int)$eflags = (unsigned int)$eflags&~0x100
+        set $eflags = (unsigned int)$eflags&~0x100
     else
-        set (unsigned int)$eflags = (unsigned int)$eflags|0x100
+        set $eflags = (unsigned int)$eflags|0x100
     end
 end
 document cft
@@ -2573,9 +2573,9 @@ end
 
 define cfi
     if (((unsigned int)$eflags >> 9) & 1)
-        set (unsigned int)$eflags = (unsigned int)$eflags&~0x200
+        set $eflags = (unsigned int)$eflags&~0x200
     else
-        set (unsigned int)$eflags = (unsigned int)$eflags|0x200
+        set $eflags = (unsigned int)$eflags|0x200
     end
 end
 document cfi
@@ -2588,9 +2588,9 @@ end
 
 define cfd
     if (((unsigned int)$eflags >>0xA) & 1)
-        set (unsigned int)$eflags = (unsigned int)$eflags&~0x400
+        set $eflags = (unsigned int)$eflags&~0x400
     else
-        set (unsigned int)$eflags = (unsigned int)$eflags|0x400
+        set $eflags = (unsigned int)$eflags|0x400
     end
 end
 document cfd
@@ -2601,9 +2601,9 @@ end
 
 define cfo
     if (((unsigned int)$eflags >> 0xB) & 1)
-        set (unsigned int)$eflags = (unsigned int)$eflags&~0x800
+        set $eflags = (unsigned int)$eflags&~0x800
     else
-        set (unsigned int)$eflags = (unsigned int)$eflags|0x800
+        set $eflags = (unsigned int)$eflags|0x800
     end
 end
 document cfo
