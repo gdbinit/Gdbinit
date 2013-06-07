@@ -1427,7 +1427,7 @@ define hexdump
     end
 end
 document hexdump
-Syntax: hexdump ADDR [nr lines]
+Syntax: hexdump ADDR <NR_LINES>
 | Display a 16-byte hex/ASCII dump of memory starting at address ADDR.
 | Optional parameter is the number of lines to display if you want more than one. 
 end
@@ -3334,7 +3334,7 @@ define search
     end
 end
 document search
-Syntax: search <start> <end> <pattern>
+Syntax: search <START> <END> <PATTERN>
 | Search for the given pattern beetween $start and $end address.
 end
 
@@ -3595,7 +3595,7 @@ define kernel32
     end
 end
 document kernel32
-Syntax: kernel32 path_to_kgmacros [port]
+Syntax: kernel32 PATH_TO_KGMACROS <PORT>
 | Attach to VMware gdb stub for 32 bits kernel.
 | The path to kgmacros must be supplied as first parameter.
 | If you don't want to load kgmacros just put something as the first parameter.
@@ -3620,7 +3620,7 @@ define kernel64
     end
 end
 document kernel64
-Syntax: kernel64 path_to_kgmacros [port]
+Syntax: kernel64 PATH_TO_KGMACROS <PORT>
 | Attach to VMware gdb stub for 64 bits kernel.
 | The path to kgmacros must be supplied as first parameter.
 | If you don't want to load kgmacros just put something as the first parameter.
