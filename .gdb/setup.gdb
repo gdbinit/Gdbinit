@@ -12,6 +12,7 @@ define setup-detect-target
   set logging on
   set pagination off
   info target
+  show osabi
   set pagination on
   set logging off
   set logging redirect off
