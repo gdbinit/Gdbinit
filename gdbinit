@@ -91,6 +91,9 @@ set $ARMOPCODES = 1
 set $X86FLAVOR = 0
 # use colorized output or not
 set $USECOLOR = 1
+# to use with remote KDP
+set $KDP64BITS = -1
+set $64BITS = 0
 
 set confirm off
 set verbose off
@@ -1169,21 +1172,21 @@ define reg
 			set $oldlr  = $lr
 	    end
     else
-        if (sizeof(void *) == 8)
-            regx64 
+        if ($64BITS == 1)
+            regx64
         else
             regx86
         end
         # call smallregisters
 	    smallregisters
         # display conditional jump routine
-	    if (sizeof(void *) == 8)
+	    if ($64BITS == 1)
     	    printf "\t\t\t\t"
     	end
         dumpjump
         printf "\n"
         if ($SHOWREGCHANGES == 1)
-    	    if (sizeof(void *) == 8)
+    	    if ($64BITS == 1)
 	        	set $oldrax = $rax
 			    set $oldrbx = $rbx
     			set $oldrcx = $rcx
@@ -1220,7 +1223,7 @@ end
 
 
 define smallregisters
-    if (sizeof(void *) == 8)
+    if ($64BITS == 1)
     #64bits stuff
 	    # from rax
     	set $eax = $rax & 0xffffffff
@@ -1438,7 +1441,7 @@ define hexdump_aux
         help hexdump_aux
     else
     	color_bold
-        if (sizeof(void *) == 8)
+        if ($64BITS == 1)
             printf "0x%016lX : ", $arg0
         else
             printf "0x%08X : ", $arg0
@@ -1483,7 +1486,7 @@ define ddump
         help ddump
     else
         color $COLOR_SEPARATOR
-        if (sizeof(void *) == 8)
+        if ($64BITS == 1)
             printf "[0x%04X:0x%016lX]", $ds, $data_addr
         else
             printf "[0x%04X:0x%08X]", $ds, $data_addr
@@ -1491,7 +1494,7 @@ define ddump
     	color $COLOR_SEPARATOR
     	printf "------------------------"
         printf "-------------------------------"
-        if (sizeof(void *) == 8)
+        if ($64BITS == 1)
             printf "-------------------------------------"
 	    end
 	    color_bold
@@ -1543,7 +1546,7 @@ define datawin
         end
 ################################# X86
     else
-        if (sizeof(void *) == 8)
+        if ($64BITS == 1)
             if ((($rsi >> 0x18) == 0x40) || (($rsi >> 0x18) == 0x08) || (($rsi >> 0x18) == 0xBF))
                 set $data_addr = $rsi
             else
@@ -2007,7 +2010,7 @@ define context
     if $SHOWCPUREGISTERS == 1
 	    printf "----------------------------------------"
 	    printf "----------------------------------"
-	    if (sizeof(void *) == 8)
+	    if ($64BITS == 1)
 	        printf "---------------------------------------------"
 	    end
 	    color $COLOR_SEPARATOR
@@ -2019,7 +2022,7 @@ define context
     end
     if $SHOWSTACK == 1
     	color $COLOR_SEPARATOR
-		if (sizeof(void *) == 8)
+		if ($64BITS == 1)
 		    printf "[0x%04X:0x%016lX]", $ss, $rsp
 		else
     	    printf "[0x%04X:0x%08X]", $ss, $esp
@@ -2027,7 +2030,7 @@ define context
         color $COLOR_SEPARATOR
 		printf "-------------------------"
     	printf "-----------------------------"
-	    if (sizeof(void *) == 8)
+	    if ($64BITS == 1)
 	        printf "-------------------------------------"
 	    end
 	    color $COLOR_SEPARATOR
@@ -2071,7 +2074,7 @@ define context
             if $displayobjectivec == 1
                 color $COLOR_SEPARATOR
                 printf "--------------------------------------------------------------------"
-                if (sizeof(void *) == 8)
+                if ($64BITS == 1)
                     printf "---------------------------------------------"
                 end
                 color $COLOR_SEPARATOR
@@ -2086,7 +2089,7 @@ define context
         if $displayobjectivec == 1
             color $COLOR_SEPARATOR
           	printf "--------------------------------------------------------------------"
-          	if (sizeof(void *) == 8)
+          	if ($64BITS == 1)
 	            printf "---------------------------------------------"
     	    end
     	    color $COLOR_SEPARATOR
@@ -2106,7 +2109,7 @@ define context
 
     color $COLOR_SEPARATOR
     printf "--------------------------------------------------------------------------"
-    if (sizeof(void *) == 8)
+    if ($64BITS == 1)
 	    printf "---------------------------------------------"
 	end
 	color $COLOR_SEPARATOR
@@ -2117,10 +2120,18 @@ define context
     if ($context_i > 0)
         if ($SETCOLOUR1STLINE == 1)	
 	        color $GREEN
-    	    x /i $pc
+            if ($ARM == 1)
+                x/i $pc | $cpsr.t
+            else
+    	        x/i $pc
+            end
 	        color_reset
 	    else
-	    	x /i $pc
+            if ($ARM == 1)
+	    	    x/i $pc | $cpsr.t
+            else
+                x/i $pc
+            end
 	    end
         set $context_i--
     end
@@ -2131,7 +2142,7 @@ define context
     color $COLOR_SEPARATOR
     printf "----------------------------------------"
     printf "----------------------------------------"
-    if (sizeof(void *) == 8)
+    if ($64BITS == 1)
         printf "---------------------------------------------\n"
 	else
 	    printf "\n"
@@ -2734,7 +2745,7 @@ define rint3
 	    set $pc = $ORIGINAL_INT3ADDRESS
     else
     	set *(unsigned char *)$ORIGINAL_INT3ADDRESS = $ORIGINAL_INT3
-    	if sizeof(void *) == 8
+    	if ($64BITS == 1)
         	set $rip = $ORIGINAL_INT3ADDRESS
     	else
     	    set $eip = $ORIGINAL_INT3ADDRESS
@@ -3000,7 +3011,7 @@ end
 #define ptraceme
 #    catch syscall ptrace
 #    commands
-#        if (sizeof(void *) == 4)
+#        if ($64BITS == 0)
 #            if ($ebx == 0)
 #	        set $eax = 0
 #                continue
@@ -3033,7 +3044,21 @@ end
 
 # ____________________misc____________________
 define hook-stop
-# Display instructions formats
+    if (sizeof(void*) == 8)
+        set $64BITS = 1
+    else
+        set $64BITS = 0
+    end
+
+    if ($KDP64BITS != -1)
+        if ($KDP64BITS == 0)
+            set $64BITS = 0
+        else
+            set $64BITS = 1
+        end
+    end
+
+    # Display instructions formats
     if $ARM == 1
         if $ARMOPCODES == 1
             set arm show-opcode-bytes 1
@@ -3089,7 +3114,7 @@ define assemble
     printf "End with a line saying just \"end\".\n"
     
     if ($argc)
-	    if (sizeof(void *) == 8)
+	    if ($64BITS == 1)
 		    # argument specified, assemble instructions into memory at address specified.
     		shell ASMOPCODE="$(while read -ep '>' r && test "$r" != end ; do echo -E "$r"; done)" ; GDBASMFILENAME=$RANDOM; \
     		echo -e "BITS 64\n$ASMOPCODE" >/tmp/$GDBASMFILENAME ; /usr/local/bin/nasm -f bin -o /dev/stdout /tmp/$GDBASMFILENAME | /usr/bin/hexdump -ve '1/1 "set *((unsigned char *) $arg0 + %#2_ax) = %#02x\n"' >/tmp/gdbassemble ; /bin/rm -f /tmp/$GDBASMFILENAME
@@ -3105,7 +3130,7 @@ define assemble
 		    shell /bin/rm -f /tmp/gdbassemble
     	end
     else
-	    if (sizeof(void *) == 8)
+	    if ($64BITS == 1)
 		    # no argument, assemble instructions to stdout
     		shell ASMOPCODE="$(while read -ep '>' r && test "$r" != end ; do echo -E "$r"; done)" ; GDBASMFILENAME=$RANDOM; \
 	    	echo -e "BITS 64\n$ASMOPCODE" >/tmp/$GDBASMFILENAME ; /usr/local/bin/nasm -f bin -o /dev/stdout /tmp/$GDBASMFILENAME | /usr/local/bin/ndisasm -i -b64 /dev/stdin ; \
@@ -3627,6 +3652,20 @@ Syntax: kernel64 PATH_TO_KGMACROS <PORT>
 | Optional parameter is the port to connect to, in case you are not using the default 8864
 | or want to kernel debug more than one active virtual machine.
 | By supplying a bogus kgmacros this command should be compatible with any OS.
+end
+
+define 32bits
+    set $KDP64BITS = 0
+    set $64BITS = 0
+end
+
+define 64bits
+    set $KDP64BITS = 1
+    set $64BITS = 1
+end
+
+define resetkdp
+    set $KDP64BITS = -1
 end
 
 #EOF
