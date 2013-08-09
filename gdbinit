@@ -3063,7 +3063,7 @@ define hook-stop
         if $ARMOPCODES == 1
             set arm show-opcode-bytes 1
         else
-            set arm show-opcode-bytes 1
+            set arm show-opcode-bytes 0
         end
     else
         if $X86FLAVOR == 0
