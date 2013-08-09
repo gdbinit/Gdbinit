@@ -3580,6 +3580,14 @@ Syntax: arm
 | Set gdb to work with ARM binaries.
 end
 
+define ioskdp
+    set $SHOW_CONTEXT = 0
+    set $SHOW_NEST_INSN = 0
+end
+document ioskdp
+Syntax: ioskdp
+| Disable dumping context information for iOS KDP debugging
+end
 
 define intelsyntax
     if $ARM == 0
