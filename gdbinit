@@ -2,7 +2,7 @@
 #
 # DESCRIPTION: A user-friendly gdb configuration file, for x86/x86_64 and ARM platforms.
 #
-# REVISION : 8.0.4 (08/05/2013)
+# REVISION : 8.0.5 (18/08/2013)
 #
 # CONTRIBUTORS: mammon_, elaine, pusillus, mong, zhang le, l0kit,
 #               truthix the cyberpunk, fG!, gln
@@ -29,6 +29,10 @@
 #            For more information, read it here http://reverse.put.as/2008/11/28/apples-gdb-bug/
 #
 # CHANGELOG: (older changes at the end of the file)
+#
+#   Version 8.0.5 (18/08/2013)
+#     - Add commands header and loadcmds to dump Mach-O header information
+#     - Other fixes and additions from previous commits
 #
 #   Version 8.0.4 (08/05/2013)
 #     - Detect automatically 32 or 64 bits archs using sizeof(void*). 
@@ -3674,6 +3678,31 @@ end
 
 define resetkdp
     set $KDP64BITS = -1
+end
+
+define header
+    if $argc != 0
+        dump memory /tmp/gdbinit_header_dump $arg0 $arg0 + 4096
+        shell /usr/bin/otool -h /tmp/gdbinit_header_dump
+        shell /bin/rm -f /tmp/gdbinit_header_dump
+    end
+end
+document header
+Syntax: header MACHO_HEADER_START_ADDRESS
+| Dump the Mach-O header located at given address
+end
+
+define loadcmds
+    if $argc != 0
+        # this size should be good enough for most binaries
+        dump memory /tmp/gdbinit_header_dump $arg0 $arg0 + 4096 * 10
+        shell /usr/bin/otool -l /tmp/gdbinit_header_dump
+        shell /bin/rm -f /tmp/gdbinit_header_dump
+    end
+end
+document loadcmds
+Syntax: loadcmds MACHO_HEADER_START_ADDRESS
+| Dump the Mach-O load commands
 end
 
 #EOF
