@@ -30,6 +30,9 @@
 #
 # CHANGELOG: (older changes at the end of the file)
 #
+#   Version 8.0.6 (05/09/2013)
+#     - Add patch command to convert bytes to little-endian and patch memory
+#
 #   Version 8.0.5 (18/08/2013)
 #     - Add commands header and loadcmds to dump Mach-O header information
 #     - Other fixes and additions from previous commits
@@ -2761,6 +2764,40 @@ Syntax: rint3
 | Restore the original byte previous to int3 patch issued with "int3" command.
 end
 
+define patch
+    if $argc != 3
+        help patch
+    end
+    set $patchaddr = $arg0
+    set $patchbytes = $arg1
+    set $patchsize = $arg2
+
+    if ($patchsize == 1)
+        set *(unsigned char*)$patchaddr = $patchbytes
+    end
+    if ($patchsize == 2)
+        set $lendianbytes = (unsigned short)(($patchbytes << 8) | ($patchbytes >> 8))
+        set *(unsigned short*)$patchaddr = $lendianbytes
+    end
+    if ($patchsize == 4)
+        set $lendianbytes = (unsigned int)( (($patchbytes << 8) & 0xFF00FF00 ) | (($patchbytes >> 8) & 0xFF00FF ))
+        set $lendianbytes = (unsigned int)($lendianbytes << 0x10 | $lendianbytes >> 0x10)
+        set *(unsigned int*)$patchaddr = $lendianbytes
+    end
+    if ($patchsize == 8)
+        set $lendianbytes = (unsigned long long)( (($patchbytes << 8) & 0xFF00FF00FF00FF00ULL ) | (($patchbytes >> 8) & 0x00FF00FF00FF00FFULL ) )
+        set $lendianbytes = (unsigned long long)( (($lendianbytes << 0x10) & 0xFFFF0000FFFF0000ULL ) | (($lendianbytes >> 0x10) & 0x0000FFFF0000FFFFULL ) )
+        set $lendianbytes = (unsigned long long)( ($lendianbytes << 0x20) | ($lendianbytes >> 0x20) )
+        set *(unsigned long long*)$patchaddr = $lendianbytes
+    end
+end
+document patch
+Syntax: patch address bytes size
+| Patch a given address, converting the bytes to little-endian.
+| Assumes input bytes are unsigned values and should be in hexadecimal format (0x...).
+| Size must be 1, 2, 4, 8 bytes.
+| Main purpose is to be used with the output from the asm commands.
+end
 
 # ____________________cflow___________________
 define print_insn_type
