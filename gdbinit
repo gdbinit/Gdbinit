@@ -3073,8 +3073,31 @@ define break_entry_point
 	break *$entry_point_address
 end
 document break_entry_point
-Syntax: entry_point
+Syntax: break_entry_point
 | Sets a breakpoint on the entry point of the target.
+end
+
+define objc_symbols
+	shell rm -f /tmp/gdb-objc_symbols
+
+	set logging redirect on
+	set logging file /tmp/gdb-objc_symbols
+	set logging on
+
+	info target
+
+	set logging off
+
+	shell target="$(head -1 /tmp/gdb-objc_symbols | head -1 | awk -F '"' '{ print $2 }')"; objc-symbols "$target" | SymTabCreator -o /tmp/gdb-symtab
+
+	set logging on
+	add-symbol-file /tmp/gdb-symtab
+	set logging off
+end
+document objc_symbols
+Syntax: objc_symbols
+| Loads stripped objc symbols into gdb using objc-symbols and SymTabCreator
+| See http://stackoverflow.com/questions/17554070/import-class-dump-info-into-gdb
 end
 
 #define ptraceme
