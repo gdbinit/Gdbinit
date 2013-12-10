@@ -3049,6 +3049,34 @@ Syntax: trace_run
 | Log overwrites(!) the file ~/gdb_trace_run.txt.
 end
 
+define entry_point
+	shell rm -f /tmp/gdb-entry_point
+
+	set logging redirect on
+	set logging file /tmp/gdb-entry_point
+	set logging on
+
+	info files
+
+	set logging off
+
+	shell entry_point="$(grep 'Entry point:' /tmp/gdb-entry_point | awk '{ print $3 }')"; echo "$entry_point"; echo 'set $entry_point_address = '"$entry_point" > /tmp/gdb-entry_point
+	source /tmp/gdb-entry_point
+end
+document entry_point
+Syntax: entry_point
+| Prints the entry point address of the target and stores it in the variable entry_point.
+end
+
+define break_entry_point
+	entry_point
+	break *$entry_point_address
+end
+document break_entry_point
+Syntax: entry_point
+| Sets a breakpoint on the entry point of the target.
+end
+
 #define ptraceme
 #    catch syscall ptrace
 #    commands
