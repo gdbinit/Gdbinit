@@ -3050,8 +3050,7 @@ Syntax: trace_run
 end
 
 define entry_point
-	shell rm -f /tmp/gdb-entry_point
-
+	
 	set logging redirect on
 	set logging file /tmp/gdb-entry_point
 	set logging on
@@ -3060,25 +3059,25 @@ define entry_point
 
 	set logging off
 
-	shell entry_point="$(grep 'Entry point:' /tmp/gdb-entry_point | awk '{ print $3 }')"; echo "$entry_point"; echo 'set $entry_point_address = '"$entry_point" > /tmp/gdb-entry_point
+	shell entry_point="$(/usr/bin/grep 'Entry point:' /tmp/gdb-entry_point | /usr/bin/awk '{ print $3 }')"; echo "$entry_point"; echo 'set $entry_point_address = '"$entry_point" > /tmp/gdb-entry_point
 	source /tmp/gdb-entry_point
+    shell /bin/rm -f /tmp/gdb-entry_point
 end
 document entry_point
 Syntax: entry_point
 | Prints the entry point address of the target and stores it in the variable entry_point.
 end
 
-define break_entry_point
+define break_entrypoint
 	entry_point
 	break *$entry_point_address
 end
-document break_entry_point
-Syntax: break_entry_point
+document break_entrypoint
+Syntax: break_entrypoint
 | Sets a breakpoint on the entry point of the target.
 end
 
 define objc_symbols
-	shell rm -f /tmp/gdb-objc_symbols
 
 	set logging redirect on
 	set logging file /tmp/gdb-objc_symbols
@@ -3087,17 +3086,19 @@ define objc_symbols
 	info target
 
 	set logging off
-
-	shell target="$(head -1 /tmp/gdb-objc_symbols | head -1 | awk -F '"' '{ print $2 }')"; objc-symbols "$target" | SymTabCreator -o /tmp/gdb-symtab
+    # XXX: define paths for objc-symbols and SymTabCreator
+	shell target="$(/usr/bin/head -1 /tmp/gdb-objc_symbols | /usr/bin/head -1 | /usr/bin/awk -F '"' '{ print $2 }')"; objc-symbols "$target" | SymTabCreator -o /tmp/gdb-symtab
 
 	set logging on
 	add-symbol-file /tmp/gdb-symtab
 	set logging off
+    shell /bin/rm -f /tmp/gdb-objc_symbols
 end
 document objc_symbols
 Syntax: objc_symbols
 | Loads stripped objc symbols into gdb using objc-symbols and SymTabCreator
 | See http://stackoverflow.com/questions/17554070/import-class-dump-info-into-gdb
+| and https://github.com/0xced/class-dump/tree/objc-symbols (for the required utils)
 end
 
 #define ptraceme
