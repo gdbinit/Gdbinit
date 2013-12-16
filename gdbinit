@@ -2389,7 +2389,7 @@ define stepoframework
                     set $_nextaddress = $pc + 0x3
                 end
                 # call *0x????????(%ebx) (0xFF93????????) || 
-                if ($_byte2 == 0x93 || $_byte2 == 0x94 || $_byte2 == 0x90 || $_byte2 == 0x92 || $_byte2 == 0x95)
+                if ($_byte2 == 0x93 || $_byte2 == 0x94 || $_byte2 == 0x90 || $_byte2 == 0x92 || $_byte2 == 0x95 || $_byte2 == 0x15)
                     set $_nextaddress = $pc + 6
                 end
                 # call *0x????????(%ebx,%eax,4) (0xFF94??????????)
