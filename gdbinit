@@ -5,7 +5,7 @@
 # REVISION : 8.0.5 (18/08/2013)
 #
 # CONTRIBUTORS: mammon_, elaine, pusillus, mong, zhang le, l0kit,
-#               truthix the cyberpunk, fG!, gln
+#               truthix the cyberpunk, fG!, gln, vittorio_cecchetto
 #
 # FEEDBACK: http://reverse.put.as - reverser@put.as
 #
@@ -29,6 +29,12 @@
 #            For more information, read it here http://reverse.put.as/2008/11/28/apples-gdb-bug/
 #
 # CHANGELOG: (older changes at the end of the file)
+#
+#   Version 8.0.7 (27/01/2014)
+#     - Removed: hex_quad, hexdump, hexdump_aux, ddump, dd
+#     - Added: memdump, memdump_hex, memdump_ascii, $MEMDUMP_..., $CONTEXTSIZE_STACK_DIRECTION, $CONTEXTSIZE_DATA_DIRECTION
+#     - Renamed $SHOWSTACK in $SHOWSTACKWIN 
+#     - Renamed $CONTEXTSIZE_* in $CONTEXTSIZE_*_LINES
 #
 #   Version 8.0.6 (05/09/2013)
 #     - Add patch command to convert bytes to little-endian and patch memory
@@ -81,7 +87,7 @@ set $SHOWOBJECTIVEC = 1
 # set to 0 to remove display of cpu registers (default is 1)
 set $SHOWCPUREGISTERS = 1
 # set to 1 to enable display of stack (default is 0)
-set $SHOWSTACK = 0
+set $SHOWSTACKWIN = 0
 # set to 1 to enable display of data window (default is 0)
 set $SHOWDATAWIN = 0
 # set to 0 to disable coloured display of changed registers
@@ -115,9 +121,18 @@ set width 0
 set $SHOW_CONTEXT = 1
 set $SHOW_NEST_INSN = 0
 
-set $CONTEXTSIZE_STACK = 6
-set $CONTEXTSIZE_DATA  = 8
-set $CONTEXTSIZE_CODE  = 8
+set $MEMDUMP_BYTES_PER_GROUP = 0x1
+set $MEMDUMP_GROUPS_PER_SUPERGROUP = 0x8 
+set $MEMDUMP_SUPERGROUPS_PER_LINE = 0x2
+set $MEMDUMP_HEX = 1
+set $MEMDUMP_ASCII = 1
+
+set $CONTEXTSIZE_STACK_LINES = 0x6
+# 0 = show addresses in descending order
+set $CONTEXTSIZE_STACK_DIRECTION = 1
+set $CONTEXTSIZE_DATA_LINES = 0x8
+set $CONTEXTSIZE_DATA_DIRECTION = 0
+set $CONTEXTSIZE_CODE_LINES  = 0x8
 
 # __________________end gdb options_________________
 #
@@ -256,7 +271,7 @@ define contextsize-stack
     if $argc != 1
         help contextsize-stack
     else
-        set $CONTEXTSIZE_STACK = $arg0
+        set $CONTEXTSIZE_STACK_LINES = $arg0
     end
 end
 document contextsize-stack
@@ -269,7 +284,7 @@ define contextsize-data
     if $argc != 1
         help contextsize-data
     else
-        set $CONTEXTSIZE_DATA = $arg0
+        set $CONTEXTSIZE_DATA_LINES = $arg0
     end
 end
 document contextsize-data
@@ -282,7 +297,7 @@ define contextsize-code
     if $argc != 1
         help contextsize-code
     else
-        set $CONTEXTSIZE_CODE = $arg0
+        set $CONTEXTSIZE_CODE_LINES = $arg0
     end
 end
 document contextsize-code
@@ -1403,139 +1418,99 @@ Syntax: ascii_char ADDR
 end
 
 
-define hex_quad
-    if $argc != 1
-        help hex_quad
+define memdump_hex
+    if $argc != 4
+        help memdump_hex
     else
-        printf "%02X %02X %02X %02X %02X %02X %02X %02X", \
-               *(unsigned char*)($arg0), *(unsigned char*)($arg0 + 1),     \
-               *(unsigned char*)($arg0 + 2), *(unsigned char*)($arg0 + 3), \
-               *(unsigned char*)($arg0 + 4), *(unsigned char*)($arg0 + 5), \
-               *(unsigned char*)($arg0 + 6), *(unsigned char*)($arg0 + 7)
-    end
-end
-document hex_quad
-Syntax: hex_quad ADDR
-| Print eight hexadecimal bytes starting at address ADDR.
-end
-
-
-define hexdump
-    if $argc == 1
-        hexdump_aux $arg0
-	else
-		if $argc == 2
-			set $_count = 0
-			while ($_count < $arg1)
-				set $_i = ($_count * 0x10)
-				hexdump_aux $arg0+$_i
-				set $_count++
-			end
-		else
-			help hexdump
+	printf " "
+	set $supergroup = 0
+	while ($supergroup < $arg3)
+		if ($supergroup > 0) 
+			echo \033[1m
+        		printf " - "
+        		echo \033[0m 
 		end
+		set $group = 0
+		while ($group < $arg2)		
+			if ($group > 0) 
+				printf " " 
+			end
+			set $byte = $arg1
+			while ($byte > 0)
+				printf "%02X", *(unsigned char*)($arg0 + $byte - 1 + $group * $arg1 + $supergroup * $arg1 * $arg2)
+				set $byte--
+			end
+			set $group++	
+		end
+		set $supergroup++
+	end
     end
 end
-document hexdump
-Syntax: hexdump ADDR <NR_LINES>
-| Display a 16-byte hex/ASCII dump of memory starting at address ADDR.
-| Optional parameter is the number of lines to display if you want more than one. 
+document memdump_hex
+Syntax: memdump_hex ADDR BYTES GROUPS SUPERGROUPS 
+| Print hexadecimal bytes starting at address ADDR, grouped in BYTES, GROUPS and SUPERGROUPS.
 end
 
 
-define hexdump_aux
-    if $argc != 1
-        help hexdump_aux
+define memdump_ascii
+    if $argc != 2
+        help memdump_ascii
     else
-    	color_bold
-        if ($64BITS == 1)
-            printf "0x%016lX : ", $arg0
-        else
-            printf "0x%08X : ", $arg0
-        end
-        color_reset
-        hex_quad $arg0
-        color_bold
-        printf " - "
-        color_reset
-        hex_quad $arg0+8
-        printf " "
-        color_bold
-        ascii_char $arg0+0x0
-        ascii_char $arg0+0x1
-        ascii_char $arg0+0x2
-        ascii_char $arg0+0x3
-        ascii_char $arg0+0x4
-        ascii_char $arg0+0x5
-        ascii_char $arg0+0x6
-        ascii_char $arg0+0x7
-        ascii_char $arg0+0x8
-        ascii_char $arg0+0x9
-        ascii_char $arg0+0xA
-        ascii_char $arg0+0xB
-        ascii_char $arg0+0xC
-        ascii_char $arg0+0xD
-        ascii_char $arg0+0xE
-        ascii_char $arg0+0xF
-        color_reset
-        printf "\n"
+	printf " "
+	set $count = 0
+	while ($count < $arg1)
+		ascii_char $arg0+$count
+		set $count++
+	end
     end
 end
-document hexdump_aux
-Syntax: hexdump_aux ADDR
-| Display a 16-byte hex/ASCII dump of memory at address ADDR.
+document memdump_ascii
+Syntax: memdump_ascii ADDR NUM 
+| Print ASCII value of NUM bytes starting at address ADDR.
+end
+
+
+define memdump
+    if $argc != 3
+        help memdump
+    else
+        echo \033[0m
+        set $i = 0
+        while ($i < $arg1)
+            set $totbytes = $MEMDUMP_BYTES_PER_GROUP * $MEMDUMP_GROUPS_PER_SUPERGROUP * $MEMDUMP_SUPERGROUPS_PER_LINE
+	    if ($arg2 == 0)
+		set $offset = $arg0 + $i * $totbytes
+	    else
+		set $offset = $arg0 + ($arg1 - $i - 1) * $totbytes
+	    end
+	    echo \033[1m
+	    printf " "
+            if ($64BITS == 1)
+                printf "0x%016lX", $offset
+            else
+                printf "0x%08X", $offset
+            end
+	    printf " :"
+	    if ($MEMDUMP_HEX == 1)
+		echo \033[0m 
+		memdump_hex $offset $MEMDUMP_BYTES_PER_GROUP $MEMDUMP_GROUPS_PER_SUPERGROUP $MEMDUMP_SUPERGROUPS_PER_LINE
+	    end
+	    if ($MEMDUMP_ASCII == 1)
+		echo \033[1m
+	    	memdump_ascii $offset $totbytes
+	    end
+            printf "\n"
+            set $i++
+        end
+    end
+end
+document memdump
+Syntax: memdump ADDR NUM DIREC 
+| Display NUM lines of memory dump, starting at address ADDR, if DIREC = 0 show addresses in descending order.
 end
 
 
 # _______________data window__________________
-define ddump
-    if $argc != 1
-        help ddump
-    else
-        color $COLOR_SEPARATOR
-        if ($64BITS == 1)
-            printf "[0x%04X:0x%016lX]", $ds, $data_addr
-        else
-            printf "[0x%04X:0x%08X]", $ds, $data_addr
-        end
-    	color $COLOR_SEPARATOR
-    	printf "------------------------"
-        printf "-------------------------------"
-        if ($64BITS == 1)
-            printf "-------------------------------------"
-	    end
-	    color_bold
-	    color $COLOR_SEPARATOR
-	    printf "[data]\n"
-        color_reset
-        set $_count = 0
-        while ($_count < $arg0)
-            set $_i = ($_count * 0x10)
-            hexdump $data_addr+$_i
-            set $_count++
-        end
-    end
-end
-document ddump
-Syntax: ddump NUM
-| Display NUM lines of hexdump for address in $data_addr global variable.
-end
-
-
-define dd
-    if $argc != 1
-        help dd
-    else
-        set $data_addr = $arg0
-        ddump 0x10
-    end
-end
-document dd
-Syntax: dd ADDR
-| Display 16 lines of a hex dump of address starting at ADDR.
-end
-
-
 define datawin
     if $ARM == 1
         if ((($r0 >> 0x18) == 0x40) || (($r0 >> 0x18) == 0x08) || (($r0 >> 0x18) == 0xBF))
@@ -1583,7 +1558,21 @@ define datawin
             end
         end
     end
-    ddump $CONTEXTSIZE_DATA
+    echo \033[34m
+    if ($64BITS == 1)
+        printf "[0x%04X:0x%016lX]", $ds, $data_addr
+    else
+        printf "[0x%04X:0x%08X]", $ds, $data_addr
+    end
+    echo \033[34m
+    printf "------------------------"
+    printf "-------------------------------"
+    if ($64BITS == 1)
+        printf "-------------------------------------"
+    end
+    echo \033[1;34m
+    printf "[data]\n"
+    memdump $data_addr $CONTEXTSIZE_DATA_LINES $CONTEXTSIZE_DATA_DIRECTION
 end
 document datawin
 Syntax: datawin
@@ -2027,7 +2016,7 @@ define context
 	    reg
 	    color $CYAN
     end
-    if $SHOWSTACK == 1
+    if $SHOWSTACKWIN == 1
     	color $COLOR_SEPARATOR
 		if ($64BITS == 1)
 		    printf "[0x%04X:0x%016lX]", $ss, $rsp
@@ -2044,12 +2033,7 @@ define context
 	    color_bold
 	    printf "[stack]\n"
     	color_reset
-    	set $context_i = $CONTEXTSIZE_STACK
-    	while ($context_i > 0)
-       	    set $context_t = $sp + 0x10 * ($context_i - 1)
-       	    hexdump $context_t
-       	    set $context_i--
-    	end
+    	memdump $sp $CONTEXTSIZE_STACK_LINES $CONTEXTSIZE_STACK_DIRECTION
     end
     # show the objective C message being passed to msgSend
     if $SHOWOBJECTIVEC == 1
@@ -2123,7 +2107,7 @@ define context
 	color_bold
     printf "[code]\n"
     color_reset
-    set $context_i = $CONTEXTSIZE_CODE
+    set $context_i = $CONTEXTSIZE_CODE_LINES
     if ($context_i > 0)
         if ($SETCOLOUR1STLINE == 1)	
 	        color $GREEN
@@ -3606,7 +3590,7 @@ end
 
 
 define enablestack
-	set $SHOWSTACK = 1
+	set $SHOWSTACKWIN = 1
 end
 document enablestack
 Syntax: enablestack
@@ -3643,7 +3627,7 @@ end
 
 
 define disablestack
-	set $SHOWSTACK = 0
+	set $SHOWSTACKWIN = 0
 end
 document disablestack
 Syntax: disablestack
