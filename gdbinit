@@ -104,6 +104,8 @@ set $64BITS = 0
 
 set confirm off
 set verbose off
+set history filename ~/.gdb_history
+set history save
 
 set output-radix 0x10
 set input-radix 0x10
@@ -3770,7 +3772,9 @@ define resetkdp
 end
 
 define header
-    if $argc != 0
+    if $argc != 1
+        help header
+    else
         dump memory /tmp/gdbinit_header_dump $arg0 $arg0 + 4096
         shell /usr/bin/otool -h /tmp/gdbinit_header_dump
         shell /bin/rm -f /tmp/gdbinit_header_dump
@@ -3782,7 +3786,9 @@ Syntax: header MACHO_HEADER_START_ADDRESS
 end
 
 define loadcmds
-    if $argc != 0
+    if $argc != 1
+        help loadcmds
+    else
         # this size should be good enough for most binaries
         dump memory /tmp/gdbinit_header_dump $arg0 $arg0 + 4096 * 10
         shell /usr/bin/otool -l /tmp/gdbinit_header_dump
