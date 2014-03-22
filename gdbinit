@@ -204,7 +204,7 @@ define color_underline
 end
 
 # can't use the color functions because we are using the set command
-if $COLOUREDPROMPT == 1
+if $COLOUREDPROMPT == 1 && $USECOLOR == 1
 	set prompt \033[31mgdb$ \033[0m
 end
 
