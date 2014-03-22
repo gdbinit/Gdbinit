@@ -72,10 +72,10 @@
 # set to 1 to have ARM target debugging as default, use the "arm" command to switch inside gdb
 set $ARM = 0
 # set to 0 if you have problems with the colorized prompt - reported by Plouj with Ubuntu gdb 7.2
-set $COLOUREDPROMPT = 1
-# Colour the first line of the disassembly - default is green, if you want to change it search for
-# SETCOLOUR1STLINE and modify it :-)
-set $SETCOLOUR1STLINE = 0
+set $COLOREDPROMPT = 1
+# color the first line of the disassembly - default is green, if you want to change it search for
+# SETCOLOR1STLINE and modify it :-)
+set $SETCOLOR1STLINE = 0
 # set to 0 to remove display of objectivec messages (default is 1)
 set $SHOWOBJECTIVEC = 1
 # set to 0 to remove display of cpu registers (default is 1)
@@ -84,7 +84,7 @@ set $SHOWCPUREGISTERS = 1
 set $SHOWSTACK = 0
 # set to 1 to enable display of data window (default is 0)
 set $SHOWDATAWIN = 0
-# set to 0 to disable coloured display of changed registers
+# set to 0 to disable colored display of changed registers
 set $SHOWREGCHANGES = 1
 # set to 1 so skip command to execute the instruction at the new location
 # by default it EIP/RIP will be modified and update the new context but not execute the instruction
@@ -204,7 +204,7 @@ define color_underline
 end
 
 # can't use the color functions because we are using the set command
-if $COLOUREDPROMPT == 1
+if $COLOREDPROMPT == 1
 	set prompt \033[31mgdb$ \033[0m
 end
 
@@ -213,7 +213,7 @@ end
 # just remap the color variables defined above
 source ~/.gdbinit.local
 
-# Initialize these variables else comparisons will fail for colouring
+# Initialize these variables else comparisons will fail for coloring
 # we must initialize all of them at once, 32 and 64 bits, and ARM.
 set $oldrax = 0
 set $oldrbx = 0
@@ -2127,7 +2127,7 @@ define context
     color_reset
     set $context_i = $CONTEXTSIZE_CODE
     if ($context_i > 0)
-        if ($SETCOLOUR1STLINE == 1)	
+        if ($SETCOLOR1STLINE == 1)	
 	        color $GREEN
             if ($ARM == 1)
                 x/i $pc | $cpsr.t
@@ -3834,10 +3834,10 @@ end
 #    New command is "search"
 #
 #   Version 7.4 (20/06/2011) - fG!
-#    When registers change between instructions the colour will change to red (like it happens in OllyDBG)
+#    When registers change between instructions the color will change to red (like it happens in OllyDBG)
 #     This is the default behavior, if you don't like it, modify the variable SHOWREGCHANGES
 #    Added patch sent by Philippe Langlois
-#     Colour the first disassembly line - change the setting below on SETCOLOUR1STLINE - by default it's disabled
+#     color the first disassembly line - change the setting below on SETCOLOR1STLINE - by default it's disabled
 #
 #	Version 7.3.2 (21/02/2011) - fG!
 #	  Added the command rint3 and modified the int3 command. The new command will restore the byte in previous int3 patch.
@@ -3863,7 +3863,7 @@ end
 #     Added the possibility to modify what's displayed with the context window. You can change default options at the gdb options part. For example, kernel debugging is much slower if the stack display is enabled...
 #     New commands enableobjectivec, enablecpuregisters, enablestack, enabledatawin and their disable equivalents (to support realtime change of default options)
 #     Fixed problem with the assemble command. I was calling /bin/echo which doesn't support the -e option ! DUH ! Should have used bash internal version.
-#     Small fixes to colours...
+#     Small fixes to colors...
 #     New commands enablesolib and disablesolib . Just shortcuts for the stop-on-solib-events fantastic trick ! Hey... I'm lazy ;)
 #     Fixed this: Possible removal of "u" command, info udot is missing in gdb 6.8-debian . Doesn't exist on OS X so bye bye !!!
 #     Displays affected flags in jump decisions
