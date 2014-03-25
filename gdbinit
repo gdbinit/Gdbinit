@@ -3813,6 +3813,21 @@ Syntax: loadcmds MACHO_HEADER_START_ADDRESS
 | Dump the Mach-O load commands
 end
 
+# defining it here doesn't get the space #$#$%"#!
+define disablecolorprompt
+    set prompt gdb$
+end
+document disablecolorprompt
+| Remove color from prompt
+end
+
+define enablecolorprompt
+    set prompt \033[31mgdb$ \033[0m
+end
+document enablecolorprompt
+| Enable color prompt
+end
+
 #EOF
 
 # Older change logs:
