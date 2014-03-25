@@ -146,9 +146,7 @@ set $COLOR_CPUFLAGS = $RED
 
 # this is ugly but there's no else if available :-(
 define color
- if $USECOLOR == 0
-	echo \033[0m
- else
+ if $USECOLOR == 1
  	# BLACK
  	if $arg0 == 0
  		echo \033[30m
@@ -192,15 +190,21 @@ define color
 end
 
 define color_reset
-	echo \033[0m
+    if $USECOLOR == 1
+	   echo \033[0m
+    end
 end
 
 define color_bold
-	echo \033[1m
+    if $USECOLOR == 1
+	   echo \033[1m
+    end
 end
 
 define color_underline
-	echo \033[4m
+    if $USECOLOR == 1
+	   echo \033[4m
+    end
 end
 
 # this way anyone can have their custom prompt - argp's idea :-)
