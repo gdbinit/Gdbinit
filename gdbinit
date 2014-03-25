@@ -3157,8 +3157,6 @@ define hook-stop
     if $ARM == 1
         if $ARMOPCODES == 1
             set arm show-opcode-bytes 1
-        else
-            set arm show-opcode-bytes 0
         end
     else
         if $X86FLAVOR == 0
@@ -3665,8 +3663,6 @@ end
 define arm
     if $ARMOPCODES == 1
         set arm show-opcode-bytes 1
-    else
-       set arm show-opcode-bytes 1
     end
     set $ARM = 1
 end
