@@ -73,6 +73,9 @@
 set $ARM = 0
 # set to 0 if you have problems with the colorized prompt - reported by Plouj with Ubuntu gdb 7.2
 set $COLOREDPROMPT = 1
+# set to 1 if your GDB was configured with --with-python. You can check this
+# by typing: show configuration
+set $USEPYTHON = 1
 # color the first line of the disassembly - default is green, if you want to change it search for
 # SETCOLOR1STLINE and modify it :-)
 set $SETCOLOR1STLINE = 0
@@ -214,7 +217,11 @@ source ~/.gdbinit.local
 
 # can't use the color functions because we are using the set command
 if $COLOREDPROMPT == 1
-	set extended-prompt \[\e[31m\]gdb$ \[\e[0m\]
+    if $USEPYTHON == 1
+	  set extended-prompt \[\e[31m\]gdb$ \[\e[0m\]
+    else
+	  set prompt \033[31mgdb$ \033[0m
+    end
 end
 
 # Initialize these variables else comparisons will fail for coloring
