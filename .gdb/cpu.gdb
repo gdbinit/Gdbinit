@@ -424,16 +424,16 @@ define context
     datawin
   end
 
-  echo \033[34m
-  printf "--------------------------------------------------------------------------"
-  if ($64BITS == 1)
-    printf "---------------------------------------------"
-  end
-  echo \033[34m\033[1m
-  printf "[code]\n"
-  echo \033[0m
   set $context_i = $CONTEXTSIZE_CODE
   if ($context_i > 0)
+    echo \033[34m
+    printf "--------------------------------------------------------------------------"
+    if ($64BITS == 1)
+      printf "---------------------------------------------"
+    end
+    echo \033[34m\033[1m
+    printf "[code]\n"
+    echo \033[0m
     if ($SETCOLOUR1STLINE == 1)	
       echo \033[32m
       x /i $pc
@@ -442,20 +442,20 @@ define context
       x /i $pc
     end
     set $context_i--
+    while ($context_i > 0)
+      x /i
+      set $context_i--
+    end
+    echo \033[34m
+    printf "----------------------------------------"
+    printf "----------------------------------------"
+    if ($64BITS == 1)
+      printf "---------------------------------------------\n"
+    else
+      printf "\n"
+    end
+    echo \033[0m
   end
-  while ($context_i > 0)
-    x /i
-    set $context_i--
-  end
-  echo \033[34m
-  printf "----------------------------------------"
-  printf "----------------------------------------"
-  if ($64BITS == 1)
-    printf "---------------------------------------------\n"
-  else
-    printf "\n"
-  end
-  echo \033[0m
 end
 document context
 Print context window, i.e. regs, stack, ds:esi and disassemble cs:eip.
