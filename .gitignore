@@ -1,3 +1,4 @@
 .gdbinit.local
 .gdb/history
+*.pyc
 *.DS_Store
