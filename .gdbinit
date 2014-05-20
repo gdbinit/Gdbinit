@@ -75,6 +75,8 @@ source ~/.gdb/macsbug.gdb
 source ~/.gdb/carbon.gdb
 source ~/.gdb/profile.gdb
 
+source ~/.gdb/eigen.gdb
+
 # The following is commented out because it caused errors last time for me (egall)
 #source ~/.gdb/kgmacros.gdb
 
