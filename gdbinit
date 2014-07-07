@@ -3078,9 +3078,9 @@ define entry_point
 
     set logging off
 
-    shell entry_point="$(/usr/bin/grep 'Entry point:' /tmp/gdb-entry_point | /usr/bin/awk '{ print $3 }')"; echo "$entry_point"; echo 'set $entry_point_address = '"$entry_point" > /tmp/gdb-entry_point
+    shell entry_point="$(grep 'Entry point:' /tmp/gdb-entry_point | awk '{ print $3 }')"; echo "$entry_point"; echo 'set $entry_point_address = '"$entry_point" > /tmp/gdb-entry_point
     source /tmp/gdb-entry_point
-    shell /bin/rm -f /tmp/gdb-entry_point
+    shell rm -f /tmp/gdb-entry_point
 end
 document entry_point
 Syntax: entry_point
@@ -3106,12 +3106,12 @@ define objc_symbols
 
     set logging off
     # XXX: define paths for objc-symbols and SymTabCreator
-    shell target="$(/usr/bin/head -1 /tmp/gdb-objc_symbols | /usr/bin/head -1 | /usr/bin/awk -F '"' '{ print $2 }')"; objc-symbols "$target" | SymTabCreator -o /tmp/gdb-symtab
+    shell target=$(head -1 /tmp/gdb-objc_symbols | awk -F '"' '{print $2}'); objc-symbols "$target" | SymTabCreator -o /tmp/gdb-symtab
 
     set logging on
     add-symbol-file /tmp/gdb-symtab
     set logging off
-    shell /bin/rm -f /tmp/gdb-objc_symbols
+    shell rm -f /tmp/gdb-objc_symbols
 end
 document objc_symbols
 Syntax: objc_symbols
@@ -3227,29 +3227,29 @@ define assemble
         if ($64BITS == 1)
             # argument specified, assemble instructions into memory at address specified.
             shell ASMOPCODE="$(while read -ep '>' r && test "$r" != end ; do echo -E "$r"; done)" ; GDBASMFILENAME=$RANDOM; \
-            echo -e "BITS 64\n$ASMOPCODE" >/tmp/$GDBASMFILENAME ; /usr/local/bin/nasm -f bin -o /dev/stdout /tmp/$GDBASMFILENAME | /usr/bin/hexdump -ve '1/1 "set *((unsigned char *) $arg0 + %#2_ax) = %#02x\n"' >/tmp/gdbassemble ; /bin/rm -f /tmp/$GDBASMFILENAME
+                echo -e "BITS 64\n$ASMOPCODE" >/tmp/$GDBASMFILENAME ; nasm -f bin -o /dev/stdout /tmp/$GDBASMFILENAME | hexdump -ve '1/1 "set *((unsigned char *) $arg0 + %#2_ax) = %#02x\n"' >/tmp/gdbassemble ; rm -f /tmp/$GDBASMFILENAME
             source /tmp/gdbassemble
             # all done. clean the temporary file
-            shell /bin/rm -f /tmp/gdbassemble
+            shell rm -f /tmp/gdbassemble
         else
             # argument specified, assemble instructions into memory at address specified.
             shell ASMOPCODE="$(while read -ep '>' r && test "$r" != end ; do echo -E "$r"; done)" ; GDBASMFILENAME=$RANDOM; \
-            echo -e "BITS 32\n$ASMOPCODE" >/tmp/$GDBASMFILENAME ; /usr/bin/nasm -f bin -o /dev/stdout /tmp/$GDBASMFILENAME | /usr/bin/hexdump -ve '1/1 "set *((unsigned char *) $arg0 + %#2_ax) = %#02x\n"' >/tmp/gdbassemble ; /bin/rm -f /tmp/$GDBASMFILENAME
+                echo -e "BITS 32\n$ASMOPCODE" >/tmp/$GDBASMFILENAME ; nasm -f bin -o /dev/stdout /tmp/$GDBASMFILENAME | hexdump -ve '1/1 "set *((unsigned char *) $arg0 + %#2_ax) = %#02x\n"' >/tmp/gdbassemble ; rm -f /tmp/$GDBASMFILENAME
             source /tmp/gdbassemble
             # all done. clean the temporary file
-            shell /bin/rm -f /tmp/gdbassemble
+            shell rm -f /tmp/gdbassemble
         end
     else
         if ($64BITS == 1)
             # no argument, assemble instructions to stdout
             shell ASMOPCODE="$(while read -ep '>' r && test "$r" != end ; do echo -E "$r"; done)" ; GDBASMFILENAME=$RANDOM; \
-            echo -e "BITS 64\n$ASMOPCODE" >/tmp/$GDBASMFILENAME ; /usr/local/bin/nasm -f bin -o /dev/stdout /tmp/$GDBASMFILENAME | /usr/local/bin/ndisasm -i -b64 /dev/stdin ; \
-            /bin/rm -f /tmp/$GDBASMFILENAME
+                echo -e "BITS 64\n$ASMOPCODE" >/tmp/$GDBASMFILENAME ; nasm -f bin -o /dev/stdout /tmp/$GDBASMFILENAME | ndisasm -i -b64 /dev/stdin ; \
+            rm -f /tmp/$GDBASMFILENAME
         else
             # no argument, assemble instructions to stdout
             shell ASMOPCODE="$(while read -ep '>' r && test "$r" != end ; do echo -E "$r"; done)" ; GDBASMFILENAME=$RANDOM; \
-            echo -e "BITS 32\n$ASMOPCODE" >/tmp/$GDBASMFILENAME ; /usr/bin/nasm -f bin -o /dev/stdout /tmp/$GDBASMFILENAME | /usr/bin/ndisasm -i -b32 /dev/stdin ; \
-            /bin/rm -f /tmp/$GDBASMFILENAME
+                echo -e "BITS 32\n$ASMOPCODE" >/tmp/$GDBASMFILENAME ; nasm -f bin -o /dev/stdout /tmp/$GDBASMFILENAME | ndisasm -i -b32 /dev/stdin ; \
+            rm -f /tmp/$GDBASMFILENAME
         end
     end
 end
@@ -3283,15 +3283,15 @@ define assemble32
     if ($argc)
         # argument specified, assemble instructions into memory at address specified.
         shell ASMOPCODE="$(while read -ep '>' r && test "$r" != end ; do echo -E "$r"; done)" ; GDBASMFILENAME=$RANDOM; \
-        echo -e "BITS 32\n$ASMOPCODE" >/tmp/$GDBASMFILENAME ; /usr/bin/nasm -f bin -o /dev/stdout /tmp/$GDBASMFILENAME | /usr/bin/hexdump -ve '1/1 "set *((unsigned char *) $arg0 + %#2_ax) = %#02x\n"' >/tmp/gdbassemble ; /bin/rm -f /tmp/$GDBASMFILENAME
+            echo -e "BITS 32\n$ASMOPCODE" >/tmp/$GDBASMFILENAME ; nasm -f bin -o /dev/stdout /tmp/$GDBASMFILENAME | hexdump -ve '1/1 "set *((unsigned char *) $arg0 + %#2_ax) = %#02x\n"' >/tmp/gdbassemble ; rm -f /tmp/$GDBASMFILENAME
         source /tmp/gdbassemble
         # all done. clean the temporary file
-        shell /bin/rm -f /tmp/gdbassemble
+        shell rm -f /tmp/gdbassemble
     else
         # no argument, assemble instructions to stdout
         shell ASMOPCODE="$(while read -ep '>' r && test "$r" != end ; do echo -E "$r"; done)" ; GDBASMFILENAME=$RANDOM; \
-        echo -e "BITS 32\n$ASMOPCODE" >/tmp/$GDBASMFILENAME ; /usr/bin/nasm -f bin -o /dev/stdout /tmp/$GDBASMFILENAME | /usr/bin/ndisasm -i -b32 /dev/stdin ; \
-        /bin/rm -f /tmp/$GDBASMFILENAME
+            echo -e "BITS 32\n$ASMOPCODE" >/tmp/$GDBASMFILENAME ; nasm -f bin -o /dev/stdout /tmp/$GDBASMFILENAME | ndisasm -i -b32 /dev/stdin ; \
+        rm -f /tmp/$GDBASMFILENAME
     end
 end
 document assemble32
@@ -3324,15 +3324,15 @@ define assemble64
     if ($argc)
         # argument specified, assemble instructions into memory at address specified.
         shell ASMOPCODE="$(while read -ep '>' r && test "$r" != end ; do echo -E "$r"; done)" ; GDBASMFILENAME=$RANDOM; \
-        echo -e "BITS 64\n$ASMOPCODE" >/tmp/$GDBASMFILENAME ; /usr/local/bin/nasm -f bin -o /dev/stdout /tmp/$GDBASMFILENAME | /usr/bin/hexdump -ve '1/1 "set *((unsigned char *) $arg0 + %#2_ax) = %#02x\n"' >/tmp/gdbassemble ; /bin/rm -f /tmp/$GDBASMFILENAME
+           echo -e "BITS 64\n$ASMOPCODE" >/tmp/$GDBASMFILENAME ; nasm -f bin -o /dev/stdout /tmp/$GDBASMFILENAME | hexdump -ve '1/1 "set *((unsigned char *) $arg0 + %#2_ax) = %#02x\n"' >/tmp/gdbassemble ; rm -f /tmp/$GDBASMFILENAME
         source /tmp/gdbassemble
         # all done. clean the temporary file
-        shell /bin/rm -f /tmp/gdbassemble
+        shell rm -f /tmp/gdbassemble
     else
         # no argument, assemble instructions to stdout
         shell ASMOPCODE="$(while read -ep '>' r && test "$r" != end ; do echo -E "$r"; done)" ; GDBASMFILENAME=$RANDOM; \
-        echo -e "BITS 64\n$ASMOPCODE" >/tmp/$GDBASMFILENAME ; /usr/local/bin/nasm -f bin -o /dev/stdout /tmp/$GDBASMFILENAME | /usr/local/bin/ndisasm -i -b64 /dev/stdin ; \
-        /bin/rm -f /tmp/$GDBASMFILENAME
+            echo -e "BITS 64\n$ASMOPCODE" >/tmp/$GDBASMFILENAME ; nasm -f bin -o /dev/stdout /tmp/$GDBASMFILENAME | ndisasm -i -b64 /dev/stdin ; \
+        rm -f /tmp/$GDBASMFILENAME
     end
 end
 document assemble64
@@ -3789,8 +3789,8 @@ define header
         help header
     else
         dump memory /tmp/gdbinit_header_dump $arg0 $arg0 + 4096
-        shell /usr/bin/otool -h /tmp/gdbinit_header_dump
-        shell /bin/rm -f /tmp/gdbinit_header_dump
+        shell otool -h /tmp/gdbinit_header_dump
+        shell rm -f /tmp/gdbinit_header_dump
     end
 end
 document header
@@ -3804,8 +3804,8 @@ define loadcmds
     else
         # this size should be good enough for most binaries
         dump memory /tmp/gdbinit_header_dump $arg0 $arg0 + 4096 * 10
-        shell /usr/bin/otool -l /tmp/gdbinit_header_dump
-        shell /bin/rm -f /tmp/gdbinit_header_dump
+        shell otool -l /tmp/gdbinit_header_dump
+        shell rm -f /tmp/gdbinit_header_dump
     end
 end
 document loadcmds
