@@ -46,6 +46,10 @@ set $CONTEXTSIZE_STACK = 6
 set $CONTEXTSIZE_DATA  = 8
 set $CONTEXTSIZE_CODE  = 8
 
+# Override configuration options defined above for the local machine. This file
+# should never go into version control.
+source ~/.gdbinit.local-pre
+
 # Options
 ###
 
