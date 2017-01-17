@@ -2,10 +2,10 @@
 #
 # DESCRIPTION: A user-friendly gdb configuration file, for x86/x86_64 and ARM platforms.
 #
-# REVISION : 8.0.5 (18/08/2013)
+# REVISION : 8.0.6 (17/01/2017)
 #
 # CONTRIBUTORS: mammon_, elaine, pusillus, mong, zhang le, l0kit,
-#               truthix the cyberpunk, fG!, gln
+#               truthix the cyberpunk, fG!, gln, nitrogen
 #
 # FEEDBACK: http://reverse.put.as - reverser@put.as
 #
@@ -213,8 +213,10 @@ end
 source ~/.gdbinit.local
 
 # can't use the color functions because we are using the set command
+# The \001 and \002 tell Readline to ignore the color codes when calculating
+# the prompt width, and are usually invisible without Readline
 if $COLOREDPROMPT == 1
-	set prompt \033[31mgdb$ \033[0m
+	set prompt \001\033[31m\002gdb$ \001\033[0m\002
 end
 
 # Initialize these variables else comparisons will fail for coloring
