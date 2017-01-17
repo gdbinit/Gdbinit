@@ -2,10 +2,10 @@
 #
 # DESCRIPTION: A user-friendly gdb configuration file, for x86/x86_64 and ARM platforms.
 #
-# REVISION : 8.0.5 (18/08/2013)
+# REVISION : 8.0.6 (17/01/2017)
 #
 # CONTRIBUTORS: mammon_, elaine, pusillus, mong, zhang le, l0kit,
-#               truthix the cyberpunk, fG!, gln
+#               truthix the cyberpunk, fG!, gln, nitrogen
 #
 # FEEDBACK: http://reverse.put.as - reverser@put.as
 #
@@ -29,6 +29,9 @@
 #            For more information, read it here http://reverse.put.as/2008/11/28/apples-gdb-bug/
 #
 # CHANGELOG: (older changes at the end of the file)
+#
+#   Version 8.0.7 (17/01/2017)
+#     - Fix color prompt when using up/down arrow to view command history
 #
 #   Version 8.0.6 (05/09/2013)
 #     - Add patch command to convert bytes to little-endian and patch memory
@@ -213,8 +216,10 @@ end
 source ~/.gdbinit.local
 
 # can't use the color functions because we are using the set command
+# The \001 and \002 tell Readline to ignore the color codes when calculating
+# the prompt width, and are usually invisible without Readline
 if $COLOREDPROMPT == 1
-	set prompt \033[31mgdb$ \033[0m
+	set prompt \001\033[31m\002gdb$ \001\033[0m\002
 end
 
 # Initialize these variables else comparisons will fail for coloring
