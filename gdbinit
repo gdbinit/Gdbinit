@@ -30,6 +30,9 @@
 #
 # CHANGELOG: (older changes at the end of the file)
 #
+#   Version 8.0.7 (17/01/2017)
+#     - Fix color prompt when using up/down arrow to view command history
+#
 #   Version 8.0.6 (05/09/2013)
 #     - Add patch command to convert bytes to little-endian and patch memory
 #
