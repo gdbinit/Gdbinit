@@ -76,6 +76,8 @@ set $COLOREDPROMPT = 1
 # color the first line of the disassembly - default is green, if you want to change it search for
 # SETCOLOR1STLINE and modify it :-)
 set $SETCOLOR1STLINE = 0
+# set to 0 to remove disassembly display (useful for scripted commands mass dumping)
+set $SHOWDISASM = 1
 # set to 0 to remove display of objectivec messages (default is 1)
 set $SHOWOBJECTIVEC = 1
 # set to 0 to remove display of cpu registers (default is 1)
@@ -93,7 +95,7 @@ set $SKIPEXECUTE = 0
 # 1 = use stepo (do not get into calls), 0 = use stepi (step into calls)
 set $SKIPSTEP = 1
 # show the ARM opcodes - change to 0 if you don't want such thing (in x/i command)
-set $ARMOPCODES = 1
+set $ARMOPCODES = 0
 # x86 disassembly flavor: 0 for Intel, 1 for AT&T
 set $X86FLAVOR = 0
 # use colorized output or not
@@ -311,7 +313,11 @@ define bp
     if $argc != 1
         help bp
     else
-        break $arg0
+        if $ASLR != 0
+            break ($arg0 + $ASLR)
+        else
+            break $arg0
+        end
     end
 end
 document bp
@@ -2130,49 +2136,50 @@ define context
     if $SHOWDATAWIN == 1
         datawin
     end
-
-    color $COLOR_SEPARATOR
-    printf "--------------------------------------------------------------------------"
-    if ($64BITS == 1)
-	    printf "---------------------------------------------"
-	end
-	color $COLOR_SEPARATOR
-	color_bold
-    printf "[code]\n"
-    color_reset
-    set $context_i = $CONTEXTSIZE_CODE
-    if ($context_i > 0)
-        if ($SETCOLOR1STLINE == 1)	
-	        color $GREEN
-            if ($ARM == 1)
-                #       | $cpsr.t (Thumb flag)
-                x/i (unsigned int)$pc | (($cpsr >> 5) & 1)
-            else
-    	        x/i $pc
-            end
-	        color_reset
-	    else
-            if ($ARM == 1)
-                #       | $cpsr.t (Thumb flag)
-	              x/i (unsigned int)$pc | (($cpsr >> 5) & 1)
-            else
-                x/i $pc
-            end
-	    end
-        set $context_i--
-    end
-    while ($context_i > 0)
-        x /i
-        set $context_i--
+    if $SHOWDISASM == 1
+        color $COLOR_SEPARATOR
+        printf "--------------------------------------------------------------------------"
+        if ($64BITS == 1)
+	       printf "---------------------------------------------"
+	   end
+	   color $COLOR_SEPARATOR
+	   color_bold
+        printf "[code]\n"
+        color_reset
+        set $context_i = $CONTEXTSIZE_CODE
+        if ($context_i > 0)
+            if ($SETCOLOR1STLINE == 1)	
+	           color $GREEN
+                if ($ARM == 1)
+                    #       | $cpsr.t (Thumb flag)
+                    x/i (unsigned int)$pc | (($cpsr >> 5) & 1)
+                else
+    	            x/i $pc
+                end
+	           color_reset
+	       else
+                if ($ARM == 1)
+                    #       | $cpsr.t (Thumb flag)
+	                 x/i (unsigned int)$pc | (($cpsr >> 5) & 1)
+                else
+                    x/i $pc
+                end
+	       end
+            set $context_i--
+        end
+        while ($context_i > 0)
+            x /i
+            set $context_i--
+        end
     end
     color $COLOR_SEPARATOR
     printf "----------------------------------------"
     printf "----------------------------------------"
     if ($64BITS == 1)
         printf "---------------------------------------------\n"
-	else
-	    printf "\n"
-	end
+    else
+        printf "\n"
+    end
     color_reset
 end
 document context
@@ -3604,6 +3611,14 @@ end
 
 
 # enable commands for different displays
+define enabledisasm
+    set $SHOWDISASM = 1
+end
+document enabledisasm
+Syntax: enabledisasm
+| Enable disassembly display.
+end
+
 define enableobjectivec
 	set $SHOWOBJECTIVEC = 1
 end
@@ -3641,6 +3656,14 @@ end
 
 
 # disable commands for different displays
+define disabledisasm
+    set $SHOWDISASM = 0
+end
+document disabledisasm
+Syntax: disabledisasm
+| Disable disassembly display.
+end
+
 define disableobjectivec
 	set $SHOWOBJECTIVEC = 0
 end
