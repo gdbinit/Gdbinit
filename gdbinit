@@ -104,6 +104,7 @@ set $64BITS = 0
 
 set confirm off
 set verbose off
+set style enabled off
 set history filename ~/.gdb_history
 set history save
 
