@@ -3208,14 +3208,14 @@ define assemble
 	    if ($64BITS == 1)
 		    # argument specified, assemble instructions into memory at address specified.
     		shell ASMOPCODE="$(while read -ep '>' r && test "$r" != end ; do echo -E "$r"; done)" ; GDBASMFILENAME=$RANDOM; \
-    		echo -e "BITS 64\n$ASMOPCODE" >/tmp/$GDBASMFILENAME ; /usr/local/bin/nasm -f bin -o /dev/stdout /tmp/$GDBASMFILENAME | /usr/bin/hexdump -ve '1/1 "set *((unsigned char *) $arg0 + %#2_ax) = %#02x\n"' >/tmp/gdbassemble ; /bin/rm -f /tmp/$GDBASMFILENAME
+    		echo -e "BITS 64\n$ASMOPCODE" >/tmp/$GDBASMFILENAME ; nasm -f bin -o /dev/stdout /tmp/$GDBASMFILENAME | /usr/bin/hexdump -ve '1/1 "set *((unsigned char *) $arg0 + %#2_ax) = %#02x\n"' >/tmp/gdbassemble ; /bin/rm -f /tmp/$GDBASMFILENAME
     		source /tmp/gdbassemble
     		# all done. clean the temporary file
     		shell /bin/rm -f /tmp/gdbassemble
     	else
 	    	# argument specified, assemble instructions into memory at address specified.
 	    	shell ASMOPCODE="$(while read -ep '>' r && test "$r" != end ; do echo -E "$r"; done)" ; GDBASMFILENAME=$RANDOM; \
-		    echo -e "BITS 32\n$ASMOPCODE" >/tmp/$GDBASMFILENAME ; /usr/bin/nasm -f bin -o /dev/stdout /tmp/$GDBASMFILENAME | /usr/bin/hexdump -ve '1/1 "set *((unsigned char *) $arg0 + %#2_ax) = %#02x\n"' >/tmp/gdbassemble ; /bin/rm -f /tmp/$GDBASMFILENAME
+		    echo -e "BITS 32\n$ASMOPCODE" >/tmp/$GDBASMFILENAME ; nasm -f bin -o /dev/stdout /tmp/$GDBASMFILENAME | /usr/bin/hexdump -ve '1/1 "set *((unsigned char *) $arg0 + %#2_ax) = %#02x\n"' >/tmp/gdbassemble ; /bin/rm -f /tmp/$GDBASMFILENAME
     		source /tmp/gdbassemble
 	    	# all done. clean the temporary file
 		    shell /bin/rm -f /tmp/gdbassemble
@@ -3224,12 +3224,12 @@ define assemble
 	    if ($64BITS == 1)
 		    # no argument, assemble instructions to stdout
     		shell ASMOPCODE="$(while read -ep '>' r && test "$r" != end ; do echo -E "$r"; done)" ; GDBASMFILENAME=$RANDOM; \
-	    	echo -e "BITS 64\n$ASMOPCODE" >/tmp/$GDBASMFILENAME ; /usr/local/bin/nasm -f bin -o /dev/stdout /tmp/$GDBASMFILENAME | /usr/local/bin/ndisasm -i -b64 /dev/stdin ; \
+	    	echo -e "BITS 64\n$ASMOPCODE" >/tmp/$GDBASMFILENAME ; nasm -f bin -o /dev/stdout /tmp/$GDBASMFILENAME | ndisasm -i -b64 /dev/stdin ; \
 		    /bin/rm -f /tmp/$GDBASMFILENAME
     	else
 	    	# no argument, assemble instructions to stdout
 	    	shell ASMOPCODE="$(while read -ep '>' r && test "$r" != end ; do echo -E "$r"; done)" ; GDBASMFILENAME=$RANDOM; \
-	    	echo -e "BITS 32\n$ASMOPCODE" >/tmp/$GDBASMFILENAME ; /usr/bin/nasm -f bin -o /dev/stdout /tmp/$GDBASMFILENAME | /usr/bin/ndisasm -i -b32 /dev/stdin ; \
+	    	echo -e "BITS 32\n$ASMOPCODE" >/tmp/$GDBASMFILENAME ; nasm -f bin -o /dev/stdout /tmp/$GDBASMFILENAME | ndisasm -i -b32 /dev/stdin ; \
 		    /bin/rm -f /tmp/$GDBASMFILENAME
     	end
     end
@@ -3264,14 +3264,14 @@ define assemble32
     if ($argc)
         # argument specified, assemble instructions into memory at address specified.
         shell ASMOPCODE="$(while read -ep '>' r && test "$r" != end ; do echo -E "$r"; done)" ; GDBASMFILENAME=$RANDOM; \
-        echo -e "BITS 32\n$ASMOPCODE" >/tmp/$GDBASMFILENAME ; /usr/bin/nasm -f bin -o /dev/stdout /tmp/$GDBASMFILENAME | /usr/bin/hexdump -ve '1/1 "set *((unsigned char *) $arg0 + %#2_ax) = %#02x\n"' >/tmp/gdbassemble ; /bin/rm -f /tmp/$GDBASMFILENAME
+        echo -e "BITS 32\n$ASMOPCODE" >/tmp/$GDBASMFILENAME ; nasm -f bin -o /dev/stdout /tmp/$GDBASMFILENAME | /usr/bin/hexdump -ve '1/1 "set *((unsigned char *) $arg0 + %#2_ax) = %#02x\n"' >/tmp/gdbassemble ; /bin/rm -f /tmp/$GDBASMFILENAME
         source /tmp/gdbassemble
         # all done. clean the temporary file
         shell /bin/rm -f /tmp/gdbassemble
     else
         # no argument, assemble instructions to stdout
         shell ASMOPCODE="$(while read -ep '>' r && test "$r" != end ; do echo -E "$r"; done)" ; GDBASMFILENAME=$RANDOM; \
-        echo -e "BITS 32\n$ASMOPCODE" >/tmp/$GDBASMFILENAME ; /usr/bin/nasm -f bin -o /dev/stdout /tmp/$GDBASMFILENAME | /usr/bin/ndisasm -i -b32 /dev/stdin ; \
+        echo -e "BITS 32\n$ASMOPCODE" >/tmp/$GDBASMFILENAME ; nasm -f bin -o /dev/stdout /tmp/$GDBASMFILENAME | ndisasm -i -b32 /dev/stdin ; \
         /bin/rm -f /tmp/$GDBASMFILENAME
     end
 end
@@ -3305,14 +3305,14 @@ define assemble64
     if ($argc)
         # argument specified, assemble instructions into memory at address specified.
         shell ASMOPCODE="$(while read -ep '>' r && test "$r" != end ; do echo -E "$r"; done)" ; GDBASMFILENAME=$RANDOM; \
-        echo -e "BITS 64\n$ASMOPCODE" >/tmp/$GDBASMFILENAME ; /usr/local/bin/nasm -f bin -o /dev/stdout /tmp/$GDBASMFILENAME | /usr/bin/hexdump -ve '1/1 "set *((unsigned char *) $arg0 + %#2_ax) = %#02x\n"' >/tmp/gdbassemble ; /bin/rm -f /tmp/$GDBASMFILENAME
+        echo -e "BITS 64\n$ASMOPCODE" >/tmp/$GDBASMFILENAME ; nasm -f bin -o /dev/stdout /tmp/$GDBASMFILENAME | /usr/bin/hexdump -ve '1/1 "set *((unsigned char *) $arg0 + %#2_ax) = %#02x\n"' >/tmp/gdbassemble ; /bin/rm -f /tmp/$GDBASMFILENAME
         source /tmp/gdbassemble
         # all done. clean the temporary file
         shell /bin/rm -f /tmp/gdbassemble
     else
         # no argument, assemble instructions to stdout
         shell ASMOPCODE="$(while read -ep '>' r && test "$r" != end ; do echo -E "$r"; done)" ; GDBASMFILENAME=$RANDOM; \
-        echo -e "BITS 64\n$ASMOPCODE" >/tmp/$GDBASMFILENAME ; /usr/local/bin/nasm -f bin -o /dev/stdout /tmp/$GDBASMFILENAME | /usr/local/bin/ndisasm -i -b64 /dev/stdin ; \
+        echo -e "BITS 64\n$ASMOPCODE" >/tmp/$GDBASMFILENAME ; nasm -f bin -o /dev/stdout /tmp/$GDBASMFILENAME | ndisasm -i -b64 /dev/stdin ; \
         /bin/rm -f /tmp/$GDBASMFILENAME
     end
 end
