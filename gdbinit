@@ -189,6 +189,10 @@ define color_underline
     end
 end
 
+# create ~/.gdbinit.local if file not present
+# suppresses any warning about not finding the file
+shell if ! test -f ~/.gdbinit.local; then touch ~/.gdbinit.local; fi
+
 # this way anyone can have their custom prompt - argp's idea :-)
 # can also be used to redefine anything else in particular the colors aka theming
 # just remap the color variables defined above
