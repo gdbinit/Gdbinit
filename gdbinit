@@ -127,47 +127,40 @@ set $COLOR_CPUFLAGS = $RED
 
 # this is ugly but there's no else if available :-(
 define color
- if $USECOLOR == 1
-    # BLACK
-    if $arg0 == 0
-        echo \033[30m
-    else
-        # RED
+    if $USECOLOR == 1
+        # BLACK
+        if $arg0 == 0
+            echo \033[30m
+        end
+         # RED
         if $arg0 == 1
             echo \033[31m
-        else
-            # GREEN
-            if $arg0 == 2
-                echo \033[32m
-            else
-                # YELLOW
-                if $arg0 == 3
-                    echo \033[33m
-                else
-                    # BLUE
-                    if $arg0 == 4
-                        echo \033[34m
-                    else
-                        # MAGENTA
-                        if $arg0 == 5
-                            echo \033[35m
-                        else
-                            # CYAN
-                            if $arg0 == 6
-                                echo \033[36m
-                            else
-                                # WHITE
-                                if $arg0 == 7
-                                    echo \033[37m
-                                end
-                            end
-                        end
-                    end
-                end
-            end
+        end
+        # GREEN
+        if $arg0 == 2
+            echo \033[32m
+        end
+        # YELLOW
+        if $arg0 == 3
+            echo \033[33m
+        end
+        # BLUE
+        if $arg0 == 4
+            echo \033[34m
+        end
+        # MAGENTA
+        if $arg0 == 5
+            echo \033[35m
+        end
+        # CYAN
+        if $arg0 == 6
+            echo \033[36m
+        end
+        # WHITE
+        if $arg0 == 7
+            echo \033[37m
         end
     end
- end
 end
 
 define color_reset
